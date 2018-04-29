@@ -1,7 +1,7 @@
 // noreintegrate can override sounds
 // noreintegrate active notes
-// noreintegrate startnote endnote
 import React from "react";
+import _ from "lodash";
 
 function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
@@ -22,13 +22,19 @@ const NOTE_ARRAY = [
   "bb",
   "b"
 ];
-const MIDI_NOTE_C0 = 12;
+const MIDI_NUMBER_C0 = 12;
 const NOTE_REGEX = /(\w+)(\d)/;
 const NOTES_IN_OCTAVE = 12;
 function noteToMidiNumber(note) {
   const [, basenote, octave] = NOTE_REGEX.exec(note);
   const offset = NOTE_ARRAY.indexOf(basenote);
-  return MIDI_NOTE_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
+  return MIDI_NUMBER_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
+}
+function midiNumberToNote(number) {
+  const offset = (number - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
+  const octave = Math.floor((number - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
+  const basenote = NOTE_ARRAY[offset];
+  return `${basenote}${octave}`;
 }
 
 function Key(props) {
@@ -87,20 +93,14 @@ class Piano extends React.Component {
   };
 
   render() {
-    const notes = [
-      "c",
-      "db",
-      "d",
-      "eb",
-      "e",
-      "f",
-      "gb",
-      "g",
-      "ab",
-      "a",
-      "bb",
-      "b"
-    ];
+    const midiNumbers = _.range(
+      noteToMidiNumber(this.props.startNote),
+      noteToMidiNumber(this.props.endNote) + 1
+    );
+    const notes = midiNumbers.map(num => {
+      const note = midiNumberToNote(num);
+      return note.substring(0, note.length - 1);
+    });
 
     const numWhiteKeys = notes.filter(
       note => !this.props.noteConfig[note].isBlackKey

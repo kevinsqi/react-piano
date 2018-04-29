@@ -6,7 +6,7 @@ class App extends Component {
   render() {
     return (
       <div style={{ width: "500px", height: "300px" }}>
-        <Piano />
+        <Piano startNote="c4" endNote="c5" />
       </div>
     );
   }
