@@ -1,7 +1,5 @@
-// noreintegrate can override sounds
-// noreintegrate active notes
+// noreintegrate keyboard bindings
 // noreintegrate have auto-width vs manual width settings
-// noreintegrate UI - bottom border fix, animate height when pressed
 import React from "react";
 import _ from "lodash";
 
@@ -73,6 +71,7 @@ class Piano extends React.Component {
   };
 
   static defaultProps = {
+    whiteKeyGutter: 0.02,
     whiteKeyConfig: {
       widthRatio: 1,
       heightRatio: 1,
@@ -80,8 +79,9 @@ class Piano extends React.Component {
       style: {
         zIndex: 0,
         borderRadius: "0 0 6px 6px",
-        border: "2px solid #999",
-        background: "#fff"
+        border: "1px solid #888",
+        boxShadow: "inset -2px -2px 2px #fff, 0 0 5px #ccc",
+        background: "#f6f5f3"
       }
     },
     blackKeyConfig: {
@@ -91,7 +91,7 @@ class Piano extends React.Component {
       style: {
         zIndex: 1,
         borderRadius: "0 0 4px 4px",
-        border: "2px solid #eee",
+        border: "1px solid #fff",
         background: "#555"
       }
     },
@@ -149,7 +149,9 @@ class Piano extends React.Component {
       const { basenote } = getMidiNumberAttributes(num);
       return !this.props.noteConfig[basenote].isBlackKey;
     }).length;
-    const whiteKeyWidth = 1 / numWhiteKeys;
+    const distanceBetweenWhiteKeys = 1 / numWhiteKeys;
+    const whiteKeyWidth =
+      distanceBetweenWhiteKeys * (1 - this.props.whiteKeyGutter);
     const octaveWidth = 7;
 
     return (
@@ -162,7 +164,7 @@ class Piano extends React.Component {
             ? this.props.blackKeyConfig
             : this.props.whiteKeyConfig;
           const startNoteAttrs = getMidiNumberAttributes(startNum);
-          const leftRatio =
+          const leftPosition =
             noteConfig.offsetFromC -
             this.props.noteConfig[startNoteAttrs.basenote].offsetFromC +
             octaveWidth * (octave - startNoteAttrs.octave);
@@ -170,7 +172,7 @@ class Piano extends React.Component {
           return (
             <Key
               note={note}
-              left={ratioToPercentage(leftRatio * whiteKeyWidth)}
+              left={ratioToPercentage(leftPosition * distanceBetweenWhiteKeys)}
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio
