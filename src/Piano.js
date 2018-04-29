@@ -14,7 +14,8 @@ function WhiteKey(props) {
         top: 0,
         left: `${props.x}%`,
         width: `${props.width}%`,
-        height: `${props.height}%`
+        height: `${props.height}%`,
+        borderRadius: "0 0 4px 4px"
       }}
     />
   );
@@ -30,7 +31,8 @@ function BlackKey(props) {
         top: 0,
         left: `${props.x}%`,
         width: `${props.width}%`,
-        height: `${props.height}%`
+        height: `${props.height}%`,
+        borderRadius: "0 0 4px 4px"
       }}
     />
   );
