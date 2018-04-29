@@ -1,5 +1,6 @@
 // noreintegrate can override sounds
 // noreintegrate active notes
+// noreintegrate have auto-width vs manual width settings
 import React from "react";
 import _ from "lodash";
 
@@ -44,17 +45,16 @@ function getMidiNumberAttributes(number) {
 function Key(props) {
   return (
     <div
-      style={{
-        background: props.background,
-        border: props.border,
-        position: "absolute",
-        top: 0,
-        left: props.left,
-        width: props.width,
-        height: props.height,
-        borderRadius: "0 0 4px 4px",
-        zIndex: props.zIndex
-      }}
+      style={Object.assign(
+        {
+          position: "absolute",
+          top: 0,
+          left: props.left,
+          width: props.width,
+          height: props.height
+        },
+        props.style
+      )}
     />
   );
 }
@@ -64,16 +64,22 @@ class Piano extends React.Component {
     whiteKeyConfig: {
       widthRatio: 1,
       heightRatio: 1,
-      border: "2px solid #999",
-      background: "#fff",
-      zIndex: 0
+      style: {
+        zIndex: 0,
+        borderRadius: "0 0 4px 4px",
+        border: "2px solid #999",
+        background: "#fff"
+      }
     },
     blackKeyConfig: {
       widthRatio: 0.66,
       heightRatio: 0.66,
-      border: "2px solid #eee",
-      background: "#555",
-      zIndex: 1
+      style: {
+        zIndex: 1,
+        borderRadius: "0 0 4px 4px",
+        border: "2px solid #eee",
+        background: "#555"
+      }
     },
     noteConfig: {
       c: { offsetFromC: 0, isBlackKey: false },
@@ -112,7 +118,7 @@ class Piano extends React.Component {
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         {midiNumbers.map(num => {
           // TODO: refactor
-          const { octave, offset, basenote } = getMidiNumberAttributes(num);
+          const { octave, basenote } = getMidiNumberAttributes(num);
           const noteConfig = this.props.noteConfig[basenote];
           const keyConfig = noteConfig.isBlackKey
             ? this.props.blackKeyConfig
@@ -127,9 +133,7 @@ class Piano extends React.Component {
               left={ratioToPercentage(leftRatio * whiteKeyWidth)}
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(keyConfig.heightRatio)}
-              border={keyConfig.border}
-              background={keyConfig.background}
-              zIndex={keyConfig.zIndex}
+              style={keyConfig.style}
               key={num}
             />
           );
