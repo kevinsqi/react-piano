@@ -36,9 +36,10 @@ function getMidiNumberAttributes(number) {
   const octave = Math.floor((number - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
   const basenote = NOTE_ARRAY[offset];
   return {
-    offset,
+    note: `${basenote}${octave}`,
+    basenote,
     octave,
-    basenote
+    midiNumber: number
   };
 }
 
