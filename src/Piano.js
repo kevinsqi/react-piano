@@ -3,6 +3,34 @@
 // noreintegrate startnote endnote
 import React from "react";
 
+function ratioToPercentage(ratio) {
+  return `${ratio * 100}%`;
+}
+
+// TODO: move to separate file
+const NOTE_ARRAY = [
+  "c",
+  "db",
+  "d",
+  "eb",
+  "e",
+  "f",
+  "gb",
+  "g",
+  "ab",
+  "a",
+  "bb",
+  "b"
+];
+const MIDI_NOTE_C0 = 12;
+const NOTE_REGEX = /(\w+)(\d)/;
+const NOTES_IN_OCTAVE = 12;
+function noteToMidiNumber(note) {
+  const [, basenote, octave] = NOTE_REGEX.exec(note);
+  const offset = NOTE_ARRAY.indexOf(basenote);
+  return MIDI_NOTE_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
+}
+
 function Key(props) {
   return (
     <div
@@ -21,10 +49,6 @@ function Key(props) {
   );
 }
 
-function ratioToPercentage(ratio) {
-  return `${ratio * 100}%`;
-}
-
 class Piano extends React.Component {
   static defaultProps = {
     whiteKeyConfig: {
@@ -41,6 +65,7 @@ class Piano extends React.Component {
       background: "#555",
       zIndex: 1
     },
+    // TODO: include MIDI note number https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
     noteConfig: {
       c: { offset: 0, isBlackKey: false },
       db: { offset: 0.55, isBlackKey: true },
