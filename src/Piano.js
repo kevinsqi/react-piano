@@ -56,8 +56,11 @@ function Key(props) {
         },
         props.style
       )}
+      onClick={props.onClick}
     >
-      <span style={{ textTransform: "capitalize" }}>{props.note}</span>
+      <span style={{ color: "#999", textTransform: "capitalize" }}>
+        {props.note}
+      </span>
     </div>
   );
 }
@@ -97,11 +100,16 @@ class Piano extends React.Component {
       a: { offsetFromC: 5, isBlackKey: false },
       bb: { offsetFromC: 5.85, isBlackKey: true },
       b: { offsetFromC: 6, isBlackKey: false }
+    },
+    onClickKey: attrs => {
+      // noreintegrate
+      console.log("onClickKey", attrs);
     }
   };
 
-  onClickKey = () => {
-    // TODO
+  onClickKey = midiNumber => {
+    const attrs = getMidiNumberAttributes(midiNumber);
+    this.props.onClickKey(attrs);
   };
 
   render() {
@@ -138,6 +146,7 @@ class Piano extends React.Component {
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(keyConfig.heightRatio)}
               style={keyConfig.style}
+              onClick={this.onClickKey.bind(this, num)}
               key={num}
             />
           );
