@@ -4,12 +4,12 @@
 import React from "react";
 import _ from "lodash";
 
-function WhiteKey(props) {
+function Key(props) {
   return (
     <div
       style={{
-        backgroundColor: "#fff",
-        border: "2px solid #999",
+        backgroundColor: props.backgroundColor,
+        border: `2px solid ${props.stroke}`,
         position: "absolute",
         top: 0,
         left: `${props.x}%`,
@@ -21,49 +21,81 @@ function WhiteKey(props) {
   );
 }
 
-function BlackKey(props) {
-  return (
-    <div
-      style={{
-        backgroundColor: "#555",
-        stroke: "2px solid #eee",
-        position: "absolute",
-        top: 0,
-        left: `${props.x}%`,
-        width: `${props.width}%`,
-        height: `${props.height}%`,
-        borderRadius: "0 0 4px 4px"
-      }}
-    />
-  );
-}
+const noteConfig = [
+  {
+    name: "c",
+    offset: 0,
+    isBlackKey: false
+  },
+  {
+    name: "db",
+    offset: 0.55,
+    isBlackKey: true
+  },
+  {
+    name: "d",
+    offset: 1,
+    isBlackKey: false
+  },
+  {
+    name: "eb",
+    offset: 1.8,
+    isBlackKey: true
+  },
+  {
+    name: "e",
+    offset: 2,
+    isBlackKey: false
+  },
+  {
+    name: "f",
+    offset: 3,
+    isBlackKey: false
+  },
+  { name: "gb", offset: 3.5, isBlackKey: true }
+  // blackKeyOffsets = [0.55, 1.8, 3.5, 4.7, 5.85].map(
+];
 
-function Piano(props) {
-  const maxWidth = 100;
-  const maxHeight = 100;
-  const numWhiteKeys = 7;
-  const whiteKeyWidth = maxWidth / numWhiteKeys;
-  const whiteKeyHeight = maxHeight;
-  const blackKeyWidth = whiteKeyWidth * 0.65;
-  const blackKeyHeight = maxHeight * 0.66;
-  const blackKeyOffsets = [0.55, 1.8, 3.5, 4.7, 5.85].map(
-    index => whiteKeyWidth * index
-  );
-  return (
-    <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      {_.range(numWhiteKeys).map(index => (
-        <WhiteKey
-          x={index * whiteKeyWidth}
-          width={whiteKeyWidth}
-          height={whiteKeyHeight}
-          key={index}
-        />
-      ))}
-      {blackKeyOffsets.map(offset => (
-        <BlackKey x={offset} width={blackKeyWidth} height={blackKeyHeight} />
-      ))}
-    </div>
-  );
+class Piano extends React.Component {
+  static defaultProps = {
+    blackKeyConfig: {
+      widthRatio: 0.66,
+      heightRatio: 0.66
+    }
+  };
+
+  onClickKey = () => {
+    // TODO
+  };
+
+  render() {
+    const notes = ["c", "db", "d", "eb", "e"];
+    const notesToNoteConfigs = _.keyBy(noteConfig, "name");
+    const configs = notes.map(note => notesToNoteConfigs[note]);
+
+    const numWhiteKeys = 7; // noreintegrate get from mapping over notes
+    // noreintegrate configure this from a config object too
+    const whiteKeyHeight = 100;
+    const whiteKeyWidth = 100 / numWhiteKeys;
+    const blackKeyWidth = whiteKeyWidth * this.props.blackKeyConfig.widthRatio;
+    const blackKeyHeight = 100 * this.props.blackKeyConfig.heightRatio;
+    return (
+      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+        {configs.map(config => {
+          return (
+            <Key
+              x={config.offset * whiteKeyWidth}
+              key={config.name}
+              width={config.isBlackKey ? blackKeyWidth : whiteKeyWidth}
+              height={config.isBlackKey ? blackKeyHeight : whiteKeyHeight}
+              stroke={config.isBlackKey ? "#eee" : "#999"}
+              backgroundColor={config.isBlackKey ? "#555" : "#fff"}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 }
 
 export default Piano;
