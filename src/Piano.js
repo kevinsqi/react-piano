@@ -16,16 +16,16 @@ function WhiteKey(props) {
 }
 
 function BlackKey(props) {
-  const topOverflow = 3;
+  const borderRadius = 3;
   return (
     <rect
       stroke="#eee"
       fill="#555"
       x={props.x}
-      y={-topOverflow}
-      rx={3}
+      y={-borderRadius /* so border doesn't get applied to top */}
+      rx={borderRadius}
       width={props.width}
-      height={props.height + topOverflow}
+      height={props.height + borderRadius}
     />
   );
 }
@@ -55,8 +55,10 @@ function Octave(props) {
   );
 }
 
+// noreintegrate active notes
 // noreintegrate startnote endnote
 function Piano(props) {
+  // Add padding so stroke borders don't get cut off
   const border = 4;
   const viewBox = `0 0 ${props.width + border} ${props.height + border}`;
   return (
