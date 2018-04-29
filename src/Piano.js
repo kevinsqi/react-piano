@@ -1,6 +1,7 @@
 // noreintegrate can override sounds
 // noreintegrate active notes
 // noreintegrate have auto-width vs manual width settings
+// noreintegrate UI - bottom border fix, animate height when pressed
 import React from "react";
 import _ from "lodash";
 
@@ -67,13 +68,18 @@ function Key(props) {
 }
 
 class Piano extends React.Component {
+  state = {
+    keysDown: {}
+  };
+
   static defaultProps = {
     whiteKeyConfig: {
       widthRatio: 1,
       heightRatio: 1,
+      heightKeyDownRatio: 0.98,
       style: {
         zIndex: 0,
-        borderRadius: "0 0 4px 4px",
+        borderRadius: "0 0 6px 6px",
         border: "2px solid #999",
         background: "#fff"
       }
@@ -81,6 +87,7 @@ class Piano extends React.Component {
     blackKeyConfig: {
       widthRatio: 0.66,
       heightRatio: 0.66,
+      heightKeyDownRatio: 0.65,
       style: {
         zIndex: 1,
         borderRadius: "0 0 4px 4px",
@@ -113,11 +120,21 @@ class Piano extends React.Component {
   };
 
   onKeyDown = midiNumber => {
+    this.setState({
+      keysDown: Object.assign({}, this.state.keysDown, {
+        [midiNumber]: true
+      })
+    });
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onKeyDown(attrs);
   };
 
   onKeyUp = midiNumber => {
+    this.setState({
+      keysDown: Object.assign({}, this.state.keysDown, {
+        [midiNumber]: false
+      })
+    });
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onKeyUp(attrs);
   };
@@ -149,12 +166,15 @@ class Piano extends React.Component {
             noteConfig.offsetFromC -
             this.props.noteConfig[startNoteAttrs.basenote].offsetFromC +
             octaveWidth * (octave - startNoteAttrs.octave);
+          const isKeyDown = this.state.keysDown[num];
           return (
             <Key
               note={note}
               left={ratioToPercentage(leftRatio * whiteKeyWidth)}
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
-              height={ratioToPercentage(keyConfig.heightRatio)}
+              height={ratioToPercentage(
+                isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio
+              )}
               style={keyConfig.style}
               onMouseDown={this.onKeyDown.bind(this, num)}
               onMouseUp={this.onKeyUp.bind(this, num)}
