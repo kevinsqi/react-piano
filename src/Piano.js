@@ -77,7 +77,9 @@ class Piano extends React.Component {
       "b"
     ];
 
-    const numWhiteKeys = 7; // noreintegrate get from mapping over notes
+    const numWhiteKeys = notes.filter(
+      note => !this.props.noteConfig[note].isBlackKey
+    ).length;
     const whiteKeyWidth = 1 / numWhiteKeys;
     return (
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
