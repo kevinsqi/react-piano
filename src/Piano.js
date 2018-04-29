@@ -1,39 +1,66 @@
 import React from "react";
+import _ from "lodash";
 
 function WhiteKey(props) {
-  const width = 20;
   return (
     <rect
-      stroke="#cccccc"
+      stroke="#aaaaaa"
       fill="#ffffff"
-      x={props.index * width}
+      x={props.x}
       y={0}
       rx={3}
-      width={width}
-      height={100}
+      width={props.width}
+      height={props.height}
+    />
+  );
+}
+
+function BlackKey(props) {
+  const topOverflow = 3;
+  return (
+    <rect
+      stroke="#ccc"
+      fill="#666"
+      x={props.x}
+      y={-topOverflow}
+      rx={3}
+      width={props.width}
+      height={props.height + topOverflow}
     />
   );
 }
 
 function Octave(props) {
-  const width = 20;
+  const numWhiteKeys = 7;
+  const whiteKeyWidth = props.width / numWhiteKeys;
+  const blackKeyWidth = whiteKeyWidth * 0.65;
+  const blackKeyHeight = props.height * 0.66;
+  const blackKeyOffsets = [0.55, 1.8, 3.5].map(index => whiteKeyWidth * index);
   return (
     <g>
-      <WhiteKey index={0} />
-      <WhiteKey index={1} />
-      <WhiteKey index={2} />
-      <WhiteKey index={3} />
-      <WhiteKey index={4} />
-      <WhiteKey index={5} />
-      <WhiteKey index={6} />
+      {_.range(7).map(index => (
+        <WhiteKey
+          x={index * whiteKeyWidth}
+          width={whiteKeyWidth}
+          height={props.height}
+          key={index}
+        />
+      ))}
+      {blackKeyOffsets.map(offset => (
+        <BlackKey x={offset} width={blackKeyWidth} height={blackKeyHeight} />
+      ))}
     </g>
   );
 }
 
 function Piano(props) {
+  const border = 4;
+  const viewBox = `0 0 ${props.width + border} ${props.height + border}`;
   return (
-    <svg viewBox="0 0 200 100">
-      <Octave />
+    <svg viewBox={viewBox}>
+      <g x={border / 2} y={border / 2}>
+        <Octave width={props.width} height={props.height} />
+      </g>
     </svg>
   );
 }
