@@ -59,6 +59,10 @@ function Key(props) {
       )}
       onMouseDown={props.onMouseDown}
       onMouseUp={props.onMouseUp}
+      onMouseLeave={props.onMouseLeave}
+      onTouchStart={props.onTouchStart}
+      onTouchCancel={props.onTouchCancel}
+      onTouchEnd={props.onTouchEnd}
     >
       <span style={{ color: "#999", textTransform: "capitalize" }}>
         {props.note}
@@ -182,6 +186,10 @@ class Piano extends React.Component {
               style={keyConfig.style}
               onMouseDown={this.onKeyDown.bind(this, num)}
               onMouseUp={this.onKeyUp.bind(this, num)}
+              onMouseLeave={this.onKeyUp.bind(this, num)}
+              onTouchStart={this.onKeyDown.bind(this, num)}
+              onTouchCancel={this.onKeyUp.bind(this, num)}
+              onTouchEnd={this.onKeyUp.bind(this, num)}
               key={num}
             />
           );
