@@ -56,7 +56,8 @@ function Key(props) {
         },
         props.style
       )}
-      onClick={props.onClick}
+      onMouseDown={props.onMouseDown}
+      onMouseUp={props.onMouseUp}
     >
       <span style={{ color: "#999", textTransform: "capitalize" }}>
         {props.note}
@@ -101,15 +102,24 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isBlackKey: true },
       b: { offsetFromC: 6, isBlackKey: false }
     },
-    onClickKey: attrs => {
+    onKeyDown: keyAttrs => {
       // noreintegrate
-      console.log("onClickKey", attrs);
+      console.log("onKeyDown", keyAttrs);
+    },
+    onKeyUp: keyAttrs => {
+      // noreintegrate
+      console.log("onKeyUp", keyAttrs);
     }
   };
 
-  onClickKey = midiNumber => {
+  onKeyDown = midiNumber => {
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onClickKey(attrs);
+    this.props.onKeyDown(attrs);
+  };
+
+  onKeyUp = midiNumber => {
+    const attrs = getMidiNumberAttributes(midiNumber);
+    this.props.onKeyUp(attrs);
   };
 
   render() {
@@ -146,7 +156,8 @@ class Piano extends React.Component {
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(keyConfig.heightRatio)}
               style={keyConfig.style}
-              onClick={this.onClickKey.bind(this, num)}
+              onMouseDown={this.onKeyDown.bind(this, num)}
+              onMouseUp={this.onKeyUp.bind(this, num)}
               key={num}
             />
           );
