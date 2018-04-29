@@ -56,7 +56,9 @@ function Key(props) {
         },
         props.style
       )}
-    />
+    >
+      <span style={{ textTransform: "capitalize" }}>{props.note}</span>
+    </div>
   );
 }
 
@@ -119,7 +121,7 @@ class Piano extends React.Component {
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         {midiNumbers.map(num => {
           // TODO: refactor
-          const { octave, basenote } = getMidiNumberAttributes(num);
+          const { octave, basenote, note } = getMidiNumberAttributes(num);
           const noteConfig = this.props.noteConfig[basenote];
           const keyConfig = noteConfig.isBlackKey
             ? this.props.blackKeyConfig
@@ -131,6 +133,7 @@ class Piano extends React.Component {
             octaveWidth * (octave - startNoteAttrs.octave);
           return (
             <Key
+              note={note}
               left={ratioToPercentage(leftRatio * whiteKeyWidth)}
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(keyConfig.heightRatio)}
