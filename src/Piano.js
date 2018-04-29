@@ -1,4 +1,6 @@
+// noreintegrate fix dragging
 // noreintegrate keyboard bindings
+// noreintegrate animate height
 // noreintegrate have auto-width vs manual width settings
 import React from "react";
 import _ from "lodash";
@@ -157,7 +159,7 @@ class Piano extends React.Component {
     return (
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         {midiNumbers.map(num => {
-          // TODO: refactor
+          // TODO: refactor, BlackKey/WhiteKey?
           const { octave, basenote, note } = getMidiNumberAttributes(num);
           const noteConfig = this.props.noteConfig[basenote];
           const keyConfig = noteConfig.isBlackKey
