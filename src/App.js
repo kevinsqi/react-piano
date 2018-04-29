@@ -5,8 +5,8 @@ import Piano from "./Piano";
 class App extends Component {
   render() {
     return (
-      <div style={{ width: "500px" }}>
-        <Piano width={300} height={200} />
+      <div style={{ width: "500px", height: "300px" }}>
+        <Piano />
       </div>
     );
   }
