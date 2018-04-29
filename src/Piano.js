@@ -30,11 +30,15 @@ function noteToMidiNumber(note) {
   const offset = NOTE_ARRAY.indexOf(basenote);
   return MIDI_NUMBER_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
 }
-function midiNumberToNote(number) {
+function getMidiNumberAttributes(number) {
   const offset = (number - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
   const octave = Math.floor((number - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
   const basenote = NOTE_ARRAY[offset];
-  return `${basenote}${octave}`;
+  return {
+    offset,
+    octave,
+    basenote
+  };
 }
 
 function Key(props) {
@@ -71,20 +75,19 @@ class Piano extends React.Component {
       background: "#555",
       zIndex: 1
     },
-    // TODO: include MIDI note number https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies
     noteConfig: {
-      c: { offset: 0, isBlackKey: false },
-      db: { offset: 0.55, isBlackKey: true },
-      d: { offset: 1, isBlackKey: false },
-      eb: { offset: 1.8, isBlackKey: true },
-      e: { offset: 2, isBlackKey: false },
-      f: { offset: 3, isBlackKey: false },
-      gb: { offset: 3.5, isBlackKey: true },
-      g: { offset: 4, isBlackKey: false },
-      ab: { offset: 4.7, isBlackKey: true },
-      a: { offset: 5, isBlackKey: false },
-      bb: { offset: 5.85, isBlackKey: true },
-      b: { offset: 6, isBlackKey: false }
+      c: { offsetFromC: 0, isBlackKey: false },
+      db: { offsetFromC: 0.55, isBlackKey: true },
+      d: { offsetFromC: 1, isBlackKey: false },
+      eb: { offsetFromC: 1.8, isBlackKey: true },
+      e: { offsetFromC: 2, isBlackKey: false },
+      f: { offsetFromC: 3, isBlackKey: false },
+      gb: { offsetFromC: 3.5, isBlackKey: true },
+      g: { offsetFromC: 4, isBlackKey: false },
+      ab: { offsetFromC: 4.7, isBlackKey: true },
+      a: { offsetFromC: 5, isBlackKey: false },
+      bb: { offsetFromC: 5.85, isBlackKey: true },
+      b: { offsetFromC: 6, isBlackKey: false }
     }
   };
 
@@ -93,35 +96,41 @@ class Piano extends React.Component {
   };
 
   render() {
+    const startNum = noteToMidiNumber(this.props.startNote);
     const midiNumbers = _.range(
-      noteToMidiNumber(this.props.startNote),
+      startNum,
       noteToMidiNumber(this.props.endNote) + 1
     );
-    const notes = midiNumbers.map(num => {
-      const note = midiNumberToNote(num);
-      return note.substring(0, note.length - 1);
-    });
-
-    const numWhiteKeys = notes.filter(
-      note => !this.props.noteConfig[note].isBlackKey
-    ).length;
+    const numWhiteKeys = midiNumbers.filter(num => {
+      const { basenote } = getMidiNumberAttributes(num);
+      return !this.props.noteConfig[basenote].isBlackKey;
+    }).length;
     const whiteKeyWidth = 1 / numWhiteKeys;
+    const octaveWidth = 7;
+
     return (
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        {notes.map(note => {
-          const noteConfig = this.props.noteConfig[note];
+        {midiNumbers.map(num => {
+          // TODO: refactor
+          const { octave, offset, basenote } = getMidiNumberAttributes(num);
+          const noteConfig = this.props.noteConfig[basenote];
           const keyConfig = noteConfig.isBlackKey
             ? this.props.blackKeyConfig
             : this.props.whiteKeyConfig;
+          const startNoteAttrs = getMidiNumberAttributes(startNum);
+          const leftRatio =
+            noteConfig.offsetFromC -
+            this.props.noteConfig[startNoteAttrs.basenote].offsetFromC +
+            octaveWidth * (octave - startNoteAttrs.octave);
           return (
             <Key
-              left={ratioToPercentage(noteConfig.offset * whiteKeyWidth)}
+              left={ratioToPercentage(leftRatio * whiteKeyWidth)}
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(keyConfig.heightRatio)}
               border={keyConfig.border}
               background={keyConfig.background}
               zIndex={keyConfig.zIndex}
-              key={note}
+              key={num}
             />
           );
         })}
