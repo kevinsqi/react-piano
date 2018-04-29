@@ -4,7 +4,7 @@ import _ from "lodash";
 function WhiteKey(props) {
   return (
     <rect
-      stroke="#aaaaaa"
+      stroke="#999999"
       fill="#ffffff"
       x={props.x}
       y={0}
@@ -19,8 +19,8 @@ function BlackKey(props) {
   const topOverflow = 3;
   return (
     <rect
-      stroke="#ccc"
-      fill="#666"
+      stroke="#eee"
+      fill="#555"
       x={props.x}
       y={-topOverflow}
       rx={3}
@@ -35,7 +35,9 @@ function Octave(props) {
   const whiteKeyWidth = props.width / numWhiteKeys;
   const blackKeyWidth = whiteKeyWidth * 0.65;
   const blackKeyHeight = props.height * 0.66;
-  const blackKeyOffsets = [0.55, 1.8, 3.5].map(index => whiteKeyWidth * index);
+  const blackKeyOffsets = [0.55, 1.8, 3.5, 4.7, 5.85].map(
+    index => whiteKeyWidth * index
+  );
   return (
     <g>
       {_.range(7).map(index => (
@@ -53,6 +55,7 @@ function Octave(props) {
   );
 }
 
+// noreintegrate startnote endnote
 function Piano(props) {
   const border = 4;
   const viewBox = `0 0 ${props.width + border} ${props.height + border}`;
