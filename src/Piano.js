@@ -1,5 +1,4 @@
 // noreintegrate fix dragging
-// noreintegrate keyboard bindings
 // noreintegrate animate height
 // noreintegrate have auto-width vs manual width settings
 import React from "react";
@@ -49,6 +48,35 @@ function getMidiNumberAttributes(number) {
     midiNumber: number,
     frequency: midiNumberToFrequency(number)
   };
+}
+
+// noreintegrate refactor
+function getKeyboardShortcutsForMidiNumbers(
+  numbers,
+  noteConfig,
+  keyboardConfig
+) {
+  let keyIndex = 0;
+  const keysToMidiNumbers = {};
+  for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
+    const num = numbers[numIndex];
+    const { basenote } = getMidiNumberAttributes(num);
+    const { isBlackKey } = noteConfig[basenote];
+
+    const key = keyboardConfig[keyIndex];
+    // noreintegrate should check isFlat
+    if (isBlackKey) {
+      keysToMidiNumbers[key.flat] = num;
+    } else {
+      keysToMidiNumbers[key.natural] = num;
+      keyIndex += 1;
+
+      if (keyIndex >= keyboardConfig.length) {
+        break;
+      }
+    }
+  }
+  return keysToMidiNumbers;
 }
 
 function Key(props) {
@@ -125,6 +153,52 @@ class Piano extends React.Component {
     onKeyUp: keyAttrs => {}
   };
 
+  componentDidMount() {
+    if (this.props.keyboardConfig) {
+      // noreintegrate only enable if a prop is passed
+      window.addEventListener("keydown", this.handleKeyDown);
+      window.addEventListener("keyup", this.handleKeyUp);
+    }
+  }
+
+  componentWillUnmount() {
+    // noreintegrate remove event listeners
+  }
+
+  getMidiNumbers() {
+    const startNum = noteToMidiNumber(this.props.startNote);
+    return _.range(startNum, noteToMidiNumber(this.props.endNote) + 1);
+  }
+
+  getMidiNumberForKey = key => {
+    const mapping = getKeyboardShortcutsForMidiNumbers(
+      this.getMidiNumbers(),
+      this.props.noteConfig,
+      this.props.keyboardConfig
+    );
+    return mapping[key];
+  };
+
+  handleKeyDown = event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const midiNumber = this.getMidiNumberForKey(event.key);
+    if (midiNumber) {
+      this.onKeyDown(midiNumber);
+    }
+  };
+  handleKeyUp = event => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const midiNumber = this.getMidiNumberForKey(event.key);
+    if (midiNumber) {
+      this.onKeyUp(midiNumber);
+    }
+  };
+
+  // noreintegrate rename onNoteDown/onNoteUp
   onKeyDown = midiNumber => {
     this.setState({
       keysDown: Object.assign({}, this.state.keysDown, {
@@ -147,10 +221,7 @@ class Piano extends React.Component {
 
   render() {
     const startNum = noteToMidiNumber(this.props.startNote);
-    const midiNumbers = _.range(
-      startNum,
-      noteToMidiNumber(this.props.endNote) + 1
-    );
+    const midiNumbers = this.getMidiNumbers();
     const numWhiteKeys = midiNumbers.filter(num => {
       const { basenote } = getMidiNumberAttributes(num);
       return !this.props.noteConfig[basenote].isBlackKey;

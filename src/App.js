@@ -3,6 +3,20 @@ import "./App.css";
 import Piano from "./Piano";
 import Oscillator from "./Oscillator";
 
+const KEYBOARD_CONFIG = [
+  { natural: "a", flat: "q", sharp: "w" },
+  { natural: "s", flat: "w", sharp: "e" },
+  { natural: "d", flat: "e", sharp: "r" },
+  { natural: "f", flat: "r", sharp: "t" },
+  { natural: "g", flat: "t", sharp: "y" },
+  { natural: "h", flat: "y", sharp: "u" },
+  { natural: "j", flat: "u", sharp: "i" },
+  { natural: "k", flat: "i", sharp: "o" },
+  { natural: "l", flat: "o", sharp: "p" },
+  { natural: ";", flat: "p", sharp: "[" },
+  { natural: "'", flat: "[", sharp: "]" }
+];
+
 const audioContext = new window.AudioContext();
 class App extends Component {
   oscillator = new Oscillator({
@@ -30,6 +44,7 @@ class App extends Component {
             endNote="c6"
             onKeyUp={this.onKeyUp}
             onKeyDown={this.onKeyDown}
+            keyboardConfig={KEYBOARD_CONFIG}
           />
         </div>
         <div style={{ width: "100%", height: "300px" }}>
