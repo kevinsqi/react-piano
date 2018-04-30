@@ -10,14 +10,13 @@ class App extends Component {
     gain: 0.1
   });
 
-  // noreintegrate rename all these handlers to onKeyUp etc
   // noreintegrate make oscillator take midi notes
-  handleKeyDown = ({ frequency }) => {
+  onKeyDown = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.start(frequency);
     });
   };
-  handleKeyUp = ({ frequency }) => {
+  onKeyUp = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.stop(frequency);
     });
@@ -29,16 +28,16 @@ class App extends Component {
           <Piano
             startNote="c4"
             endNote="c6"
-            keyUp={this.handleKeyUp}
-            keyDown={this.handleKeyDown}
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
           />
         </div>
         <div style={{ width: "100%", height: "300px" }}>
           <Piano
             startNote="a3"
             endNote="f7"
-            keyUp={this.handleKeyUp}
-            keyDown={this.handleKeyDown}
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
           />
         </div>
       </div>

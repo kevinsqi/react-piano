@@ -121,8 +121,8 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isBlackKey: true },
       b: { offsetFromC: 6, isBlackKey: false }
     },
-    handleKeyDown: keyAttrs => {},
-    handleKeyUp: keyAttrs => {}
+    onKeyDown: keyAttrs => {},
+    onKeyUp: keyAttrs => {}
   };
 
   onKeyDown = midiNumber => {
@@ -132,7 +132,7 @@ class Piano extends React.Component {
       })
     });
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.keyDown(attrs);
+    this.props.onKeyDown(attrs);
   };
 
   onKeyUp = midiNumber => {
@@ -142,7 +142,7 @@ class Piano extends React.Component {
       })
     });
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.keyUp(attrs);
+    this.props.onKeyUp(attrs);
   };
 
   render() {
