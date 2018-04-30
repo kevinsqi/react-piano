@@ -1,5 +1,6 @@
+// noreintegrate setup NPM and github pages demo
 // noreintegrate fix dragging
-// noreintegrate animate height
+// noreintegrate animate height, refactor active color logic
 // noreintegrate have auto-width vs manual width settings
 import React from "react";
 import _ from "lodash";
@@ -120,7 +121,7 @@ class Piano extends React.Component {
         zIndex: 0,
         borderRadius: "0 0 6px 6px",
         border: "1px solid #888",
-        boxShadow: "inset -2px -2px 2px #fff, 0 0 5px #ccc",
+        boxShadow: "0 0 5px #ccc",
         background: "#f6f5f3"
       }
     },
@@ -254,7 +255,9 @@ class Piano extends React.Component {
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio
               )}
-              style={keyConfig.style}
+              style={Object.assign({}, keyConfig.style, {
+                background: isKeyDown ? "#01baef" : keyConfig.style.background
+              })}
               onMouseDown={this.onKeyDown.bind(this, num)}
               onMouseUp={this.onKeyUp.bind(this, num)}
               onTouchStart={this.onKeyDown.bind(this, num)}
