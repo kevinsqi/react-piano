@@ -9,6 +9,12 @@ function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
 }
 
+// TODO: rewrite clearly
+function midiNumberToFrequency(number) {
+  const A4 = 440;
+  return A4 / 32 * Math.pow(2, (number - 9) / 12);
+}
+
 // TODO: move to separate file
 const NOTE_ARRAY = [
   "c",
@@ -40,7 +46,8 @@ function getMidiNumberAttributes(number) {
     note: `${basenote}${octave}`,
     basenote,
     octave,
-    midiNumber: number
+    midiNumber: number,
+    frequency: midiNumberToFrequency(number)
   };
 }
 
@@ -59,7 +66,6 @@ function Key(props) {
       )}
       onMouseDown={props.onMouseDown}
       onMouseUp={props.onMouseUp}
-      onMouseLeave={props.onMouseLeave}
       onTouchStart={props.onTouchStart}
       onTouchCancel={props.onTouchCancel}
       onTouchEnd={props.onTouchEnd}
@@ -115,14 +121,8 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isBlackKey: true },
       b: { offsetFromC: 6, isBlackKey: false }
     },
-    onKeyDown: keyAttrs => {
-      // noreintegrate
-      console.log("onKeyDown", keyAttrs);
-    },
-    onKeyUp: keyAttrs => {
-      // noreintegrate
-      console.log("onKeyUp", keyAttrs);
-    }
+    handleKeyDown: keyAttrs => {},
+    handleKeyUp: keyAttrs => {}
   };
 
   onKeyDown = midiNumber => {
@@ -132,7 +132,7 @@ class Piano extends React.Component {
       })
     });
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onKeyDown(attrs);
+    this.props.keyDown(attrs);
   };
 
   onKeyUp = midiNumber => {
@@ -142,7 +142,7 @@ class Piano extends React.Component {
       })
     });
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onKeyUp(attrs);
+    this.props.keyUp(attrs);
   };
 
   render() {
@@ -186,7 +186,6 @@ class Piano extends React.Component {
               style={keyConfig.style}
               onMouseDown={this.onKeyDown.bind(this, num)}
               onMouseUp={this.onKeyUp.bind(this, num)}
-              onMouseLeave={this.onKeyUp.bind(this, num)}
               onTouchStart={this.onKeyDown.bind(this, num)}
               onTouchCancel={this.onKeyUp.bind(this, num)}
               onTouchEnd={this.onKeyUp.bind(this, num)}
