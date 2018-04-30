@@ -67,20 +67,20 @@ class App extends Component {
       <div>
         <div style={{ width: "800px", height: "300px" }}>
           <Piano
-            startNote="c4"
-            endNote="c6"
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
-            keyboardConfig={KEYBOARD_CONFIG.TOP}
-          />
-        </div>
-        <div style={{ width: "100%", height: "300px" }}>
-          <Piano
-            startNote="a3"
-            endNote="f7"
+            startNote="f4"
+            endNote="f6"
             onKeyUp={this.onKeyUp}
             onKeyDown={this.onKeyDown}
             keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
+          />
+        </div>
+        <div style={{ width: "800px", height: "300px" }}>
+          <Piano
+            startNote="c3"
+            endNote="c4"
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            keyboardConfig={KEYBOARD_CONFIG.TOP}
           />
         </div>
       </div>
