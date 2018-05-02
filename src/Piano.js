@@ -1,8 +1,4 @@
 // noreintegrate handle null flats/sharps
-// noreintegrate setup NPM and github pages demo
-// noreintegrate fix dragging
-// noreintegrate animate height, refactor active color logic
-// noreintegrate have auto-width vs manual width settings
 import React from 'react';
 import _ from 'lodash';
 
@@ -138,14 +134,16 @@ class Piano extends React.Component {
 
   componentDidMount() {
     if (this.props.keyboardConfig) {
-      // noreintegrate only enable if a prop is passed
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
     }
   }
 
   componentWillUnmount() {
-    // noreintegrate remove event listeners
+    if (this.props.keyboardConfig) {
+      window.removeEventListener('keydown', this.handleKeyDown);
+      window.removeEventListener('keyup', this.handleKeyUp);
+    }
   }
 
   getMidiNumbers() {
