@@ -14,11 +14,11 @@ function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig)
   for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
     const num = numbers[numIndex];
     const { basenote } = getMidiNumberAttributes(num);
-    const { isBlackKey } = noteConfig[basenote];
+    const { isFlat } = noteConfig[basenote];
 
     const key = keyboardConfig[keyIndex];
     // noreintegrate should check isFlat
-    if (isBlackKey) {
+    if (isFlat) {
       keysToMidiNumbers[key.flat] = num;
     } else {
       keysToMidiNumbers[key.natural] = num;
@@ -87,18 +87,18 @@ class Piano extends React.Component {
       },
     },
     noteConfig: {
-      c: { offsetFromC: 0, isBlackKey: false },
-      db: { offsetFromC: 0.55, isBlackKey: true },
-      d: { offsetFromC: 1, isBlackKey: false },
-      eb: { offsetFromC: 1.8, isBlackKey: true },
-      e: { offsetFromC: 2, isBlackKey: false },
-      f: { offsetFromC: 3, isBlackKey: false },
-      gb: { offsetFromC: 3.5, isBlackKey: true },
-      g: { offsetFromC: 4, isBlackKey: false },
-      ab: { offsetFromC: 4.7, isBlackKey: true },
-      a: { offsetFromC: 5, isBlackKey: false },
-      bb: { offsetFromC: 5.85, isBlackKey: true },
-      b: { offsetFromC: 6, isBlackKey: false },
+      c: { offsetFromC: 0, isFlat: false },
+      db: { offsetFromC: 0.55, isFlat: true },
+      d: { offsetFromC: 1, isFlat: false },
+      eb: { offsetFromC: 1.8, isFlat: true },
+      e: { offsetFromC: 2, isFlat: false },
+      f: { offsetFromC: 3, isFlat: false },
+      gb: { offsetFromC: 3.5, isFlat: true },
+      g: { offsetFromC: 4, isFlat: false },
+      ab: { offsetFromC: 4.7, isFlat: true },
+      a: { offsetFromC: 5, isFlat: false },
+      bb: { offsetFromC: 5.85, isFlat: true },
+      b: { offsetFromC: 6, isFlat: false },
     },
     onKeyDown: (keyAttrs) => {},
     onKeyUp: (keyAttrs) => {},
@@ -178,7 +178,7 @@ class Piano extends React.Component {
     const midiNumbers = this.getMidiNumbers();
     const numWhiteKeys = midiNumbers.filter((num) => {
       const { basenote } = getMidiNumberAttributes(num);
-      return !this.props.noteConfig[basenote].isBlackKey;
+      return !this.props.noteConfig[basenote].isFlat;
     }).length;
     const distanceBetweenWhiteKeys = 1 / numWhiteKeys;
     const whiteKeyWidth = distanceBetweenWhiteKeys * (1 - this.props.whiteKeyGutter);
@@ -190,7 +190,7 @@ class Piano extends React.Component {
           // TODO: refactor, BlackKey/WhiteKey?
           const { octave, basenote, note } = getMidiNumberAttributes(num);
           const noteConfig = this.props.noteConfig[basenote];
-          const keyConfig = noteConfig.isBlackKey
+          const keyConfig = noteConfig.isFlat
             ? this.props.blackKeyConfig
             : this.props.whiteKeyConfig;
           const startNoteAttrs = getMidiNumberAttributes(startNum);

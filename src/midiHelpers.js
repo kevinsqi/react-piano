@@ -9,6 +9,9 @@ function midiNumberToFrequency(number) {
   return A4 / 32 * Math.pow(2, (number - 9) / 12);
 }
 
+// Notes are strings in the format "[basenote][octave]", e.g. "a4", "cb7"
+// Converts note to midi number, as specified in:
+// https://www.midikits.net/midi_analyser/midi_note_numbers_for_octaves.htm
 export function noteToMidiNumber(note) {
   const [, basenote, octave] = NOTE_REGEX.exec(note);
   const offset = NOTE_ARRAY.indexOf(basenote);
