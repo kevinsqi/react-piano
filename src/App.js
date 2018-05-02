@@ -51,17 +51,18 @@ class App extends Component {
     gain: 0.1,
   });
 
-  // noreintegrate make oscillator take midi notes
   onKeyDown = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.start(frequency);
     });
   };
+
   onKeyUp = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.stop(frequency);
     });
   };
+
   render() {
     return (
       <div>

@@ -169,6 +169,7 @@ class Piano extends React.Component {
       this.onKeyDown(midiNumber);
     }
   };
+
   handleKeyUp = (event) => {
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
