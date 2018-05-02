@@ -3,8 +3,8 @@
 // noreintegrate fix dragging
 // noreintegrate animate height, refactor active color logic
 // noreintegrate have auto-width vs manual width settings
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 
 function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
@@ -17,20 +17,7 @@ function midiNumberToFrequency(number) {
 }
 
 // TODO: move to separate file
-const NOTE_ARRAY = [
-  "c",
-  "db",
-  "d",
-  "eb",
-  "e",
-  "f",
-  "gb",
-  "g",
-  "ab",
-  "a",
-  "bb",
-  "b"
-];
+const NOTE_ARRAY = ['c', 'db', 'd', 'eb', 'e', 'f', 'gb', 'g', 'ab', 'a', 'bb', 'b'];
 const MIDI_NUMBER_C0 = 12;
 const NOTE_REGEX = /(\w+)(\d)/;
 const NOTES_IN_OCTAVE = 12;
@@ -48,16 +35,12 @@ function getMidiNumberAttributes(number) {
     basenote,
     octave,
     midiNumber: number,
-    frequency: midiNumberToFrequency(number)
+    frequency: midiNumberToFrequency(number),
   };
 }
 
 // noreintegrate refactor
-function getKeyboardShortcutsForMidiNumbers(
-  numbers,
-  noteConfig,
-  keyboardConfig
-) {
+function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig) {
   let keyIndex = 0;
   const keysToMidiNumbers = {};
   for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
@@ -86,13 +69,13 @@ function Key(props) {
     <div
       style={Object.assign(
         {
-          position: "absolute",
+          position: 'absolute',
           top: 0,
           left: props.left,
           width: props.width,
-          height: props.height
+          height: props.height,
         },
-        props.style
+        props.style,
       )}
       onMouseDown={props.onMouseDown}
       onMouseUp={props.onMouseUp}
@@ -100,16 +83,14 @@ function Key(props) {
       onTouchCancel={props.onTouchCancel}
       onTouchEnd={props.onTouchEnd}
     >
-      <span style={{ color: "#999", textTransform: "capitalize" }}>
-        {props.note}
-      </span>
+      <span style={{ color: '#999', textTransform: 'capitalize' }}>{props.note}</span>
     </div>
   );
 }
 
 class Piano extends React.Component {
   state = {
-    keysDown: {}
+    keysDown: {},
   };
 
   static defaultProps = {
@@ -120,11 +101,11 @@ class Piano extends React.Component {
       heightKeyDownRatio: 0.98,
       style: {
         zIndex: 0,
-        borderRadius: "0 0 6px 6px",
-        border: "1px solid #888",
-        boxShadow: "0 0 5px #ccc",
-        background: "#f6f5f3"
-      }
+        borderRadius: '0 0 6px 6px',
+        border: '1px solid #888',
+        boxShadow: '0 0 5px #ccc',
+        background: '#f6f5f3',
+      },
     },
     blackKeyConfig: {
       widthRatio: 0.66,
@@ -132,10 +113,10 @@ class Piano extends React.Component {
       heightKeyDownRatio: 0.65,
       style: {
         zIndex: 1,
-        borderRadius: "0 0 4px 4px",
-        border: "1px solid #fff",
-        background: "#555"
-      }
+        borderRadius: '0 0 4px 4px',
+        border: '1px solid #fff',
+        background: '#555',
+      },
     },
     noteConfig: {
       c: { offsetFromC: 0, isBlackKey: false },
@@ -149,17 +130,17 @@ class Piano extends React.Component {
       ab: { offsetFromC: 4.7, isBlackKey: true },
       a: { offsetFromC: 5, isBlackKey: false },
       bb: { offsetFromC: 5.85, isBlackKey: true },
-      b: { offsetFromC: 6, isBlackKey: false }
+      b: { offsetFromC: 6, isBlackKey: false },
     },
-    onKeyDown: keyAttrs => {},
-    onKeyUp: keyAttrs => {}
+    onKeyDown: (keyAttrs) => {},
+    onKeyUp: (keyAttrs) => {},
   };
 
   componentDidMount() {
     if (this.props.keyboardConfig) {
       // noreintegrate only enable if a prop is passed
-      window.addEventListener("keydown", this.handleKeyDown);
-      window.addEventListener("keyup", this.handleKeyUp);
+      window.addEventListener('keydown', this.handleKeyDown);
+      window.addEventListener('keyup', this.handleKeyUp);
     }
   }
 
@@ -172,16 +153,16 @@ class Piano extends React.Component {
     return _.range(startNum, noteToMidiNumber(this.props.endNote) + 1);
   }
 
-  getMidiNumberForKey = key => {
+  getMidiNumberForKey = (key) => {
     const mapping = getKeyboardShortcutsForMidiNumbers(
       this.getMidiNumbers(),
       this.props.noteConfig,
-      this.props.keyboardConfig
+      this.props.keyboardConfig,
     );
     return mapping[key];
   };
 
-  handleKeyDown = event => {
+  handleKeyDown = (event) => {
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
     }
@@ -190,7 +171,7 @@ class Piano extends React.Component {
       this.onKeyDown(midiNumber);
     }
   };
-  handleKeyUp = event => {
+  handleKeyUp = (event) => {
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
     }
@@ -201,21 +182,21 @@ class Piano extends React.Component {
   };
 
   // noreintegrate rename onNoteDown/onNoteUp
-  onKeyDown = midiNumber => {
+  onKeyDown = (midiNumber) => {
     this.setState({
       keysDown: Object.assign({}, this.state.keysDown, {
-        [midiNumber]: true
-      })
+        [midiNumber]: true,
+      }),
     });
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onKeyDown(attrs);
   };
 
-  onKeyUp = midiNumber => {
+  onKeyUp = (midiNumber) => {
     this.setState({
       keysDown: Object.assign({}, this.state.keysDown, {
-        [midiNumber]: false
-      })
+        [midiNumber]: false,
+      }),
     });
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onKeyUp(attrs);
@@ -224,18 +205,17 @@ class Piano extends React.Component {
   render() {
     const startNum = noteToMidiNumber(this.props.startNote);
     const midiNumbers = this.getMidiNumbers();
-    const numWhiteKeys = midiNumbers.filter(num => {
+    const numWhiteKeys = midiNumbers.filter((num) => {
       const { basenote } = getMidiNumberAttributes(num);
       return !this.props.noteConfig[basenote].isBlackKey;
     }).length;
     const distanceBetweenWhiteKeys = 1 / numWhiteKeys;
-    const whiteKeyWidth =
-      distanceBetweenWhiteKeys * (1 - this.props.whiteKeyGutter);
+    const whiteKeyWidth = distanceBetweenWhiteKeys * (1 - this.props.whiteKeyGutter);
     const octaveWidth = 7;
 
     return (
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
-        {midiNumbers.map(num => {
+      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {midiNumbers.map((num) => {
           // TODO: refactor, BlackKey/WhiteKey?
           const { octave, basenote, note } = getMidiNumberAttributes(num);
           const noteConfig = this.props.noteConfig[basenote];
@@ -254,10 +234,10 @@ class Piano extends React.Component {
               left={ratioToPercentage(leftPosition * distanceBetweenWhiteKeys)}
               width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
               height={ratioToPercentage(
-                isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio
+                isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
               style={Object.assign({}, keyConfig.style, {
-                background: isKeyDown ? "#01baef" : keyConfig.style.background
+                background: isKeyDown ? '#01baef' : keyConfig.style.background,
               })}
               onMouseDown={this.onKeyDown.bind(this, num)}
               onMouseUp={this.onKeyUp.bind(this, num)}

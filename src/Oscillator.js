@@ -15,12 +15,12 @@ class Oscillator {
     }
 
     let oscillator = this.audioContext.createOscillator();
-    oscillator.type = "sine";
+    oscillator.type = 'sine';
     oscillator.frequency.value = freq;
     oscillator.connect(this.gainNode);
     oscillator.start(0);
 
-    console.log("playing frequency at value", oscillator.frequency.value);
+    console.log('playing frequency at value', oscillator.frequency.value);
 
     this.oscillators[freq] = oscillator;
   }
