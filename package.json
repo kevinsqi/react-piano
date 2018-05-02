@@ -13,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/iqnivek/react-piano/issues"
   },
-  "homepage": "https://github.com/iqnivek/react-piano"
+  "homepage": "https://github.com/iqnivek/react-piano",
+  "devDependencies": {
+    "babel-preset-react-app": "^3.1.1"
+  }
 }
