@@ -1,10 +1,11 @@
 const path = require('path');
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: './src/index.js',
   output: {
     path: path.join(__dirname, 'build'),
-    filename: 'index.js',
+    filename: isProduction ? 'index.min.js' : 'index.js',
     library: 'Piano',
     libraryTarget: 'umd',
   },

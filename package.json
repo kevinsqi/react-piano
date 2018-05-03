@@ -5,8 +5,8 @@
   "main": "build/index.js",
   "scripts": {
     "build": "rimraf build && npm run build:development && npm run build:production",
-    "build:development": "cross-env NODE_ENV=development webpack",
-    "build:production": "cross-env NODE_ENV=production webpack -p",
+    "build:development": "cross-env NODE_ENV=development webpack --mode development",
+    "build:production": "cross-env NODE_ENV=production webpack --mode production",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/iqnivek/react-piano",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.4",
     "babel-preset-react-app": "^3.1.1",
     "cross-env": "^5.1.4",
     "react": "^16.3.2",
