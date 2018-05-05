@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "description": "",
   "main": "build/index.js",
+  "files": [
+    "build",
+    "src"
+  ],
   "scripts": {
     "build": "rimraf build && npm run build:development && npm run build:production",
     "build:development": "cross-env NODE_ENV=development webpack --mode development",
     "build:production": "cross-env NODE_ENV=production webpack --mode production",
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
