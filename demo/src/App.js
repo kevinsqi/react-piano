@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import Piano from 'react-piano';
 import './App.css';
-import Piano from './Piano';
 import Oscillator from './Oscillator';
 
 const KEYBOARD_CONFIG = {

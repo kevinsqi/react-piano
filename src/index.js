@@ -1,9 +1,3 @@
-import React from 'react';
-
-class Piano extends React.Component {
-  render() {
-    return <div>piano</div>;
-  }
-}
+import Piano from './Piano';
 
 export default Piano;
