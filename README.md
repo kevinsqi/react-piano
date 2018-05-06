@@ -1,6 +1,6 @@
 # react-piano
 
-[https://img.shields.io/npm/v/react-piano.svg](https://www.npmjs.com/package/react-piano)
+[![npm version](https://img.shields.io/npm/v/react-piano.svg)](https://www.npmjs.com/package/react-piano)
 
 A super-customizable react component for rendering a responsive piano keyboard.
 
