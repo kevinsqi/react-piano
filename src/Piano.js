@@ -17,7 +17,6 @@ function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig)
     const { isFlat } = noteConfig[basenote];
 
     const key = keyboardConfig[keyIndex];
-    // noreintegrate should check isFlat
     if (isFlat) {
       keysToMidiNumbers[key.flat] = num;
     } else {
@@ -184,6 +183,7 @@ class Piano extends React.Component {
     const whiteKeyWidth = distanceBetweenWhiteKeys * (1 - this.props.whiteKeyGutter);
     const octaveWidth = 7;
 
+    // TODO: create wrapper which allows fixed width key width
     return (
       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
         {midiNumbers.map((num) => {

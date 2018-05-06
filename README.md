@@ -2,6 +2,7 @@
 
 A super-customizable react component for rendering a responsive piano keyboard.
 
+
 ## Setup
 
 ```
@@ -18,6 +19,10 @@ import Piano from 'react-piano';
   endNote="c5"
 />
 ```
+
+## Contributing
+
+[Trello board](https://trello.com/b/m7xodJaN/tasks)
 
 ## License
 
