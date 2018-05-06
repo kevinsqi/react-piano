@@ -1,5 +1,6 @@
 {
   "name": "react-piano-demo",
+  "homepage": "http://www.kevinqi.com/react-piano",
   "version": "0.1.0",
   "dependencies": {
     "lodash": "^4.17.10",
@@ -9,9 +10,14 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
   }
 }
