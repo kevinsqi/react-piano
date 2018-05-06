@@ -99,8 +99,8 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isFlat: true },
       b: { offsetFromC: 6, isFlat: false },
     },
-    onKeyDown: (keyAttrs) => {},
-    onKeyUp: (keyAttrs) => {},
+    onNoteDown: (keyAttrs) => {},
+    onNoteUp: (keyAttrs) => {},
   };
 
   componentDidMount() {
@@ -137,7 +137,7 @@ class Piano extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onKeyDown(midiNumber);
+      this.handleNoteDown(midiNumber);
     }
   };
 
@@ -147,29 +147,28 @@ class Piano extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onKeyUp(midiNumber);
+      this.handleNoteUp(midiNumber);
     }
   };
 
-  // noreintegrate rename onNoteDown/onNoteUp
-  onKeyDown = (midiNumber) => {
+  handleNoteDown = (midiNumber) => {
     this.setState({
       keysDown: Object.assign({}, this.state.keysDown, {
         [midiNumber]: true,
       }),
     });
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onKeyDown(attrs);
+    this.props.onNoteDown(attrs);
   };
 
-  onKeyUp = (midiNumber) => {
+  handleNoteUp = (midiNumber) => {
     this.setState({
       keysDown: Object.assign({}, this.state.keysDown, {
         [midiNumber]: false,
       }),
     });
     const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onKeyUp(attrs);
+    this.props.onNoteUp(attrs);
   };
 
   render() {
@@ -210,11 +209,11 @@ class Piano extends React.Component {
               style={Object.assign({}, keyConfig.style, {
                 background: isKeyDown ? '#01baef' : keyConfig.style.background,
               })}
-              onMouseDown={this.onKeyDown.bind(this, num)}
-              onMouseUp={this.onKeyUp.bind(this, num)}
-              onTouchStart={this.onKeyDown.bind(this, num)}
-              onTouchCancel={this.onKeyUp.bind(this, num)}
-              onTouchEnd={this.onKeyUp.bind(this, num)}
+              onMouseDown={this.handleNoteDown.bind(this, num)}
+              onMouseUp={this.handleNoteUp.bind(this, num)}
+              onTouchStart={this.handleNoteDown.bind(this, num)}
+              onTouchCancel={this.handleNoteUp.bind(this, num)}
+              onTouchEnd={this.handleNoteUp.bind(this, num)}
               key={num}
             />
           );
