@@ -1,7 +1,7 @@
 {
   "name": "react-piano",
   "version": "0.1.0",
-  "description": "",
+  "description": "A responsive, customizable react piano keyboard component",
   "main": "build/index.js",
   "files": [
     "build",
@@ -18,6 +18,14 @@
     "type": "git",
     "url": "git+https://github.com/iqnivek/react-piano.git"
   },
+  "keywords": [
+    "react",
+    "react-component",
+    "piano",
+    "keyboard"
+  ],
+  "author": "Kevin Qi <iqnivek@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/iqnivek/react-piano/issues"
   },
