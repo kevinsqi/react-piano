@@ -51,13 +51,14 @@ class App extends Component {
     gain: 0.1,
   });
 
-  onKeyDown = ({ frequency }) => {
+  onNoteDown = ({ frequency }) => {
+    console.log(frequency);
     audioContext.resume().then(() => {
       this.oscillator.start(frequency);
     });
   };
 
-  onKeyUp = ({ frequency }) => {
+  onNoteUp = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.stop(frequency);
     });
@@ -70,8 +71,8 @@ class App extends Component {
           <Piano
             startNote="f4"
             endNote="f6"
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
+            onNoteDown={this.onNoteDown}
+            onNoteUp={this.onNoteUp}
             keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
           />
         </div>
