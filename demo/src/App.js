@@ -73,7 +73,7 @@ class App extends Component {
             endNote="f6"
             onNoteDown={this.onNoteDown}
             onNoteUp={this.onNoteUp}
-            keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
+            keyboardConfig={KEYBOARD_CONFIG.TOP}
           />
         </div>
         <div style={{ width: '800px', height: '300px' }}>
@@ -82,7 +82,7 @@ class App extends Component {
             endNote="c4"
             onNoteDown={this.onNoteDown}
             onNoteUp={this.onNoteUp}
-            keyboardConfig={KEYBOARD_CONFIG.TOP}
+            keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
           />
         </div>
       </div>

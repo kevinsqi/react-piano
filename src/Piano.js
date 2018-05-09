@@ -183,38 +183,44 @@ class Piano extends React.Component {
     return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.whiteKeyGutterRatio);
   }
 
-  // Position
-  getKeyPosition(offsetFromC, octave) {
+  // Key position is represented by the number of white key widths from the left
+  getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
-    // noreintegrate dedupe
+    const { octave } = getMidiNumberAttributes(midiNumber);
+    const { offsetFromC } = this.getNoteConfig(midiNumber);
     const startNum = noteToMidiNumber(this.props.startNote);
-    const startNoteAttrs = getMidiNumberAttributes(startNum);
-    const positionFromStartNote =
-      offsetFromC - this.props.noteConfig[startNoteAttrs.basenote].offsetFromC;
-    const octaveOffset = OCTAVE_WIDTH * (octave - startNoteAttrs.octave);
-    return positionFromStartNote + octaveOffset;
+    const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
+    const startOffsetFromC = this.props.noteConfig[startBasenote].offsetFromC;
+    const offsetFromStartNote = offsetFromC - startOffsetFromC;
+    const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
+    return offsetFromStartNote + octaveOffset;
+  }
+
+  getNoteConfig(midiNumber) {
+    const { basenote } = getMidiNumberAttributes(midiNumber);
+    return this.props.noteConfig[basenote];
+  }
+
+  getKeyConfig(midiNumber) {
+    return this.getNoteConfig(midiNumber).isFlat
+      ? this.props.blackKeyConfig
+      : this.props.whiteKeyConfig;
   }
 
   render() {
-    const midiNumbers = this.getMidiNumbers();
-
     // TODO: create wrapper which allows fixed width key width
     return (
       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-        {midiNumbers.map((num) => {
+        {this.getMidiNumbers().map((num) => {
           // TODO: refactor, BlackKey/WhiteKey?
-          const { octave, basenote, note } = getMidiNumberAttributes(num);
-          const noteConfig = this.props.noteConfig[basenote];
-          const keyConfig = noteConfig.isFlat
-            ? this.props.blackKeyConfig
-            : this.props.whiteKeyConfig;
+          const { note } = getMidiNumberAttributes(num);
+          const keyConfig = this.getKeyConfig(num);
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
               note={note}
               left={ratioToPercentage(
-                this.getKeyPosition(noteConfig.offsetFromC, octave) *
-                  this.getWhiteKeyWidthIncludingGutter(),
+                this.getKeyPosition(num) * this.getWhiteKeyWidthIncludingGutter(),
               )}
               width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
               height={ratioToPercentage(
