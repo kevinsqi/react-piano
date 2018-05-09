@@ -1,4 +1,3 @@
-// noreintegrate handle null flats/sharps
 import React from 'react';
 import _ from 'lodash';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
@@ -61,7 +60,7 @@ class Piano extends React.Component {
   };
 
   static defaultProps = {
-    whiteKeyGutter: 0.02,
+    whiteKeyGutterRatio: 0.02,
     whiteKeyConfig: {
       widthRatio: 1,
       heightRatio: 1,
@@ -171,15 +170,24 @@ class Piano extends React.Component {
     this.props.onNoteUp(attrs);
   };
 
+  getWhiteKeyCount() {
+    return this.getMidiNumbers().filter((number) => {
+      const { basenote } = getMidiNumberAttributes(number);
+      return !this.props.noteConfig[basenote].isFlat;
+    }).length;
+  }
+
+  getWhiteKeyWidthIncludingGutter() {
+    return 1 / this.getWhiteKeyCount();
+  }
+
+  getWhiteKeyWidth() {
+    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.whiteKeyGutterRatio);
+  }
+
   render() {
     const startNum = noteToMidiNumber(this.props.startNote);
     const midiNumbers = this.getMidiNumbers();
-    const numWhiteKeys = midiNumbers.filter((num) => {
-      const { basenote } = getMidiNumberAttributes(num);
-      return !this.props.noteConfig[basenote].isFlat;
-    }).length;
-    const distanceBetweenWhiteKeys = 1 / numWhiteKeys;
-    const whiteKeyWidth = distanceBetweenWhiteKeys * (1 - this.props.whiteKeyGutter);
     const octaveWidth = 7;
 
     // TODO: create wrapper which allows fixed width key width
@@ -201,8 +209,8 @@ class Piano extends React.Component {
           return (
             <Key
               note={note}
-              left={ratioToPercentage(leftPosition * distanceBetweenWhiteKeys)}
-              width={ratioToPercentage(keyConfig.widthRatio * whiteKeyWidth)}
+              left={ratioToPercentage(leftPosition * this.getWhiteKeyWidthIncludingGutter())}
+              width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
