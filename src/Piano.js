@@ -98,8 +98,6 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isFlat: true },
       b: { offsetFromC: 6, isFlat: false },
     },
-    onNoteDown: (keyAttrs) => {},
-    onNoteUp: (keyAttrs) => {},
   };
 
   componentDidMount() {
