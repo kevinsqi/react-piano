@@ -6,7 +6,7 @@ function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
 }
 
-// noreintegrate refactor
+// TODO: refactor
 function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig) {
   let keyIndex = 0;
   const keysToMidiNumbers = {};
@@ -81,6 +81,7 @@ class Piano extends React.Component {
         zIndex: 1,
         borderRadius: '0 0 4px 4px',
         border: '1px solid #fff',
+        borderTop: '1px solid transparent',
         background: '#555',
       },
     },
@@ -212,7 +213,6 @@ class Piano extends React.Component {
     return (
       <div style={{ position: 'relative', width: '100%', height: '100%' }}>
         {this.getMidiNumbers().map((num) => {
-          // TODO: refactor, BlackKey/WhiteKey?
           const { note } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
           const isKeyDown = this.state.keysDown[num];
