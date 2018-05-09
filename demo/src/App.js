@@ -80,8 +80,8 @@ class App extends Component {
           <Piano
             startNote="c3"
             endNote="c4"
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
+            onNoteDown={this.onNoteDown}
+            onNoteUp={this.onNoteUp}
             keyboardConfig={KEYBOARD_CONFIG.TOP}
           />
         </div>

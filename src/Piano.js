@@ -185,10 +185,20 @@ class Piano extends React.Component {
     return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.whiteKeyGutterRatio);
   }
 
-  render() {
+  // Position
+  getKeyPosition(offsetFromC, octave) {
+    const OCTAVE_WIDTH = 7;
+    // noreintegrate dedupe
     const startNum = noteToMidiNumber(this.props.startNote);
+    const startNoteAttrs = getMidiNumberAttributes(startNum);
+    const positionFromStartNote =
+      offsetFromC - this.props.noteConfig[startNoteAttrs.basenote].offsetFromC;
+    const octaveOffset = OCTAVE_WIDTH * (octave - startNoteAttrs.octave);
+    return positionFromStartNote + octaveOffset;
+  }
+
+  render() {
     const midiNumbers = this.getMidiNumbers();
-    const octaveWidth = 7;
 
     // TODO: create wrapper which allows fixed width key width
     return (
@@ -200,16 +210,14 @@ class Piano extends React.Component {
           const keyConfig = noteConfig.isFlat
             ? this.props.blackKeyConfig
             : this.props.whiteKeyConfig;
-          const startNoteAttrs = getMidiNumberAttributes(startNum);
-          const leftPosition =
-            noteConfig.offsetFromC -
-            this.props.noteConfig[startNoteAttrs.basenote].offsetFromC +
-            octaveWidth * (octave - startNoteAttrs.octave);
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
               note={note}
-              left={ratioToPercentage(leftPosition * this.getWhiteKeyWidthIncludingGutter())}
+              left={ratioToPercentage(
+                this.getKeyPosition(noteConfig.offsetFromC, octave) *
+                  this.getWhiteKeyWidthIncludingGutter(),
+              )}
               width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,

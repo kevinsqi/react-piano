@@ -19,9 +19,6 @@ class Oscillator {
     oscillator.frequency.value = freq;
     oscillator.connect(this.gainNode);
     oscillator.start(0);
-
-    console.log('playing frequency at value', oscillator.frequency.value);
-
     this.oscillators[freq] = oscillator;
   }
 
