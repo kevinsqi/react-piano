@@ -211,11 +211,12 @@ class Piano extends React.Component {
 
   render() {
     // TODO: create wrapper which allows fixed width key width
+    const width = this.props.width ? `${this.props.width}px` : '100%';
     const height = this.props.width
       ? `${this.props.width * this.getWhiteKeyWidth() / this.props.keyWidthToHeightRatio}px`
       : '100%';
     return (
-      <div style={{ position: 'relative', width: '100%', height: height }}>
+      <div style={{ position: 'relative', width: width, height: height }}>
         {this.getMidiNumbers().map((num) => {
           const { note } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
