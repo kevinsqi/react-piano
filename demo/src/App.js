@@ -3,6 +3,7 @@ import Piano from 'react-piano';
 import './App.css';
 import Oscillator from './Oscillator';
 
+// TODO: move this to be exported from Piano.js (index.js)
 const KEYBOARD_CONFIG = {
   BOTTOM: [
     { natural: 'z', flat: 'a', sharp: 's' },
@@ -51,13 +52,13 @@ class App extends Component {
     gain: 0.1,
   });
 
-  onKeyDown = ({ frequency }) => {
+  onNoteDown = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.start(frequency);
     });
   };
 
-  onKeyUp = ({ frequency }) => {
+  onNoteUp = ({ frequency }) => {
     audioContext.resume().then(() => {
       this.oscillator.stop(frequency);
     });
@@ -65,24 +66,34 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <div style={{ width: '800px', height: '300px' }}>
-          <Piano
-            startNote="f4"
-            endNote="f6"
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
-            keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
-          />
+      <div className="container">
+        <div className="text-center">
+          <h1>react-piano</h1>
         </div>
-        <div style={{ width: '800px', height: '300px' }}>
-          <Piano
-            startNote="c3"
-            endNote="c4"
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
-            keyboardConfig={KEYBOARD_CONFIG.TOP}
-          />
+
+        <div className="row">
+          <div className="col-sm-6 offset-sm-3">
+            <div style={{ width: '100%', height: '300px' }}>
+              <Piano
+                startNote="f4"
+                endNote="f6"
+                onNoteDown={this.onNoteDown}
+                onNoteUp={this.onNoteUp}
+                keyboardConfig={KEYBOARD_CONFIG.TOP}
+              />
+            </div>
+          </div>
+          <div className="col-sm-6 offset-sm-3">
+            <div style={{ width: '100%', height: '300px' }}>
+              <Piano
+                startNote="c3"
+                endNote="c4"
+                onNoteDown={this.onNoteDown}
+                onNoteUp={this.onNoteUp}
+                keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
