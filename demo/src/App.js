@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Piano from 'react-piano';
-import './App.css';
 import Oscillator from './Oscillator';
+import PianoContainer from './PianoContainer';
+import './App.css';
 
 // TODO: move this to be exported from Piano.js (index.js)
 const KEYBOARD_CONFIG = {
@@ -46,6 +47,7 @@ const KEYBOARD_CONFIG = {
 };
 
 const audioContext = new window.AudioContext();
+
 class App extends Component {
   oscillator = new Oscillator({
     audioContext,
@@ -71,28 +73,36 @@ class App extends Component {
           <h1>react-piano</h1>
         </div>
 
-        <div className="row">
-          <div className="col-sm-6 offset-sm-3">
-            <div style={{ width: '100%', height: '300px' }}>
-              <Piano
-                startNote="f4"
-                endNote="f6"
-                onNoteDown={this.onNoteDown}
-                onNoteUp={this.onNoteUp}
-                keyboardConfig={KEYBOARD_CONFIG.TOP}
-              />
-            </div>
+        <div className="row mt-3">
+          <div className="col-sm-8 offset-sm-2">
+            <PianoContainer>
+              {(width) => (
+                <Piano
+                  startNote="f4"
+                  endNote="f6"
+                  onNoteDown={this.onNoteDown}
+                  onNoteUp={this.onNoteUp}
+                  keyboardConfig={KEYBOARD_CONFIG.TOP}
+                  width={width}
+                />
+              )}
+            </PianoContainer>
           </div>
-          <div className="col-sm-6 offset-sm-3">
-            <div style={{ width: '100%', height: '300px' }}>
-              <Piano
-                startNote="c3"
-                endNote="c4"
-                onNoteDown={this.onNoteDown}
-                onNoteUp={this.onNoteUp}
-                keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
-              />
-            </div>
+        </div>
+        <div className="row mt-3">
+          <div className="col-sm-8 offset-sm-2">
+            <PianoContainer>
+              {(width) => (
+                <Piano
+                  startNote="c3"
+                  endNote="c4"
+                  onNoteDown={this.onNoteDown}
+                  onNoteUp={this.onNoteUp}
+                  keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
+                  width={width}
+                />
+              )}
+            </PianoContainer>
           </div>
         </div>
       </div>

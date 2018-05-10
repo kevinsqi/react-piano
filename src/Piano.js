@@ -60,6 +60,7 @@ class Piano extends React.Component {
   };
 
   static defaultProps = {
+    keyWidthToHeightRatio: 0.15,
     whiteKeyGutterRatio: 0.02,
     whiteKeyConfig: {
       widthRatio: 1,
@@ -210,8 +211,11 @@ class Piano extends React.Component {
 
   render() {
     // TODO: create wrapper which allows fixed width key width
+    const height = this.props.width
+      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.keyWidthToHeightRatio}px`
+      : '100%';
     return (
-      <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <div style={{ position: 'relative', width: '100%', height: height }}>
         {this.getMidiNumbers().map((num) => {
           const { note } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
