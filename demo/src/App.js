@@ -53,7 +53,6 @@ class App extends Component {
   });
 
   onNoteDown = ({ frequency }) => {
-    console.log(frequency);
     audioContext.resume().then(() => {
       this.oscillator.start(frequency);
     });
