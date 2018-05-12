@@ -118,21 +118,38 @@ class App extends Component {
                     onNoteUp={this.onNoteUp}
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
-                    renderNoteLabel={({ note }) => {
+                    renderNoteLabel={({ isBlack, keyboardShortcut }) => {
+                      if (!keyboardShortcut) {
+                        return null;
+                      }
                       return (
                         <div className="text-center">
-                          <span
-                            style={{
-                              color: themeColor,
-                              backgroundColor: '#aaa',
-                              borderRadius: 2,
-                              padding: 2,
-                              textTransform: 'capitalize',
-                              fontSize: '11px',
-                            }}
-                          >
-                            {note}
-                          </span>
+                          {isBlack ? (
+                            <div
+                              style={{
+                                color: themeColor,
+                                fontSize: '12px',
+                                textTransform: 'capitalize',
+                              }}
+                            >
+                              {keyboardShortcut}
+                            </div>
+                          ) : (
+                            <div
+                              style={{
+                                color: themeColor,
+                                backgroundColor: '#aaa',
+                                padding: '4px 0',
+                                margin: 3,
+                                border: '1px solid #fff',
+                                borderRadius: 4,
+                                fontSize: '12px',
+                                textTransform: 'capitalize',
+                              }}
+                            >
+                              {keyboardShortcut}
+                            </div>
+                          )}
                         </div>
                       );
                     }}

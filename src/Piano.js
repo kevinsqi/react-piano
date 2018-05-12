@@ -8,6 +8,9 @@ function ratioToPercentage(ratio) {
 
 // TODO: refactor
 function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig) {
+  if (!keyboardConfig) {
+    return {};
+  }
   let keyIndex = 0;
   const keysToMidiNumbers = {};
   for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
@@ -132,6 +135,20 @@ class Piano extends React.Component {
     return mapping[key];
   };
 
+  getKeyForMidiNumber = (midiNumber) => {
+    const mapping = getKeyboardShortcutsForMidiNumbers(
+      this.getMidiNumbers(),
+      this.props.noteConfig,
+      this.props.keyboardConfig,
+    );
+    for (let key in mapping) {
+      if (mapping[key] === midiNumber) {
+        return key;
+      }
+    }
+    return null;
+  };
+
   handleKeyDown = (event) => {
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
@@ -225,7 +242,7 @@ class Piano extends React.Component {
     return (
       <div style={{ position: 'relative', width: this.getWidth(), height: this.getHeight() }}>
         {this.getMidiNumbers().map((num) => {
-          const { note } = getMidiNumberAttributes(num);
+          const { note, basenote } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
           const noteConfig = this.getNoteConfig(num);
           const isKeyDown = this.state.keysDown[num];
@@ -249,7 +266,12 @@ class Piano extends React.Component {
               onTouchEnd={this.handleNoteUp.bind(this, num)}
               key={num}
             >
-              {this.props.renderNoteLabel({ note, isBlack: noteConfig.isFlat })}
+              {this.props.renderNoteLabel({
+                note,
+                basenote,
+                isBlack: noteConfig.isFlat,
+                keyboardShortcut: this.getKeyForMidiNumber(num),
+              })}
             </Key>
           );
         })}
