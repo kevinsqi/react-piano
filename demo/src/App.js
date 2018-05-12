@@ -112,11 +112,11 @@ class App extends Component {
               <PianoContainer>
                 {(width) => (
                   <Piano
-                    startNote="f5"
-                    endNote="f7"
+                    startNote="c3"
+                    endNote="c5"
                     onNoteDown={this.onNoteDown}
                     onNoteUp={this.onNoteUp}
-                    keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
+                    keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
                   />
                 )}
@@ -132,7 +132,6 @@ class App extends Component {
                     endNote="c4"
                     onNoteDown={this.onNoteDown}
                     onNoteUp={this.onNoteUp}
-                    keyboardConfig={KEYBOARD_CONFIG.TOP}
                     width={width}
                   />
                 )}
