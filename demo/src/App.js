@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Piano from 'react-piano';
 import Oscillator from './Oscillator';
 import PianoContainer from './PianoContainer';
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import './App.css';
 
 // TODO: move this to be exported from Piano.js (index.js)
@@ -121,7 +122,13 @@ class App extends Component {
       <div>
         <Header />
         <div className="container">
-          <div className="row mt-5">
+          <div className="text-center mt-5">
+            <p className="">Try it by clicking, tapping, or using your keyboard</p>
+            <div style={{ color: '#777' }}>
+              <MdArrowDownward size={32} />
+            </div>
+          </div>
+          <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
               <PianoContainer>
                 {(width) => (
@@ -193,8 +200,8 @@ class App extends Component {
             <div className="col">
               <div className="text-center">
                 <h2>Installation</h2>
-                <p>Install with yarn or npm:</p>
-                <p className="mt-4">
+                <p className="mt-4">Install with yarn or npm:</p>
+                <p className="mt-3">
                   <code className="p-2 text-dark" style={{ backgroundColor: themeColor }}>
                     yarn add react-piano
                   </code>
