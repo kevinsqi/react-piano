@@ -48,6 +48,35 @@ const KEYBOARD_CONFIG = {
 
 const audioContext = new window.AudioContext();
 
+const themeColor = '#f8e8d5';
+
+function GithubLink() {
+  return (
+    <a className="btn btn-info btn-lg" href="https://github.com/iqnivek/react-piano">
+      View docs on Github
+    </a>
+  );
+}
+
+function Footer(props) {
+  return (
+    <div className="mt-5 py-5" style={{ backgroundColor: themeColor }}>
+      <div className="container">
+        <div className="text-center text-secondary">
+          Made with{' '}
+          <span role="img" aria-label="keyboard emoji">
+            🎹
+          </span>
+          by{' '}
+          <a className="text-secondary" href="http://www.kevinqi.com/">
+            <strong>@iqnivek</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 class App extends Component {
   oscillator = new Oscillator({
     audioContext,
@@ -68,43 +97,67 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="text-center">
-          <h1>react-piano</h1>
-        </div>
+      <div>
+        <div className="container">
+          <div className="text-center mt-5">
+            <h1>react-piano</h1>
+            <p>A responsive, configurable, programmable piano keyboard for React</p>
+            <div className="mt-4">
+              <GithubLink />
+            </div>
+          </div>
 
-        <div className="row mt-3">
-          <div className="col-sm-8 offset-sm-2">
-            <PianoContainer>
-              {(width) => (
-                <Piano
-                  startNote="f4"
-                  endNote="f6"
-                  onNoteDown={this.onNoteDown}
-                  onNoteUp={this.onNoteUp}
-                  keyboardConfig={KEYBOARD_CONFIG.TOP}
-                  width={width}
-                />
-              )}
-            </PianoContainer>
+          <div className="row mt-5">
+            <div className="col-md-8 offset-md-2">
+              <PianoContainer>
+                {(width) => (
+                  <Piano
+                    startNote="f5"
+                    endNote="f7"
+                    onNoteDown={this.onNoteDown}
+                    onNoteUp={this.onNoteUp}
+                    keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
+                    width={width}
+                  />
+                )}
+              </PianoContainer>
+            </div>
+          </div>
+          <div className="row mt-5">
+            <div className="col-md-4 offset-md-4">
+              <PianoContainer>
+                {(width) => (
+                  <Piano
+                    startNote="c3"
+                    endNote="c4"
+                    onNoteDown={this.onNoteDown}
+                    onNoteUp={this.onNoteUp}
+                    keyboardConfig={KEYBOARD_CONFIG.TOP}
+                    width={width}
+                  />
+                )}
+              </PianoContainer>
+            </div>
+          </div>
+          <hr className="mt-5" />
+          <div className="row mt-5">
+            <div className="col">
+              <div className="text-center">
+                <h2>Installation</h2>
+                <p>Install with yarn or npm:</p>
+                <p className="mt-4">
+                  <code className="p-2 text-dark" style={{ backgroundColor: themeColor }}>
+                    yarn add react-piano
+                  </code>
+                </p>
+                <div className="mt-5">
+                  <GithubLink />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="row mt-3">
-          <div className="col-sm-8 offset-sm-2">
-            <PianoContainer>
-              {(width) => (
-                <Piano
-                  startNote="c3"
-                  endNote="c4"
-                  onNoteDown={this.onNoteDown}
-                  onNoteUp={this.onNoteUp}
-                  keyboardConfig={KEYBOARD_CONFIG.BOTTOM}
-                  width={width}
-                />
-              )}
-            </PianoContainer>
-          </div>
-        </div>
+        <Footer />
       </div>
     );
   }
