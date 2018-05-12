@@ -118,9 +118,22 @@ class App extends Component {
                     onNoteUp={this.onNoteUp}
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
-                    renderKeyLabel={({ note }) => {
+                    renderNoteLabel={({ note }) => {
                       return (
-                        <span style={{ color: '#999', textTransform: 'capitalize' }}>{note}</span>
+                        <div className="text-center">
+                          <span
+                            style={{
+                              color: themeColor,
+                              backgroundColor: '#aaa',
+                              borderRadius: 2,
+                              padding: 2,
+                              textTransform: 'capitalize',
+                              fontSize: '11px',
+                            }}
+                          >
+                            {note}
+                          </span>
+                        </div>
                       );
                     }}
                   />

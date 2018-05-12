@@ -50,7 +50,7 @@ function Key(props) {
       onTouchCancel={props.onTouchCancel}
       onTouchEnd={props.onTouchEnd}
     >
-      <div style={{ alignSelf: 'flex-end' }}>{props.children}</div>
+      <div style={{ alignSelf: 'flex-end', flex: 1 }}>{props.children}</div>
     </div>
   );
 }
@@ -101,7 +101,7 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isFlat: true },
       b: { offsetFromC: 6, isFlat: false },
     },
-    renderKeyLabel: () => {},
+    renderNoteLabel: () => {},
   };
 
   componentDidMount() {
@@ -227,6 +227,7 @@ class Piano extends React.Component {
         {this.getMidiNumbers().map((num) => {
           const { note } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
+          const noteConfig = this.getNoteConfig(num);
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
@@ -248,7 +249,7 @@ class Piano extends React.Component {
               onTouchEnd={this.handleNoteUp.bind(this, num)}
               key={num}
             >
-              {this.props.renderKeyLabel({ note })}
+              {this.props.renderNoteLabel({ note, isBlack: noteConfig.isFlat })}
             </Key>
           );
         })}
