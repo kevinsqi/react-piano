@@ -74,7 +74,6 @@ class Piano extends React.Component {
         zIndex: 0,
         borderRadius: '0 0 6px 6px',
         border: '1px solid #888',
-        boxShadow: '0 0 5px #ccc',
         background: '#f6f5f3',
       },
     },
@@ -257,7 +256,12 @@ class Piano extends React.Component {
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
               style={Object.assign({}, keyConfig.style, {
-                background: isKeyDown ? '#01baef' : keyConfig.style.background,
+                background: isKeyDown ? '#17a2b8' : keyConfig.style.background,
+                border: isKeyDown
+                  ? noteConfig.isFlat
+                    ? '1px solid #fff'
+                    : '1px solid #17a2b8'
+                  : keyConfig.style.border,
               })}
               onMouseDown={this.handleNoteDown.bind(this, num)}
               onMouseUp={this.handleNoteUp.bind(this, num)}

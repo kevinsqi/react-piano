@@ -130,6 +130,7 @@ class App extends Component {
                                 color: themeColor,
                                 fontSize: '12px',
                                 textTransform: 'capitalize',
+                                marginBottom: 3,
                               }}
                             >
                               {keyboardShortcut}
