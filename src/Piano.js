@@ -40,6 +40,7 @@ function Key(props) {
           left: props.left,
           width: props.width,
           height: props.height,
+          display: 'flex',
         },
         props.style,
       )}
@@ -49,7 +50,7 @@ function Key(props) {
       onTouchCancel={props.onTouchCancel}
       onTouchEnd={props.onTouchEnd}
     >
-      <span style={{ color: '#999', textTransform: 'capitalize' }}>{props.note}</span>
+      <div style={{ alignSelf: 'flex-end' }}>{props.children}</div>
     </div>
   );
 }
@@ -100,6 +101,7 @@ class Piano extends React.Component {
       bb: { offsetFromC: 5.85, isFlat: true },
       b: { offsetFromC: 6, isFlat: false },
     },
+    renderKeyLabel: () => {},
   };
 
   componentDidMount() {
@@ -245,7 +247,9 @@ class Piano extends React.Component {
               onTouchCancel={this.handleNoteUp.bind(this, num)}
               onTouchEnd={this.handleNoteUp.bind(this, num)}
               key={num}
-            />
+            >
+              {this.props.renderKeyLabel({ note })}
+            </Key>
           );
         })}
       </div>

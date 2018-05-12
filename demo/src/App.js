@@ -112,12 +112,17 @@ class App extends Component {
               <PianoContainer>
                 {(width) => (
                   <Piano
-                    startNote="c3"
-                    endNote="c5"
+                    startNote="c4"
+                    endNote="c6"
                     onNoteDown={this.onNoteDown}
                     onNoteUp={this.onNoteUp}
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
+                    renderKeyLabel={({ note }) => {
+                      return (
+                        <span style={{ color: '#999', textTransform: 'capitalize' }}>{note}</span>
+                      );
+                    }}
                   />
                 )}
               </PianoContainer>
