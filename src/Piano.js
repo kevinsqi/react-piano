@@ -75,6 +75,7 @@ class Piano extends React.Component {
         borderRadius: '0 0 6px 6px',
         border: '1px solid #888',
         background: '#f6f5f3',
+        cursor: 'pointer',
       },
     },
     blackKeyConfig: {
@@ -87,6 +88,7 @@ class Piano extends React.Component {
         border: '1px solid #fff',
         borderTop: '1px solid transparent',
         background: '#555',
+        cursor: 'pointer',
       },
     },
     noteConfig: {

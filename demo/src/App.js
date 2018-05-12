@@ -77,6 +77,27 @@ function Footer(props) {
   );
 }
 
+function Header() {
+  return (
+    <div style={{ background: '#333' }}>
+      <div className="container">
+        <div className="text-center text-white p-5">
+          <h1>react-piano</h1>
+          <p>A responsive, configurable, programmable piano keyboard for React</p>
+          <div className="mt-4">
+            <a
+              className="btn btn-outline-light btn-lg"
+              href="https://github.com/iqnivek/react-piano"
+            >
+              View docs on Github
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 class App extends Component {
   oscillator = new Oscillator({
     audioContext,
@@ -98,15 +119,8 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Header />
         <div className="container">
-          <div className="text-center mt-5">
-            <h1>react-piano</h1>
-            <p>A responsive, configurable, programmable piano keyboard for React</p>
-            <div className="mt-4">
-              <GithubLink />
-            </div>
-          </div>
-
           <div className="row mt-5">
             <div className="col-md-8 offset-md-2">
               <PianoContainer>
