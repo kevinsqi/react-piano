@@ -104,6 +104,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    // Sound names here: http://gleitz.github.io/midi-js-soundfonts/MusyngKite/names.json
     Soundfont.instrument(audioContext, 'acoustic_grand_piano').then((instrument) => {
       this.instrument = instrument;
     });

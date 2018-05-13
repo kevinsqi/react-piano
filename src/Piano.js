@@ -122,6 +122,7 @@ class Piano extends React.Component {
     }
   }
 
+  // Range of midi numbers from startNote to endNote
   getMidiNumbers() {
     const startNum = noteToMidiNumber(this.props.startNote);
     return _.range(startNum, noteToMidiNumber(this.props.endNote) + 1);
@@ -204,10 +205,12 @@ class Piano extends React.Component {
     }).length;
   }
 
+  // Width of the white key as a ratio from 0 to 1, including the small space between keys
   getWhiteKeyWidthIncludingGutter() {
     return 1 / this.getWhiteKeyCount();
   }
 
+  // Width of the white key as a ratio from 0 to 1
   getWhiteKeyWidth() {
     return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.whiteKeyGutterRatio);
   }
