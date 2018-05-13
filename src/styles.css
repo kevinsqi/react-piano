@@ -27,3 +27,9 @@
 .ReactPiano__Key--down {
   background: #63b0cd;
 }
+
+.ReactPiano__Key--disabled {
+  background: #aaa;
+  border: 1px solid #fff;
+  cursor: progress;
+}

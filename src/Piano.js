@@ -246,6 +246,7 @@ class Piano extends React.Component {
               className={classNames({
                 'ReactPiano__Key--black': noteConfig.isFlat,
                 'ReactPiano__Key--white': !noteConfig.isFlat,
+                'ReactPiano__Key--disabled': this.props.disabled,
                 'ReactPiano__Key--down': isKeyDown,
               })}
               left={ratioToPercentage(
