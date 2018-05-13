@@ -4,11 +4,11 @@
   "description": "A responsive, customizable react piano keyboard component",
   "main": "build/index.js",
   "files": [
-    "build",
-    "src"
+    "build"
   ],
   "scripts": {
-    "build": "rimraf build && npm run build:development && npm run build:production",
+    "build": "rimraf build && npm run build:css && npm run build:development && npm run build:production",
+    "build:css": "postcss src/style.css --use autoprefixer -d build/ --no-map",
     "build:development": "cross-env NODE_ENV=development webpack --mode development",
     "build:production": "cross-env NODE_ENV=production webpack --mode production",
     "prepare": "npm run build",
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/iqnivek/react-piano",
   "devDependencies": {
+    "autoprefixer": "^8.5.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
