@@ -1,4 +1,4 @@
-.ReactPiano__BlackKey {
+.ReactPiano__Key--black {
   background: #555;
   border: 1px solid #fff;
   border-top: 1px solid transparent;
@@ -7,10 +7,23 @@
   z-index: 1;
 }
 
-.ReactPiano__WhiteKey {
+.ReactPiano__Key--black.ReactPiano__Key--down {
+  border: 1px solid #fff;
+}
+
+.ReactPiano__Key--white {
   background: #f6f5f3;
   border: 1px solid #888;
   border-radius: 0 0 6px 6px;
   cursor: pointer;
   z-index: 0,
+}
+
+.ReactPiano__Key--white.ReactPiano__Key--down {
+  border: 1px solid #63b0cd;
+}
+
+/* Declare after to override default backgrounds */
+.ReactPiano__Key--down {
+  background: #63b0cd;
 }

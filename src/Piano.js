@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import classNames from 'classnames';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
 
 function ratioToPercentage(ratio) {
@@ -37,17 +38,14 @@ function Key(props) {
   return (
     <div
       className={props.className}
-      style={Object.assign(
-        {
-          position: 'absolute',
-          top: 0,
-          left: props.left,
-          width: props.width,
-          height: props.height,
-          display: 'flex',
-        },
-        props.style,
-      )}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: props.left,
+        width: props.width,
+        height: props.height,
+        display: 'flex',
+      }}
       onMouseDown={props.onMouseDown}
       onMouseUp={props.onMouseUp}
       onTouchStart={props.onTouchStart}
@@ -71,13 +69,11 @@ class Piano extends React.Component {
       widthRatio: 1,
       heightRatio: 1,
       heightKeyDownRatio: 0.98,
-      style: {},
     },
     blackKeyConfig: {
       widthRatio: 0.66,
       heightRatio: 0.66,
       heightKeyDownRatio: 0.65,
-      style: {},
     },
     noteConfig: {
       c: { offsetFromC: 0, isFlat: false },
@@ -247,7 +243,11 @@ class Piano extends React.Component {
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
-              className={noteConfig.isFlat ? 'ReactPiano__BlackKey' : 'ReactPiano__WhiteKey'}
+              className={classNames({
+                'ReactPiano__Key--black': noteConfig.isFlat,
+                'ReactPiano__Key--white': !noteConfig.isFlat,
+                'ReactPiano__Key--down': isKeyDown,
+              })}
               left={ratioToPercentage(
                 this.getKeyPosition(num) * this.getWhiteKeyWidthIncludingGutter(),
               )}
@@ -255,14 +255,6 @@ class Piano extends React.Component {
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              style={Object.assign({}, keyConfig.style, {
-                background: isKeyDown ? '#63B0CD' : keyConfig.style.background,
-                border: isKeyDown
-                  ? noteConfig.isFlat
-                    ? '1px solid #fff'
-                    : '1px solid #63B0CD'
-                  : keyConfig.style.border,
-              })}
               onMouseDown={this.handleNoteDown.bind(this, num)}
               onMouseUp={this.handleNoteUp.bind(this, num)}
               onTouchStart={this.handleNoteDown.bind(this, num)}
