@@ -258,11 +258,11 @@ class Piano extends React.Component {
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
               style={Object.assign({}, keyConfig.style, {
-                background: isKeyDown ? '#17a2b8' : keyConfig.style.background,
+                background: isKeyDown ? '#63B0CD' : keyConfig.style.background,
                 border: isKeyDown
                   ? noteConfig.isFlat
                     ? '1px solid #fff'
-                    : '1px solid #17a2b8'
+                    : '1px solid #63B0CD'
                   : keyConfig.style.border,
               })}
               onMouseDown={this.handleNoteDown.bind(this, num)}
