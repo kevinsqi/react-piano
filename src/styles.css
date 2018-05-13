@@ -1,3 +1,7 @@
-.ReactPiano {
-  color: #ddd;
+.ReactPiano__BlackKey {
+  border-radius: 0 0 4px 4px;
+}
+
+.ReactPiano__WhiteKey {
+  border-radius: 0 0 6px 6px;
 }

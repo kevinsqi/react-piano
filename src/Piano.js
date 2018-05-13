@@ -36,6 +36,7 @@ function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig)
 function Key(props) {
   return (
     <div
+      className={props.className}
       style={Object.assign(
         {
           position: 'absolute',
@@ -72,7 +73,6 @@ class Piano extends React.Component {
       heightKeyDownRatio: 0.98,
       style: {
         zIndex: 0,
-        borderRadius: '0 0 6px 6px',
         border: '1px solid #888',
         background: '#f6f5f3',
         cursor: 'pointer',
@@ -84,7 +84,6 @@ class Piano extends React.Component {
       heightKeyDownRatio: 0.65,
       style: {
         zIndex: 1,
-        borderRadius: '0 0 4px 4px',
         border: '1px solid #fff',
         borderTop: '1px solid transparent',
         background: '#555',
@@ -259,7 +258,7 @@ class Piano extends React.Component {
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
-              note={note}
+              className={noteConfig.isFlat ? 'ReactPiano__BlackKey' : 'ReactPiano__WhiteKey'}
               left={ratioToPercentage(
                 this.getKeyPosition(num) * this.getWhiteKeyWidthIncludingGutter(),
               )}

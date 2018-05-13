@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Piano from 'react-piano';
+import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
 import PianoContainer from './PianoContainer';
