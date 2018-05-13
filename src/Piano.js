@@ -173,7 +173,7 @@ class Piano extends React.Component {
 
   handleNoteDown = (midiNumber) => {
     // Prevents duplicate note firings
-    if (this.state.keysDown[midiNumber]) {
+    if (this.state.keysDown[midiNumber] || this.props.disabled) {
       return;
     }
     this.setState({
@@ -186,7 +186,7 @@ class Piano extends React.Component {
   };
 
   handleNoteUp = (midiNumber) => {
-    if (!this.state.keysDown[midiNumber]) {
+    if (!this.state.keysDown[midiNumber] || this.props.disabled) {
       return;
     }
     this.setState({
