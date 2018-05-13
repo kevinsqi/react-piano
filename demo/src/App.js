@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Piano from 'react-piano';
+import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
 import PianoContainer from './PianoContainer';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
@@ -100,20 +101,49 @@ function Header() {
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    Soundfont.instrument(audioContext, 'acoustic_grand_piano').then((instrument) => {
+      this.instrument = instrument;
+    });
+
+    this.state = {
+      activeAudioNodes: {},
+    };
+  }
+
   oscillator = new Oscillator({
     audioContext,
     gain: 0.1,
   });
 
-  onNoteDown = ({ frequency }) => {
+  onNoteDown = ({ midiNumber, frequency }) => {
     audioContext.resume().then(() => {
-      this.oscillator.start(frequency);
+      const audioNode = this.instrument.play(midiNumber);
+      this.setState({
+        activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, {
+          [midiNumber]: audioNode,
+        }),
+      });
+      // TODO: add back oscillator
     });
   };
 
-  onNoteUp = ({ frequency }) => {
+  onNoteUp = ({ midiNumber, frequency }) => {
     audioContext.resume().then(() => {
-      this.oscillator.stop(frequency);
+      if (!this.state.activeAudioNodes[midiNumber]) {
+        return;
+      }
+      // TODO: refactor
+      const audioNode = this.state.activeAudioNodes[midiNumber];
+      audioNode.stop();
+      const activeAudioNodes = Object.assign({}, this.state.activeAudioNodes);
+      delete activeAudioNodes[midiNumber];
+      this.setState({
+        activeAudioNodes,
+      });
+      // TODO: add back oscillator
     });
   };
 
