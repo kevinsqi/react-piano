@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "description": "A responsive, customizable react piano keyboard component",
   "main": "build/index.js",
+  "style": "build/styles.css",
   "files": [
     "build"
   ],
   "scripts": {
     "build": "rimraf build && npm run build:css && npm run build:development && npm run build:production",
-    "build:css": "postcss src/style.css --use autoprefixer -d build/ --no-map",
+    "build:css": "postcss src/styles.css --use autoprefixer -d build/ --no-map",
     "build:development": "cross-env NODE_ENV=development webpack --mode development",
     "build:production": "cross-env NODE_ENV=production webpack --mode production",
     "prepare": "npm run build",
