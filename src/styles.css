@@ -1,7 +1,16 @@
 .ReactPiano__BlackKey {
+  background: #555;
+  border: 1px solid #fff;
+  border-top: 1px solid transparent;
   border-radius: 0 0 4px 4px;
+  cursor: pointer;
+  z-index: 1;
 }
 
 .ReactPiano__WhiteKey {
+  background: #f6f5f3;
+  border: 1px solid #888;
   border-radius: 0 0 6px 6px;
+  cursor: pointer;
+  z-index: 0,
 }

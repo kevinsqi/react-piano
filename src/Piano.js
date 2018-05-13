@@ -71,24 +71,13 @@ class Piano extends React.Component {
       widthRatio: 1,
       heightRatio: 1,
       heightKeyDownRatio: 0.98,
-      style: {
-        zIndex: 0,
-        border: '1px solid #888',
-        background: '#f6f5f3',
-        cursor: 'pointer',
-      },
+      style: {},
     },
     blackKeyConfig: {
       widthRatio: 0.66,
       heightRatio: 0.66,
       heightKeyDownRatio: 0.65,
-      style: {
-        zIndex: 1,
-        border: '1px solid #fff',
-        borderTop: '1px solid transparent',
-        background: '#555',
-        cursor: 'pointer',
-      },
+      style: {},
     },
     noteConfig: {
       c: { offsetFromC: 0, isFlat: false },
