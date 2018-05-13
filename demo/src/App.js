@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Piano from 'react-piano';
+import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
 import PianoContainer from './PianoContainer';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
@@ -100,20 +101,55 @@ function Header() {
 }
 
 class App extends Component {
-  oscillator = new Oscillator({
-    audioContext,
-    gain: 0.1,
-  });
+  constructor(props) {
+    super(props);
 
-  onNoteDown = ({ frequency }) => {
+    this.state = {
+      activeAudioNodes: {},
+      instrument: null,
+    };
+
+    this.oscillator = new Oscillator({
+      audioContext,
+      gain: 0.1,
+    });
+  }
+
+  componentDidMount() {
+    // Sound names here: http://gleitz.github.io/midi-js-soundfonts/MusyngKite/names.json
+    Soundfont.instrument(audioContext, 'acoustic_grand_piano').then((instrument) => {
+      this.setState({
+        instrument,
+      });
+    });
+  }
+
+  onNoteDown = ({ midiNumber, frequency }) => {
     audioContext.resume().then(() => {
-      this.oscillator.start(frequency);
+      const audioNode = this.state.instrument.play(midiNumber);
+      this.setState({
+        activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, {
+          [midiNumber]: audioNode,
+        }),
+      });
+      // TODO: add back oscillator
     });
   };
 
-  onNoteUp = ({ frequency }) => {
+  onNoteUp = ({ midiNumber, frequency }) => {
     audioContext.resume().then(() => {
-      this.oscillator.stop(frequency);
+      if (!this.state.activeAudioNodes[midiNumber]) {
+        return;
+      }
+      // TODO: refactor
+      const audioNode = this.state.activeAudioNodes[midiNumber];
+      audioNode.stop();
+      const activeAudioNodes = Object.assign({}, this.state.activeAudioNodes);
+      delete activeAudioNodes[midiNumber];
+      this.setState({
+        activeAudioNodes,
+      });
+      // TODO: add back oscillator
     });
   };
 
@@ -137,6 +173,7 @@ class App extends Component {
                     endNote="c6"
                     onNoteDown={this.onNoteDown}
                     onNoteUp={this.onNoteUp}
+                    disabled={!this.state.instrument}
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
                     renderNoteLabel={({ isBlack, keyboardShortcut }) => {
@@ -190,6 +227,7 @@ class App extends Component {
                     onNoteDown={this.onNoteDown}
                     onNoteUp={this.onNoteUp}
                     width={width}
+                    disabled={!this.state.instrument}
                   />
                 )}
               </PianoContainer>

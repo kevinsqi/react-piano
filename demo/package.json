@@ -10,7 +10,8 @@
     "react-dom": "^16.3.2",
     "react-icons": "^2.2.7",
     "react-piano": "../",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "soundfont-player": "^0.10.6"
   },
   "scripts": {
     "predeploy": "npm run build",
