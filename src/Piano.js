@@ -46,12 +46,12 @@ function Key(props) {
         height: props.height,
         display: 'flex',
       }}
-      onMouseDown={props.onMouseDown}
-      onMouseUp={props.onMouseUp}
-      onMouseOut={props.onMouseOut}
-      onTouchStart={props.onTouchStart}
-      onTouchCancel={props.onTouchCancel}
-      onTouchEnd={props.onTouchEnd}
+      onMouseDown={props.onNoteDown}
+      onMouseUp={props.onNoteUp}
+      onMouseOut={props.onNoteUp}
+      onTouchStart={props.onNoteDown}
+      onTouchCancel={props.onNoteUp}
+      onTouchEnd={props.onNoteUp}
     >
       <div style={{ alignSelf: 'flex-end', flex: 1 }}>{props.children}</div>
     </div>
@@ -61,6 +61,7 @@ function Key(props) {
 class Piano extends React.Component {
   state = {
     keysDown: {},
+    isMouseDown: false,
   };
 
   static defaultProps = {
@@ -94,6 +95,17 @@ class Piano extends React.Component {
   };
 
   componentDidMount() {
+    window.addEventListener('mousedown', () => {
+      this.setState({
+        isMouseDown: true,
+      });
+    });
+    window.addEventListener('mouseup', () => {
+      this.setState({
+        isMouseDown: false,
+      });
+    });
+
     if (this.props.keyboardConfig) {
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
@@ -242,8 +254,6 @@ class Piano extends React.Component {
           const keyConfig = this.getKeyConfig(num);
           const noteConfig = this.getNoteConfig(num);
           const isKeyDown = this.state.keysDown[num];
-          const handleNoteDown = this.handleNoteDown.bind(this, num);
-          const handleNoteUp = this.handleNoteUp.bind(this, num);
           return (
             <Key
               className={classNames({
@@ -259,12 +269,8 @@ class Piano extends React.Component {
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              onMouseDown={handleNoteDown}
-              onMouseUp={handleNoteUp}
-              onMouseOut={handleNoteUp}
-              onTouchStart={handleNoteDown}
-              onTouchCancel={handleNoteUp}
-              onTouchEnd={handleNoteUp}
+              onNoteDown={this.handleNoteDown.bind(this, num)}
+              onNoteUp={this.handleNoteUp.bind(this, num)}
               key={num}
             >
               {this.props.disabled
