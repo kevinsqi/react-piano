@@ -48,6 +48,7 @@ function Key(props) {
       }}
       onMouseDown={props.onNoteDown}
       onMouseUp={props.onNoteUp}
+      onMouseOver={props.isMouseDown ? props.onNoteDown : null}
       onMouseOut={props.onNoteUp}
       onTouchStart={props.onNoteDown}
       onTouchCancel={props.onNoteUp}
@@ -95,6 +96,7 @@ class Piano extends React.Component {
   };
 
   componentDidMount() {
+    // TODO: removeEventListener calls
     window.addEventListener('mousedown', () => {
       this.setState({
         isMouseDown: true,
@@ -271,6 +273,7 @@ class Piano extends React.Component {
               )}
               onNoteDown={this.handleNoteDown.bind(this, num)}
               onNoteUp={this.handleNoteUp.bind(this, num)}
+              isMouseDown={this.state.isMouseDown}
               key={num}
             >
               {this.props.disabled
