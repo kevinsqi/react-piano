@@ -28,8 +28,17 @@
   background: #63b0cd;
 }
 
-.ReactPiano__Key--disabled {
-  background: #aaa;
-  border: 1px solid #fff;
+
+.ReactPiano__Key--black.ReactPiano__Key--disabled {
   cursor: progress;
+}
+
+.ReactPiano__Key--black.ReactPiano__Key--disabled {
+  background: #ddd;
+  border: 1px solid #999;
+}
+
+.ReactPiano__Key--white.ReactPiano__Key--disabled {
+  background: #eee;
+  border: 1px solid #aaa;
 }

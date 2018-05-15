@@ -263,12 +263,14 @@ class Piano extends React.Component {
               onTouchEnd={this.handleNoteUp.bind(this, num)}
               key={num}
             >
-              {this.props.renderNoteLabel({
-                note,
-                basenote,
-                isBlack: noteConfig.isFlat,
-                keyboardShortcut: this.getKeyForMidiNumber(num),
-              })}
+              {this.props.disabled
+                ? null
+                : this.props.renderNoteLabel({
+                    note,
+                    basenote,
+                    isBlack: noteConfig.isFlat,
+                    keyboardShortcut: this.getKeyForMidiNumber(num),
+                  })}
             </Key>
           );
         })}
