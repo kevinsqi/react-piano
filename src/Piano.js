@@ -48,6 +48,7 @@ function Key(props) {
       }}
       onMouseDown={props.onMouseDown}
       onMouseUp={props.onMouseUp}
+      onMouseOut={props.onMouseOut}
       onTouchStart={props.onTouchStart}
       onTouchCancel={props.onTouchCancel}
       onTouchEnd={props.onTouchEnd}
@@ -241,6 +242,8 @@ class Piano extends React.Component {
           const keyConfig = this.getKeyConfig(num);
           const noteConfig = this.getNoteConfig(num);
           const isKeyDown = this.state.keysDown[num];
+          const handleNoteDown = this.handleNoteDown.bind(this, num);
+          const handleNoteUp = this.handleNoteUp.bind(this, num);
           return (
             <Key
               className={classNames({
@@ -256,11 +259,12 @@ class Piano extends React.Component {
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              onMouseDown={this.handleNoteDown.bind(this, num)}
-              onMouseUp={this.handleNoteUp.bind(this, num)}
-              onTouchStart={this.handleNoteDown.bind(this, num)}
-              onTouchCancel={this.handleNoteUp.bind(this, num)}
-              onTouchEnd={this.handleNoteUp.bind(this, num)}
+              onMouseDown={handleNoteDown}
+              onMouseUp={handleNoteUp}
+              onMouseOut={handleNoteUp}
+              onTouchStart={handleNoteDown}
+              onTouchCancel={handleNoteUp}
+              onTouchEnd={handleNoteUp}
               key={num}
             >
               {this.props.disabled
