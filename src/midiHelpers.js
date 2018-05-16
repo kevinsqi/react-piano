@@ -1,5 +1,8 @@
+import _ from 'lodash';
+
 const NOTE_ARRAY = ['c', 'db', 'd', 'eb', 'e', 'f', 'gb', 'g', 'ab', 'a', 'bb', 'b'];
 const MIDI_NUMBER_C0 = 12;
+const MIDI_NUMBER_G8 = 127;
 const NOTE_REGEX = /(\w+)(\d)/;
 const NOTES_IN_OCTAVE = 12;
 
@@ -18,7 +21,7 @@ export function noteToMidiNumber(note) {
   return MIDI_NUMBER_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
 }
 
-export function getMidiNumberAttributes(number) {
+function buildMidiNumberAttributes(number) {
   const offset = (number - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
   const octave = Math.floor((number - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
   const basenote = NOTE_ARRAY[offset];
@@ -29,4 +32,21 @@ export function getMidiNumberAttributes(number) {
     midiNumber: number,
     frequency: midiNumberToFrequency(number),
   };
+}
+
+function buildMidiNumberAttributesCache() {
+  return _.range(MIDI_NUMBER_C0, MIDI_NUMBER_G8 + 1).reduce((cache, midiNumber) => {
+    cache[midiNumber] = buildMidiNumberAttributes(midiNumber);
+    return cache;
+  }, {});
+}
+
+const midiNumberAttributesCache = buildMidiNumberAttributesCache();
+
+export function getMidiNumberAttributes(number) {
+  const attrs = midiNumberAttributesCache[number];
+  if (!attrs) {
+    throw Error('MIDI number out of range');
+  }
+  return attrs;
 }
