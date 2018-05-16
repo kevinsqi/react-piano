@@ -258,7 +258,7 @@ class Piano extends React.Component {
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
-              className={classNames({
+              className={classNames('ReactPiano__Key', {
                 'ReactPiano__Key--black': noteConfig.isFlat,
                 'ReactPiano__Key--white': !noteConfig.isFlat,
                 'ReactPiano__Key--disabled': this.props.disabled,

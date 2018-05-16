@@ -1,3 +1,7 @@
+.ReactPiano__Key {
+  user-select: none;
+}
+
 .ReactPiano__Key--black {
   background: #555;
   border: 1px solid #fff;
