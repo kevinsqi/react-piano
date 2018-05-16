@@ -68,30 +68,30 @@ class Piano extends React.Component {
     config: {
       keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
       whiteKeyGutterRatio: 0.02,
-    },
-    whiteKeyConfig: {
-      widthRatio: 1,
-      heightRatio: 1,
-      heightKeyDownRatio: 0.98,
-    },
-    blackKeyConfig: {
-      widthRatio: 0.66,
-      heightRatio: 0.66,
-      heightKeyDownRatio: 0.65,
-    },
-    noteOffsetsFromC: {
-      c: 0,
-      db: 0.55,
-      d: 1,
-      eb: 1.8,
-      e: 2,
-      f: 3,
-      gb: 3.5,
-      g: 4,
-      ab: 4.7,
-      a: 5,
-      bb: 5.85,
-      b: 6,
+      whiteKey: {
+        widthRatio: 1,
+        heightRatio: 1,
+        heightKeyDownRatio: 0.98,
+      },
+      blackKey: {
+        widthRatio: 0.66,
+        heightRatio: 0.66,
+        heightKeyDownRatio: 0.65,
+      },
+      noteOffsetsFromC: {
+        c: 0,
+        db: 0.55,
+        d: 1,
+        eb: 1.8,
+        e: 2,
+        f: 3,
+        gb: 3.5,
+        g: 4,
+        ab: 4.7,
+        a: 5,
+        bb: 5.85,
+        b: 6,
+      },
     },
     renderNoteLabel: () => {},
   };
@@ -217,10 +217,10 @@ class Piano extends React.Component {
   getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
     const { octave, basenote } = getMidiNumberAttributes(midiNumber);
-    const offsetFromC = this.props.noteOffsetsFromC[basenote];
+    const offsetFromC = this.props.config.noteOffsetsFromC[basenote];
     const startNum = noteToMidiNumber(this.props.startNote);
     const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
-    const startOffsetFromC = this.props.noteOffsetsFromC[startBasenote];
+    const startOffsetFromC = this.props.config.noteOffsetsFromC[startBasenote];
     const offsetFromStartNote = offsetFromC - startOffsetFromC;
     const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
     return offsetFromStartNote + octaveOffset;
@@ -228,12 +228,12 @@ class Piano extends React.Component {
 
   getKeyConfig(midiNumber) {
     return getMidiNumberAttributes(midiNumber).isAccidental
-      ? this.props.blackKeyConfig
-      : this.props.whiteKeyConfig;
+      ? this.props.config.blackKey
+      : this.props.config.whiteKey;
   }
 
   getWidth() {
-    return this.props.width ? `${this.props.width}px` : '100%';
+    return this.props.width ? this.props.width : '100%';
   }
 
   getHeight() {
