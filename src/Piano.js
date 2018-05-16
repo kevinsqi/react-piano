@@ -8,7 +8,7 @@ function ratioToPercentage(ratio) {
 }
 
 // TODO: refactor
-function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig) {
+function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
   if (!keyboardConfig) {
     return {};
   }
@@ -16,11 +16,10 @@ function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig)
   const keysToMidiNumbers = {};
   for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
     const num = numbers[numIndex];
-    const { basenote } = getMidiNumberAttributes(num);
-    const { isFlat } = noteConfig[basenote];
+    const { basenote, isAccidental } = getMidiNumberAttributes(num);
 
     const key = keyboardConfig[keyIndex];
-    if (isFlat) {
+    if (isAccidental) {
       keysToMidiNumbers[key.flat] = num;
     } else {
       keysToMidiNumbers[key.natural] = num;
@@ -66,31 +65,33 @@ class Piano extends React.Component {
   };
 
   static defaultProps = {
-    keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
-    whiteKeyGutterRatio: 0.02,
-    whiteKeyConfig: {
-      widthRatio: 1,
-      heightRatio: 1,
-      heightKeyDownRatio: 0.98,
-    },
-    blackKeyConfig: {
-      widthRatio: 0.66,
-      heightRatio: 0.66,
-      heightKeyDownRatio: 0.65,
-    },
-    noteConfig: {
-      c: { offsetFromC: 0, isFlat: false },
-      db: { offsetFromC: 0.55, isFlat: true },
-      d: { offsetFromC: 1, isFlat: false },
-      eb: { offsetFromC: 1.8, isFlat: true },
-      e: { offsetFromC: 2, isFlat: false },
-      f: { offsetFromC: 3, isFlat: false },
-      gb: { offsetFromC: 3.5, isFlat: true },
-      g: { offsetFromC: 4, isFlat: false },
-      ab: { offsetFromC: 4.7, isFlat: true },
-      a: { offsetFromC: 5, isFlat: false },
-      bb: { offsetFromC: 5.85, isFlat: true },
-      b: { offsetFromC: 6, isFlat: false },
+    config: {
+      keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
+      whiteKeyGutterRatio: 0.02,
+      whiteKey: {
+        widthRatio: 1,
+        heightRatio: 1,
+        heightKeyDownRatio: 0.98,
+      },
+      blackKey: {
+        widthRatio: 0.66,
+        heightRatio: 0.66,
+        heightKeyDownRatio: 0.65,
+      },
+      noteOffsetsFromC: {
+        c: 0,
+        db: 0.55,
+        d: 1,
+        eb: 1.8,
+        e: 2,
+        f: 3,
+        gb: 3.5,
+        g: 4,
+        ab: 4.7,
+        a: 5,
+        bb: 5.85,
+        b: 6,
+      },
     },
     renderNoteLabel: () => {},
   };
@@ -130,7 +131,6 @@ class Piano extends React.Component {
   getMidiNumberForKey = (key) => {
     const mapping = getKeyboardShortcutsForMidiNumbers(
       this.getMidiNumbers(),
-      this.props.noteConfig,
       this.props.keyboardConfig,
     );
     return mapping[key];
@@ -139,7 +139,6 @@ class Piano extends React.Component {
   getKeyForMidiNumber = (midiNumber) => {
     const mapping = getKeyboardShortcutsForMidiNumbers(
       this.getMidiNumbers(),
-      this.props.noteConfig,
       this.props.keyboardConfig,
     );
     for (let key in mapping) {
@@ -199,8 +198,8 @@ class Piano extends React.Component {
 
   getWhiteKeyCount() {
     return this.getMidiNumbers().filter((number) => {
-      const { basenote } = getMidiNumberAttributes(number);
-      return !this.props.noteConfig[basenote].isFlat;
+      const { isAccidental } = getMidiNumberAttributes(number);
+      return !isAccidental;
     }).length;
   }
 
@@ -211,40 +210,35 @@ class Piano extends React.Component {
 
   // Width of the white key as a ratio from 0 to 1
   getWhiteKeyWidth() {
-    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.whiteKeyGutterRatio);
+    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.config.whiteKeyGutterRatio);
   }
 
   // Key position is represented by the number of white key widths from the left
   getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
-    const { octave } = getMidiNumberAttributes(midiNumber);
-    const { offsetFromC } = this.getNoteConfig(midiNumber);
+    const { octave, basenote } = getMidiNumberAttributes(midiNumber);
+    const offsetFromC = this.props.config.noteOffsetsFromC[basenote];
     const startNum = noteToMidiNumber(this.props.startNote);
     const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
-    const startOffsetFromC = this.props.noteConfig[startBasenote].offsetFromC;
+    const startOffsetFromC = this.props.config.noteOffsetsFromC[startBasenote];
     const offsetFromStartNote = offsetFromC - startOffsetFromC;
     const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
     return offsetFromStartNote + octaveOffset;
   }
 
-  getNoteConfig(midiNumber) {
-    const { basenote } = getMidiNumberAttributes(midiNumber);
-    return this.props.noteConfig[basenote];
-  }
-
   getKeyConfig(midiNumber) {
-    return this.getNoteConfig(midiNumber).isFlat
-      ? this.props.blackKeyConfig
-      : this.props.whiteKeyConfig;
+    return getMidiNumberAttributes(midiNumber).isAccidental
+      ? this.props.config.blackKey
+      : this.props.config.whiteKey;
   }
 
   getWidth() {
-    return this.props.width ? `${this.props.width}px` : '100%';
+    return this.props.width ? this.props.width : '100%';
   }
 
   getHeight() {
     return this.props.width
-      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.keyWidthToHeightRatio}px`
+      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.config.keyWidthToHeightRatio}px`
       : '100%';
   }
 
@@ -252,15 +246,14 @@ class Piano extends React.Component {
     return (
       <div style={{ position: 'relative', width: this.getWidth(), height: this.getHeight() }}>
         {this.getMidiNumbers().map((num) => {
-          const { note, basenote } = getMidiNumberAttributes(num);
+          const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
-          const noteConfig = this.getNoteConfig(num);
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
               className={classNames('ReactPiano__Key', {
-                'ReactPiano__Key--black': noteConfig.isFlat,
-                'ReactPiano__Key--white': !noteConfig.isFlat,
+                'ReactPiano__Key--black': isAccidental,
+                'ReactPiano__Key--white': !isAccidental,
                 'ReactPiano__Key--disabled': this.props.disabled,
                 'ReactPiano__Key--down': isKeyDown,
               })}
@@ -281,7 +274,7 @@ class Piano extends React.Component {
                 : this.props.renderNoteLabel({
                     note,
                     basenote,
-                    isBlack: noteConfig.isFlat,
+                    isBlack: isAccidental,
                     keyboardShortcut: this.getKeyForMidiNumber(num),
                   })}
             </Key>
