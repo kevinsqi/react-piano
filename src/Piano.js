@@ -48,8 +48,8 @@ function Key(props) {
       }}
       onMouseDown={props.onNoteDown}
       onMouseUp={props.onNoteUp}
-      onMouseOver={props.isMouseDown ? props.onNoteDown : null}
-      onMouseOut={props.onNoteUp}
+      onMouseEnter={props.isMouseDown ? props.onNoteDown : null}
+      onMouseLeave={props.isMouseDown ? props.onNoteUp : null}
       onTouchStart={props.onNoteDown}
       onTouchCancel={props.onNoteUp}
       onTouchEnd={props.onNoteUp}
@@ -175,11 +175,11 @@ class Piano extends React.Component {
     if (this.state.keysDown[midiNumber] || this.props.disabled) {
       return;
     }
-    this.setState({
-      keysDown: Object.assign({}, this.state.keysDown, {
+    this.setState((prevState) => ({
+      keysDown: Object.assign({}, prevState.keysDown, {
         [midiNumber]: true,
       }),
-    });
+    }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteDown(attrs);
   };
@@ -188,11 +188,11 @@ class Piano extends React.Component {
     if (!this.state.keysDown[midiNumber] || this.props.disabled) {
       return;
     }
-    this.setState({
-      keysDown: Object.assign({}, this.state.keysDown, {
+    this.setState((prevState) => ({
+      keysDown: Object.assign({}, prevState.keysDown, {
         [midiNumber]: false,
       }),
-    });
+    }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteUp(attrs);
   };
