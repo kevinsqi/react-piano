@@ -8,7 +8,7 @@ function ratioToPercentage(ratio) {
 }
 
 // TODO: refactor
-function getKeyboardShortcutsForMidiNumbers(numbers, noteConfig, keyboardConfig) {
+function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
   if (!keyboardConfig) {
     return {};
   }
@@ -78,6 +78,7 @@ class Piano extends React.Component {
       heightKeyDownRatio: 0.65,
     },
     noteConfig: {
+      // TODO: simplify config
       c: { offsetFromC: 0 },
       db: { offsetFromC: 0.55 },
       d: { offsetFromC: 1 },
@@ -129,7 +130,6 @@ class Piano extends React.Component {
   getMidiNumberForKey = (key) => {
     const mapping = getKeyboardShortcutsForMidiNumbers(
       this.getMidiNumbers(),
-      this.props.noteConfig,
       this.props.keyboardConfig,
     );
     return mapping[key];
@@ -138,7 +138,6 @@ class Piano extends React.Component {
   getKeyForMidiNumber = (midiNumber) => {
     const mapping = getKeyboardShortcutsForMidiNumbers(
       this.getMidiNumbers(),
-      this.props.noteConfig,
       this.props.keyboardConfig,
     );
     for (let key in mapping) {
@@ -216,19 +215,14 @@ class Piano extends React.Component {
   // Key position is represented by the number of white key widths from the left
   getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
-    const { octave } = getMidiNumberAttributes(midiNumber);
-    const { offsetFromC } = this.getNoteConfig(midiNumber);
+    const { octave, basenote } = getMidiNumberAttributes(midiNumber);
+    const offsetFromC = this.props.noteConfig[basenote].offsetFromC;
     const startNum = noteToMidiNumber(this.props.startNote);
     const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
     const startOffsetFromC = this.props.noteConfig[startBasenote].offsetFromC;
     const offsetFromStartNote = offsetFromC - startOffsetFromC;
     const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
     return offsetFromStartNote + octaveOffset;
-  }
-
-  getNoteConfig(midiNumber) {
-    const { basenote } = getMidiNumberAttributes(midiNumber);
-    return this.props.noteConfig[basenote];
   }
 
   getKeyConfig(midiNumber) {
@@ -253,7 +247,6 @@ class Piano extends React.Component {
         {this.getMidiNumbers().map((num) => {
           const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
-          const noteConfig = this.getNoteConfig(num);
           const isKeyDown = this.state.keysDown[num];
           return (
             <Key
