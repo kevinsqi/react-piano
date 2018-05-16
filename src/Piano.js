@@ -65,8 +65,10 @@ class Piano extends React.Component {
   };
 
   static defaultProps = {
-    keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
-    whiteKeyGutterRatio: 0.02,
+    config: {
+      keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
+      whiteKeyGutterRatio: 0.02,
+    },
     whiteKeyConfig: {
       widthRatio: 1,
       heightRatio: 1,
@@ -77,20 +79,19 @@ class Piano extends React.Component {
       heightRatio: 0.66,
       heightKeyDownRatio: 0.65,
     },
-    noteConfig: {
-      // TODO: simplify config
-      c: { offsetFromC: 0 },
-      db: { offsetFromC: 0.55 },
-      d: { offsetFromC: 1 },
-      eb: { offsetFromC: 1.8 },
-      e: { offsetFromC: 2 },
-      f: { offsetFromC: 3 },
-      gb: { offsetFromC: 3.5 },
-      g: { offsetFromC: 4 },
-      ab: { offsetFromC: 4.7 },
-      a: { offsetFromC: 5 },
-      bb: { offsetFromC: 5.85 },
-      b: { offsetFromC: 6 },
+    noteOffsetsFromC: {
+      c: 0,
+      db: 0.55,
+      d: 1,
+      eb: 1.8,
+      e: 2,
+      f: 3,
+      gb: 3.5,
+      g: 4,
+      ab: 4.7,
+      a: 5,
+      bb: 5.85,
+      b: 6,
     },
     renderNoteLabel: () => {},
   };
@@ -209,17 +210,17 @@ class Piano extends React.Component {
 
   // Width of the white key as a ratio from 0 to 1
   getWhiteKeyWidth() {
-    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.whiteKeyGutterRatio);
+    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.config.whiteKeyGutterRatio);
   }
 
   // Key position is represented by the number of white key widths from the left
   getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
     const { octave, basenote } = getMidiNumberAttributes(midiNumber);
-    const offsetFromC = this.props.noteConfig[basenote].offsetFromC;
+    const offsetFromC = this.props.noteOffsetsFromC[basenote];
     const startNum = noteToMidiNumber(this.props.startNote);
     const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
-    const startOffsetFromC = this.props.noteConfig[startBasenote].offsetFromC;
+    const startOffsetFromC = this.props.noteOffsetsFromC[startBasenote];
     const offsetFromStartNote = offsetFromC - startOffsetFromC;
     const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
     return offsetFromStartNote + octaveOffset;
@@ -237,7 +238,7 @@ class Piano extends React.Component {
 
   getHeight() {
     return this.props.width
-      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.keyWidthToHeightRatio}px`
+      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.config.keyWidthToHeightRatio}px`
       : '100%';
   }
 
