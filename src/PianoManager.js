@@ -41,18 +41,8 @@ class PianoManager extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: removeEventListener calls
-    window.addEventListener('mousedown', () => {
-      this.setState({
-        isMouseDown: true,
-      });
-    });
-    window.addEventListener('mouseup', () => {
-      this.setState({
-        isMouseDown: false,
-      });
-    });
-
+    window.addEventListener('mousedown', this.handleMouseDown);
+    window.addEventListener('mouseup', this.handleMouseUp);
     if (this.props.keyboardConfig) {
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
@@ -60,6 +50,8 @@ class PianoManager extends React.Component {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('mousedown', this.handleMouseDown);
+    window.removeEventListener('mouseup', this.handleMouseUp);
     if (this.props.keyboardConfig) {
       window.removeEventListener('keydown', this.handleKeyDown);
       window.removeEventListener('keyup', this.handleKeyUp);
@@ -111,6 +103,18 @@ class PianoManager extends React.Component {
     if (midiNumber) {
       this.handleNoteUp(midiNumber);
     }
+  };
+
+  handleMouseDown = (event) => {
+    this.setState({
+      isMouseDown: true,
+    });
+  };
+
+  handleMouseUp = (event) => {
+    this.setState({
+      isMouseDown: false,
+    });
   };
 
   handleNoteDown = (midiNumber) => {
