@@ -93,23 +93,6 @@ class Piano extends React.Component {
       : '100%';
   }
 
-  handleNoteDown = (midiNumber) => {
-    // Prevents duplicate note firings
-    if (this.props.keysDown[midiNumber] || this.props.disabled) {
-      return;
-    }
-    const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onNoteDown(attrs);
-  };
-
-  handleNoteUp = (midiNumber) => {
-    if (!this.props.keysDown[midiNumber] || this.props.disabled) {
-      return;
-    }
-    const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onNoteUp(attrs);
-  };
-
   render() {
     return (
       <div style={{ position: 'relative', width: this.getWidth(), height: this.getHeight() }}>
@@ -132,8 +115,8 @@ class Piano extends React.Component {
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              onNoteDown={this.handleNoteDown.bind(this, num)}
-              onNoteUp={this.handleNoteUp.bind(this, num)}
+              onNoteDown={this.props.onNoteDown.bind(this, num)}
+              onNoteUp={this.props.onNoteUp.bind(this, num)}
               gliss={this.props.gliss}
               key={num}
             >

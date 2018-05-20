@@ -28,6 +28,7 @@ function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
   return keysToMidiNumbers;
 }
 
+// TODO: rename this Piano, and Piano to something else?
 // TODO: move width logic to pianomanager?
 class PianoManager extends React.Component {
   constructor(props) {
@@ -112,22 +113,31 @@ class PianoManager extends React.Component {
     }
   };
 
-  handleNoteDown = (noteAttrs) => {
+  handleNoteDown = (midiNumber) => {
+    // Prevents duplicate note firings
+    if (this.state.keysDown[midiNumber] || this.props.disabled) {
+      return;
+    }
     this.setState((prevState) => ({
       keysDown: Object.assign({}, prevState.keysDown, {
-        [noteAttrs.midiNumber]: true,
+        [midiNumber]: true,
       }),
     }));
-    this.props.onNoteDown(noteAttrs);
+    const attrs = getMidiNumberAttributes(midiNumber);
+    this.props.onNoteDown(attrs);
   };
 
-  handleNoteUp = (noteAttrs) => {
+  handleNoteUp = (midiNumber) => {
+    if (!this.state.keysDown[midiNumber] || this.props.disabled) {
+      return;
+    }
     this.setState((prevState) => ({
       keysDown: Object.assign({}, prevState.keysDown, {
-        [noteAttrs.midiNumber]: false,
+        [midiNumber]: false,
       }),
     }));
-    this.props.onNoteUp(noteAttrs);
+    const attrs = getMidiNumberAttributes(midiNumber);
+    this.props.onNoteUp(attrs);
   };
 
   // TODO: use renderProps instead?
