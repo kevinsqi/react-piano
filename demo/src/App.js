@@ -101,13 +101,13 @@ function Header() {
   );
 }
 
-function renderNoteLabel({ isBlack, keyboardShortcut }) {
+function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
   if (!keyboardShortcut) {
     return null;
   }
   return (
     <div className="text-center">
-      {isBlack ? (
+      {isAccidental ? (
         <div
           style={{
             color: themeColor,

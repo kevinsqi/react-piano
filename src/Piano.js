@@ -120,13 +120,7 @@ class Piano extends React.Component {
               gliss={this.props.gliss}
               key={num}
             >
-              {this.props.disabled
-                ? null
-                : this.props.renderNoteLabel({
-                    note,
-                    basenote,
-                    isBlack: isAccidental,
-                  })}
+              {this.props.disabled ? null : this.props.renderNoteLabel(num)}
             </Key>
           );
         })}

@@ -151,6 +151,11 @@ class PianoManager extends React.Component {
         gliss={this.state.isMouseDown}
         onNoteDown={this.handleNoteDown}
         onNoteUp={this.handleNoteUp}
+        renderNoteLabel={(midiNumber) => {
+          return this.props.renderNoteLabel(getMidiNumberAttributes(midiNumber), {
+            keyboardShortcut: this.getKeyForMidiNumber(midiNumber),
+          });
+        }}
       />
     );
   }
