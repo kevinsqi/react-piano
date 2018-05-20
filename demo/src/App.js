@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { PianoManager } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
@@ -138,7 +138,7 @@ function renderNoteLabel({ isBlack, keyboardShortcut }) {
   );
 }
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -220,6 +220,7 @@ class App extends Component {
               </PianoContainer>
             </div>
           </div>
+          {/*
           <div className="row mt-5">
             <div className="col-md-4 offset-md-4">
               <PianoContainer>
@@ -237,6 +238,7 @@ class App extends Component {
             </div>
           </div>
           <hr className="mt-5" />
+          */}
           <div className="row mt-5">
             <div className="col">
               <div className="text-center">

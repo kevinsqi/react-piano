@@ -14,8 +14,8 @@ function Key(props) {
       }}
       onMouseDown={props.onNoteDown}
       onMouseUp={props.onNoteUp}
-      onMouseEnter={props.isMouseDown ? props.onNoteDown : null}
-      onMouseLeave={props.isMouseDown ? props.onNoteUp : null}
+      onMouseEnter={props.gliss ? props.onNoteDown : null}
+      onMouseLeave={props.gliss ? props.onNoteUp : null}
       onTouchStart={props.onNoteDown}
       onTouchCancel={props.onNoteUp}
       onTouchEnd={props.onNoteUp}
