@@ -37,6 +37,7 @@ class PianoManager extends React.Component {
     this.state = {
       keysDown: {},
       isMouseDown: false,
+      noteSequenceIndex: 0,
     };
   }
 
@@ -47,6 +48,8 @@ class PianoManager extends React.Component {
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
     }
+
+    this.playNoteSequence();
   }
 
   componentWillUnmount() {
@@ -144,9 +147,30 @@ class PianoManager extends React.Component {
     this.props.onNoteUp(attrs);
   };
 
+  playNoteSequence = () => {
+    if (!this.props.noteSequence) {
+      return;
+    }
+
+    setInterval(() => {
+      const nextIndex = (this.state.noteSequenceIndex + 1) % this.props.noteSequence.length;
+      const currentNote = this.props.noteSequence[this.state.noteSequenceIndex];
+      if (currentNote) {
+        // TODO: should this be handled by Piano.js?
+        this.handleNoteDown(currentNote);
+      }
+      this.setState({
+        keysDown: {
+          [currentNote]: !!currentNote,
+        },
+        noteSequenceIndex: nextIndex,
+      });
+    }, 500);
+  };
+
   // TODO: use renderProps instead?
   render() {
-    const { onNoteDown, onNoteUp, keyboardConfig, ...otherProps } = this.props;
+    const { onNoteDown, onNoteUp, keyboardConfig, noteSequence, ...otherProps } = this.props;
 
     return (
       <Piano

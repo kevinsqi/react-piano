@@ -215,6 +215,7 @@ class App extends React.Component {
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
                     renderNoteLabel={renderNoteLabel}
+                    noteSequence={[60, 61, 62, 63, 64, 65]}
                   />
                 )}
               </PianoContainer>
