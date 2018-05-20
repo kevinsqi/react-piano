@@ -101,6 +101,43 @@ function Header() {
   );
 }
 
+function renderNoteLabel({ isBlack, keyboardShortcut }) {
+  if (!keyboardShortcut) {
+    return null;
+  }
+  return (
+    <div className="text-center">
+      {isBlack ? (
+        <div
+          style={{
+            color: themeColor,
+            fontSize: '12px',
+            textTransform: 'capitalize',
+            marginBottom: 3,
+          }}
+        >
+          {keyboardShortcut}
+        </div>
+      ) : (
+        <div
+          style={{
+            color: themeColor,
+            backgroundColor: '#aaa',
+            padding: '4px 0',
+            margin: 3,
+            border: '1px solid #fff',
+            borderRadius: 4,
+            fontSize: '12px',
+            textTransform: 'capitalize',
+          }}
+        >
+          {keyboardShortcut}
+        </div>
+      )}
+    </div>
+  );
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -177,42 +214,7 @@ class App extends Component {
                     disabled={!this.state.instrument}
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
-                    renderNoteLabel={({ isBlack, keyboardShortcut }) => {
-                      if (!keyboardShortcut) {
-                        return null;
-                      }
-                      return (
-                        <div className="text-center">
-                          {isBlack ? (
-                            <div
-                              style={{
-                                color: themeColor,
-                                fontSize: '12px',
-                                textTransform: 'capitalize',
-                                marginBottom: 3,
-                              }}
-                            >
-                              {keyboardShortcut}
-                            </div>
-                          ) : (
-                            <div
-                              style={{
-                                color: themeColor,
-                                backgroundColor: '#aaa',
-                                padding: '4px 0',
-                                margin: 3,
-                                border: '1px solid #fff',
-                                borderRadius: 4,
-                                fontSize: '12px',
-                                textTransform: 'capitalize',
-                              }}
-                            >
-                              {keyboardShortcut}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    }}
+                    renderNoteLabel={renderNoteLabel}
                   />
                 )}
               </PianoContainer>
