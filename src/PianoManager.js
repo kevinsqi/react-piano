@@ -133,7 +133,6 @@ class PianoManager extends React.Component {
   // TODO: use renderProps instead?
   render() {
     const { onNoteDown, onNoteUp, keyboardConfig, ...otherProps } = this.props;
-    console.log('state', this.state);
 
     return (
       <Piano
@@ -147,4 +146,4 @@ class PianoManager extends React.Component {
   }
 }
 
-export default Piano;
+export default PianoManager;

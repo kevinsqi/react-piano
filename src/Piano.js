@@ -111,7 +111,6 @@ class Piano extends React.Component {
   };
 
   render() {
-    console.log('props', this.props);
     return (
       <div style={{ position: 'relative', width: this.getWidth(), height: this.getHeight() }}>
         {this.getMidiNumbers().map((num) => {
