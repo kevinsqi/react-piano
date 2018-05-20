@@ -1,3 +1,4 @@
 import Piano from './Piano';
+import PianoManager from './PianoManager';
 
-export default Piano;
+export { Piano, PianoManager };

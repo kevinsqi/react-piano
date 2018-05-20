@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Piano from 'react-piano';
+import { PianoManager } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
@@ -206,7 +206,7 @@ class App extends Component {
             <div className="col-md-8 offset-md-2">
               <PianoContainer>
                 {(width) => (
-                  <Piano
+                  <PianoManager
                     startNote="c4"
                     endNote="c6"
                     onNoteDown={this.onNoteDown}
@@ -224,7 +224,7 @@ class App extends Component {
             <div className="col-md-4 offset-md-4">
               <PianoContainer>
                 {(width) => (
-                  <Piano
+                  <PianoManager
                     startNote="c3"
                     endNote="c4"
                     onNoteDown={this.onNoteDown}
