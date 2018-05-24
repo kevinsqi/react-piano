@@ -28,8 +28,6 @@ function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
   return keysToMidiNumbers;
 }
 
-// TODO: rename this Piano, and Piano to something else?
-// TODO: move width logic to pianomanager?
 class PianoManager extends React.Component {
   constructor(props) {
     super(props);
@@ -156,7 +154,6 @@ class PianoManager extends React.Component {
       const nextIndex = (this.state.noteSequenceIndex + 1) % this.props.noteSequence.length;
       const currentNote = this.props.noteSequence[this.state.noteSequenceIndex];
       if (currentNote) {
-        // TODO: should this be handled by Piano.js?
         this.handleNoteDown(currentNote);
       }
       this.setState({
