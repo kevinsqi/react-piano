@@ -62,8 +62,9 @@ class PianoManager extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.notes) {
-      this.triggerNotesDown(this.props.notes);
+    // noreintegrate
+    if (this.props.notes && this.props.notes !== prevProps.notes) {
+      this.triggerNotesDown(prevProps.notes, this.props.notes);
     }
   }
 
@@ -166,14 +167,15 @@ class PianoManager extends React.Component {
     this.props.onNoteDown(attrs);
   };
 
-  triggerNotesDown = (midiNumbers) => {
-    console.log('triggerNotesDown', midiNumbers);
-    /* noreintegrate
+  triggerNotesDown = (prevMidiNumbers, midiNumbers) => {
+    (prevMidiNumbers || []).forEach((number) => {
+      const attrs = getMidiNumberAttributes(number);
+      this.props.onNoteUp(attrs);
+    });
     midiNumbers.forEach((number) => {
       const attrs = getMidiNumberAttributes(number);
       this.props.onNoteDown(attrs);
     });
-    */
   };
 
   handleNoteUp = (midiNumber) => {
