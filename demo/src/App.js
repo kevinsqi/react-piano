@@ -215,31 +215,14 @@ class App extends React.Component {
                     keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                     width={width}
                     renderNoteLabel={renderNoteLabel}
-                    noteSequence={[60, 61, 62, 63, 64, 65]}
+                    onRecordNotes={(notes) => {
+                      console.log(notes);
+                    }}
                   />
                 )}
               </PianoContainer>
             </div>
           </div>
-          {/*
-          <div className="row mt-5">
-            <div className="col-md-4 offset-md-4">
-              <PianoContainer>
-                {(width) => (
-                  <PianoManager
-                    startNote="c3"
-                    endNote="c4"
-                    onNoteDown={this.onNoteDown}
-                    onNoteUp={this.onNoteUp}
-                    width={width}
-                    disabled={!this.state.instrument}
-                  />
-                )}
-              </PianoContainer>
-            </div>
-          </div>
-          <hr className="mt-5" />
-          */}
           <div className="row mt-5">
             <div className="col">
               <div className="text-center">

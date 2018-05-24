@@ -29,6 +29,10 @@ function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
 }
 
 class PianoManager extends React.Component {
+  static defaultProps = {
+    onRecordNote: () => {},
+  };
+
   constructor(props) {
     super(props);
 
@@ -123,11 +127,19 @@ class PianoManager extends React.Component {
     if (this.state.keysDown[midiNumber] || this.props.disabled) {
       return;
     }
-    this.setState((prevState) => ({
-      keysDown: Object.assign({}, prevState.keysDown, {
-        [midiNumber]: true,
+    this.setState(
+      (prevState) => ({
+        keysDown: Object.assign({}, prevState.keysDown, {
+          [midiNumber]: true,
+        }),
       }),
-    }));
+      () => {
+        const sortedNotes = Object.keys(this.state.keysDown)
+          .filter((key) => this.state.keysDown[key])
+          .sort();
+        this.props.onRecordNotes(sortedNotes);
+      },
+    );
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteDown(attrs);
   };
