@@ -138,6 +138,30 @@ function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
   );
 }
 
+class Composition extends React.Component {
+  export = () => {
+    const stepDuration = 1 / 4;
+    const serialization = this.props.sequence.map((midiNumbers, index) => {
+      return {
+        time: index * stepDuration,
+        notes: midiNumbers,
+        duration: stepDuration,
+      };
+    });
+    console.log(JSON.stringify(serialization, null, 4));
+  };
+
+  render() {
+    return (
+      <div>
+        {this.props.sequence.join(' ')}
+        <button onClick={this.export}>Export</button>
+        <button onClick={this.props.onClear}>Clear</button>
+      </div>
+    );
+  }
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -145,6 +169,7 @@ class App extends React.Component {
     this.state = {
       activeAudioNodes: {},
       instrument: null,
+      noteSequence: [],
     };
 
     this.oscillator = new Oscillator({
@@ -204,23 +229,35 @@ class App extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <PianoContainer>
-                {(width) => (
-                  <PianoManager
-                    startNote="c4"
-                    endNote="c6"
-                    onNoteDown={this.onNoteDown}
-                    onNoteUp={this.onNoteUp}
-                    disabled={!this.state.instrument}
-                    keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
-                    width={width}
-                    renderNoteLabel={renderNoteLabel}
-                    onRecordNotes={(notes) => {
-                      console.log(notes);
-                    }}
-                  />
-                )}
-              </PianoContainer>
+              <div>
+                <PianoContainer>
+                  {(width) => (
+                    <PianoManager
+                      startNote="c4"
+                      endNote="c6"
+                      onNoteDown={this.onNoteDown}
+                      onNoteUp={this.onNoteUp}
+                      disabled={!this.state.instrument}
+                      keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
+                      width={width}
+                      renderNoteLabel={renderNoteLabel}
+                      onRecordNotes={(midiNumbers) => {
+                        this.setState({
+                          noteSequence: this.state.noteSequence.concat(midiNumbers),
+                        });
+                      }}
+                    />
+                  )}
+                </PianoContainer>
+              </div>
+              <Composition
+                sequence={this.state.noteSequence}
+                onClear={() => {
+                  this.setState({
+                    noteSequence: [],
+                  });
+                }}
+              />
             </div>
           </div>
           <div className="row mt-5">

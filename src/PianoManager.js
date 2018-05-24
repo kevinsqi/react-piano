@@ -136,6 +136,7 @@ class PianoManager extends React.Component {
       () => {
         const sortedNotes = Object.keys(this.state.keysDown)
           .filter((key) => this.state.keysDown[key])
+          .map((key) => parseInt(key, 10))
           .sort();
         this.props.onRecordNotes(sortedNotes);
       },
