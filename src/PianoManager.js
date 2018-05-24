@@ -30,7 +30,7 @@ function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
 
 class PianoManager extends React.Component {
   static defaultProps = {
-    onRecordNote: () => {},
+    onRecordNotes: () => {},
   };
 
   constructor(props) {
@@ -50,8 +50,6 @@ class PianoManager extends React.Component {
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
     }
-
-    this.playNoteSequence();
   }
 
   componentWillUnmount() {
@@ -61,6 +59,25 @@ class PianoManager extends React.Component {
       window.removeEventListener('keydown', this.handleKeyDown);
       window.removeEventListener('keyup', this.handleKeyUp);
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.notes) {
+      this.triggerNotesDown(this.props.notes);
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    // noreintegrate keysDown comparison
+    if (nextProps.notes) {
+      return {
+        keysDown: nextProps.notes.reduce((obj, note) => {
+          obj[note] = true;
+          return obj;
+        }, {}),
+      };
+    }
+    return null;
   }
 
   // TODO dedupe
@@ -138,11 +155,25 @@ class PianoManager extends React.Component {
           .filter((key) => this.state.keysDown[key])
           .map((key) => parseInt(key, 10))
           .sort();
-        this.props.onRecordNotes(sortedNotes);
+        // Playback
+        // noreintegrate
+        if (!this.props.notes) {
+          this.props.onRecordNotes(sortedNotes);
+        }
       },
     );
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteDown(attrs);
+  };
+
+  triggerNotesDown = (midiNumbers) => {
+    console.log('triggerNotesDown', midiNumbers);
+    /* noreintegrate
+    midiNumbers.forEach((number) => {
+      const attrs = getMidiNumberAttributes(number);
+      this.props.onNoteDown(attrs);
+    });
+    */
   };
 
   handleNoteUp = (midiNumber) => {
@@ -156,26 +187,6 @@ class PianoManager extends React.Component {
     }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteUp(attrs);
-  };
-
-  playNoteSequence = () => {
-    if (!this.props.noteSequence) {
-      return;
-    }
-
-    setInterval(() => {
-      const nextIndex = (this.state.noteSequenceIndex + 1) % this.props.noteSequence.length;
-      const currentNote = this.props.noteSequence[this.state.noteSequenceIndex];
-      if (currentNote) {
-        this.handleNoteDown(currentNote);
-      }
-      this.setState({
-        keysDown: {
-          [currentNote]: !!currentNote,
-        },
-        noteSequenceIndex: nextIndex,
-      });
-    }, 500);
   };
 
   // TODO: use renderProps instead?

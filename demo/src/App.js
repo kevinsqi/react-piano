@@ -151,12 +151,18 @@ class Composition extends React.Component {
     console.log(JSON.stringify(serialization, null, 4));
   };
 
+  play = () => {
+    this.props.onPlay(this.props.sequence);
+  };
+
   render() {
     return (
       <div>
         {this.props.sequence.join(' ')}
         <button onClick={this.export}>Export</button>
         <button onClick={this.props.onClear}>Clear</button>
+        <button onClick={this.play}>Play</button>
+        <button onClick={this.props.onStop}>Stop</button>
       </div>
     );
   }
@@ -170,12 +176,15 @@ class App extends React.Component {
       activeAudioNodes: {},
       instrument: null,
       noteSequence: [],
+      notes: null,
     };
 
     this.oscillator = new Oscillator({
       audioContext,
       gain: 0.1,
     });
+
+    this.playbackIntervalHandler = null;
   }
 
   componentDidMount() {
@@ -235,6 +244,7 @@ class App extends React.Component {
                     <PianoManager
                       startNote="c4"
                       endNote="c6"
+                      notes={this.state.notes}
                       onNoteDown={this.onNoteDown}
                       onNoteUp={this.onNoteUp}
                       disabled={!this.state.instrument}
@@ -243,7 +253,7 @@ class App extends React.Component {
                       renderNoteLabel={renderNoteLabel}
                       onRecordNotes={(midiNumbers) => {
                         this.setState({
-                          noteSequence: this.state.noteSequence.concat(midiNumbers),
+                          noteSequence: this.state.noteSequence.concat([midiNumbers]),
                         });
                       }}
                     />
@@ -255,6 +265,22 @@ class App extends React.Component {
                 onClear={() => {
                   this.setState({
                     noteSequence: [],
+                  });
+                }}
+                onPlay={(sequence) => {
+                  let index = 0;
+                  this.playbackIntervalHandler = setInterval(() => {
+                    const notes = sequence[index];
+                    this.setState({
+                      notes,
+                    });
+                    index = (index + 1) % sequence.length;
+                  }, 250);
+                }}
+                onStop={() => {
+                  clearInterval(this.playbackIntervalHandler);
+                  this.setState({
+                    notes: null,
                   });
                 }}
               />
