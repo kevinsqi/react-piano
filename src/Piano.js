@@ -1,130 +1,186 @@
 import React from 'react';
-import _ from 'lodash';
-import classNames from 'classnames';
-import Key from './Key';
+import Keyboard from './Keyboard';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
 
-function ratioToPercentage(ratio) {
-  return `${ratio * 100}%`;
+// TODO: refactor
+function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
+  if (!keyboardConfig) {
+    return {};
+  }
+  let keyIndex = 0;
+  const keysToMidiNumbers = {};
+  for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
+    const num = numbers[numIndex];
+    const { basenote, isAccidental } = getMidiNumberAttributes(num);
+
+    const key = keyboardConfig[keyIndex];
+    if (isAccidental) {
+      keysToMidiNumbers[key.flat] = num;
+    } else {
+      keysToMidiNumbers[key.natural] = num;
+      keyIndex += 1;
+
+      if (keyIndex >= keyboardConfig.length) {
+        break;
+      }
+    }
+  }
+  return keysToMidiNumbers;
 }
 
 class Piano extends React.Component {
   static defaultProps = {
-    config: {
-      keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
-      whiteKeyGutterRatio: 0.02,
-      whiteKey: {
-        widthRatio: 1,
-        heightRatio: 1,
-        heightKeyDownRatio: 0.98,
-      },
-      blackKey: {
-        widthRatio: 0.66,
-        heightRatio: 0.66,
-        heightKeyDownRatio: 0.65,
-      },
-      noteOffsetsFromC: {
-        c: 0,
-        db: 0.55,
-        d: 1,
-        eb: 1.8,
-        e: 2,
-        f: 3,
-        gb: 3.5,
-        g: 4,
-        ab: 4.7,
-        a: 5,
-        bb: 5.85,
-        b: 6,
-      },
-    },
-    renderNoteLabel: () => {},
+    onRecordNotes: () => {},
   };
 
-  // Range of midi numbers from startNote to endNote
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      notes: [],
+      isMouseDown: false,
+    };
+  }
+
+  componentDidMount() {
+    window.addEventListener('mousedown', this.handleMouseDown);
+    window.addEventListener('mouseup', this.handleMouseUp);
+    if (this.props.keyboardConfig) {
+      window.addEventListener('keydown', this.handleKeyDown);
+      window.addEventListener('keyup', this.handleKeyUp);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousedown', this.handleMouseDown);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+    if (this.props.keyboardConfig) {
+      window.removeEventListener('keydown', this.handleKeyDown);
+      window.removeEventListener('keyup', this.handleKeyUp);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.notes !== prevProps.notes) {
+      this.triggerNotesDown(prevProps.notes, this.props.notes);
+    }
+  }
+
+  // TODO dedupe
   getMidiNumbers() {
     const startNum = noteToMidiNumber(this.props.startNote);
     return _.range(startNum, noteToMidiNumber(this.props.endNote) + 1);
   }
 
-  getWhiteKeyCount() {
-    return this.getMidiNumbers().filter((number) => {
-      const { isAccidental } = getMidiNumberAttributes(number);
-      return !isAccidental;
-    }).length;
-  }
+  getMidiNumberForKey = (key) => {
+    const mapping = getKeyboardShortcutsForMidiNumbers(
+      this.getMidiNumbers(),
+      this.props.keyboardConfig,
+    );
+    return mapping[key];
+  };
 
-  // Width of the white key as a ratio from 0 to 1, including the small space between keys
-  getWhiteKeyWidthIncludingGutter() {
-    return 1 / this.getWhiteKeyCount();
-  }
+  getKeyForMidiNumber = (midiNumber) => {
+    const mapping = getKeyboardShortcutsForMidiNumbers(
+      this.getMidiNumbers(),
+      this.props.keyboardConfig,
+    );
+    for (let key in mapping) {
+      if (mapping[key] === midiNumber) {
+        return key;
+      }
+    }
+    return null;
+  };
 
-  // Width of the white key as a ratio from 0 to 1
-  getWhiteKeyWidth() {
-    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.config.whiteKeyGutterRatio);
-  }
+  handleKeyDown = (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const midiNumber = this.getMidiNumberForKey(event.key);
+    if (midiNumber) {
+      this.handleNoteDown(midiNumber);
+    }
+  };
 
-  // Key position is represented by the number of white key widths from the left
-  getKeyPosition(midiNumber) {
-    const OCTAVE_WIDTH = 7;
-    const { octave, basenote } = getMidiNumberAttributes(midiNumber);
-    const offsetFromC = this.props.config.noteOffsetsFromC[basenote];
-    const startNum = noteToMidiNumber(this.props.startNote);
-    const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
-    const startOffsetFromC = this.props.config.noteOffsetsFromC[startBasenote];
-    const offsetFromStartNote = offsetFromC - startOffsetFromC;
-    const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
-    return offsetFromStartNote + octaveOffset;
-  }
+  handleKeyUp = (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const midiNumber = this.getMidiNumberForKey(event.key);
+    if (midiNumber) {
+      this.handleNoteUp(midiNumber);
+    }
+  };
 
-  getKeyConfig(midiNumber) {
-    return getMidiNumberAttributes(midiNumber).isAccidental
-      ? this.props.config.blackKey
-      : this.props.config.whiteKey;
-  }
+  handleMouseDown = (event) => {
+    this.setState({
+      isMouseDown: true,
+    });
+  };
 
-  getWidth() {
-    return this.props.width ? this.props.width : '100%';
-  }
+  handleMouseUp = (event) => {
+    this.setState({
+      isMouseDown: false,
+    });
+  };
 
-  getHeight() {
-    return this.props.width
-      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.config.keyWidthToHeightRatio}px`
-      : '100%';
-  }
+  handleNoteDown = (midiNumber) => {
+    // Prevents duplicate note firings
+    if (this.state.notes.includes(midiNumber) || this.props.disabled) {
+      return;
+    }
+    this.setState(
+      (prevState) => ({
+        notes: prevState.notes.concat(midiNumber).sort(),
+      }),
+      () => {
+        this.props.onRecordNotes(this.state.notes);
+      },
+    );
+    const attrs = getMidiNumberAttributes(midiNumber);
+    this.props.onNoteDown(attrs);
+  };
+
+  triggerNotesDown = (prevMidiNumbers, midiNumbers) => {
+    (prevMidiNumbers || []).forEach((number) => {
+      const attrs = getMidiNumberAttributes(number);
+      this.props.onNoteUp(attrs);
+    });
+    (midiNumbers || []).forEach((number) => {
+      const attrs = getMidiNumberAttributes(number);
+      this.props.onNoteDown(attrs);
+    });
+  };
+
+  handleNoteUp = (midiNumber) => {
+    if (!this.state.notes.includes(midiNumber) || this.props.disabled) {
+      return;
+    }
+    this.setState((prevState) => ({
+      notes: prevState.notes.filter((note) => midiNumber !== note),
+    }));
+    const attrs = getMidiNumberAttributes(midiNumber);
+    this.props.onNoteUp(attrs);
+  };
 
   render() {
     return (
-      <div style={{ position: 'relative', width: this.getWidth(), height: this.getHeight() }}>
-        {this.getMidiNumbers().map((num) => {
-          const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
-          const keyConfig = this.getKeyConfig(num);
-          const isKeyDown = this.props.notes.includes(num);
-          return (
-            <Key
-              className={classNames('ReactPiano__Key', {
-                'ReactPiano__Key--black': isAccidental,
-                'ReactPiano__Key--white': !isAccidental,
-                'ReactPiano__Key--disabled': this.props.disabled,
-                'ReactPiano__Key--down': isKeyDown,
-              })}
-              left={ratioToPercentage(
-                this.getKeyPosition(num) * this.getWhiteKeyWidthIncludingGutter(),
-              )}
-              width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
-              height={ratioToPercentage(
-                isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
-              )}
-              onNoteDown={this.props.onNoteDown.bind(this, num)}
-              onNoteUp={this.props.onNoteUp.bind(this, num)}
-              gliss={this.props.gliss}
-              key={num}
-            >
-              {this.props.disabled ? null : this.props.renderNoteLabel(num)}
-            </Key>
-          );
-        })}
-      </div>
+      <Keyboard
+        startNote={this.props.startNote}
+        endNote={this.props.endNote}
+        disabled={this.props.disabled}
+        notes={this.props.notes || this.state.notes}
+        width={this.props.width}
+        gliss={this.state.isMouseDown}
+        onNoteDown={this.handleNoteDown}
+        onNoteUp={this.handleNoteUp}
+        renderNoteLabel={(midiNumber) => {
+          return this.props.renderNoteLabel(getMidiNumberAttributes(midiNumber), {
+            keyboardShortcut: this.getKeyForMidiNumber(midiNumber),
+          });
+        }}
+      />
     );
   }
 }

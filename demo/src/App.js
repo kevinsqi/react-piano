@@ -1,5 +1,5 @@
 import React from 'react';
-import { PianoManager } from 'react-piano';
+import { Piano } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
@@ -252,7 +252,7 @@ class App extends React.Component {
               <div>
                 <DimensionsProvider>
                   {(width) => (
-                    <PianoManager
+                    <Piano
                       startNote="c4"
                       endNote="c6"
                       notes={

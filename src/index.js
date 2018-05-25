@@ -1,4 +1,4 @@
+import Keyboard from './Keyboard';
 import Piano from './Piano';
-import PianoManager from './PianoManager';
 
-export { Piano, PianoManager };
+export { Piano, Keyboard };
