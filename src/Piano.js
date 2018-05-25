@@ -1,32 +1,7 @@
 import React from 'react';
 import Keyboard from './Keyboard';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
-
-// TODO: refactor
-function getKeyboardShortcutsForMidiNumbers(numbers, keyboardConfig) {
-  if (!keyboardConfig) {
-    return {};
-  }
-  let keyIndex = 0;
-  const keysToMidiNumbers = {};
-  for (let numIndex = 0; numIndex < numbers.length; numIndex += 1) {
-    const num = numbers[numIndex];
-    const { basenote, isAccidental } = getMidiNumberAttributes(num);
-
-    const key = keyboardConfig[keyIndex];
-    if (isAccidental) {
-      keysToMidiNumbers[key.flat] = num;
-    } else {
-      keysToMidiNumbers[key.natural] = num;
-      keyIndex += 1;
-
-      if (keyIndex >= keyboardConfig.length) {
-        break;
-      }
-    }
-  }
-  return keysToMidiNumbers;
-}
+import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 
 class Piano extends React.Component {
   static defaultProps = {
@@ -73,18 +48,12 @@ class Piano extends React.Component {
   }
 
   getMidiNumberForKey = (key) => {
-    const mapping = getKeyboardShortcutsForMidiNumbers(
-      this.getMidiNumbers(),
-      this.props.keyboardConfig,
-    );
+    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), this.props.keyboardConfig);
     return mapping[key];
   };
 
   getKeyForMidiNumber = (midiNumber) => {
-    const mapping = getKeyboardShortcutsForMidiNumbers(
-      this.getMidiNumbers(),
-      this.props.keyboardConfig,
-    );
+    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), this.props.keyboardConfig);
     for (let key in mapping) {
       if (mapping[key] === midiNumber) {
         return key;
@@ -142,17 +111,6 @@ class Piano extends React.Component {
     this.props.onNoteDown(attrs);
   };
 
-  triggerNotesDown = (prevMidiNumbers, midiNumbers) => {
-    (prevMidiNumbers || []).forEach((number) => {
-      const attrs = getMidiNumberAttributes(number);
-      this.props.onNoteUp(attrs);
-    });
-    (midiNumbers || []).forEach((number) => {
-      const attrs = getMidiNumberAttributes(number);
-      this.props.onNoteDown(attrs);
-    });
-  };
-
   handleNoteUp = (midiNumber) => {
     if (!this.state.notes.includes(midiNumber) || this.props.disabled) {
       return;
@@ -162,6 +120,19 @@ class Piano extends React.Component {
     }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteUp(attrs);
+  };
+
+  // TODO: rename this more clearly relative to handleNoteDown
+  // For triggering playback
+  triggerNotesDown = (prevMidiNumbers, midiNumbers) => {
+    (prevMidiNumbers || []).forEach((number) => {
+      const attrs = getMidiNumberAttributes(number);
+      this.props.onNoteUp(attrs);
+    });
+    (midiNumbers || []).forEach((number) => {
+      const attrs = getMidiNumberAttributes(number);
+      this.props.onNoteDown(attrs);
+    });
   };
 
   render() {
