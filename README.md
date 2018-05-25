@@ -4,6 +4,7 @@
 
 A super-customizable responsive piano keyboard for React 🎹
 
+**NOTE:** This component is a work in progress and not well-suited for production use yet! The API will be changing significantly. Feel free to play around with it, but a v1.0.0 release is recommended for production.
 
 ## Setup
 

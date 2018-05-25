@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import Piano from 'react-piano';
+import React from 'react';
+import { PianoManager } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
-import PianoContainer from './PianoContainer';
+import DimensionsProvider from './DimensionsProvider';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import './App.css';
 
@@ -101,19 +101,92 @@ function Header() {
   );
 }
 
-class App extends Component {
+function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
+  if (!keyboardShortcut) {
+    return null;
+  }
+  return (
+    <div className="text-center">
+      {isAccidental ? (
+        <div
+          style={{
+            color: themeColor,
+            fontSize: '12px',
+            textTransform: 'capitalize',
+            marginBottom: 3,
+          }}
+        >
+          {keyboardShortcut}
+        </div>
+      ) : (
+        <div
+          style={{
+            color: themeColor,
+            backgroundColor: '#aaa',
+            padding: '4px 0',
+            margin: 3,
+            border: '1px solid #fff',
+            borderRadius: 4,
+            fontSize: '12px',
+            textTransform: 'capitalize',
+          }}
+        >
+          {keyboardShortcut}
+        </div>
+      )}
+    </div>
+  );
+}
+
+class Composition extends React.Component {
+  export = () => {
+    const stepDuration = 1 / 4;
+    const serialization = this.props.notesArray.map((midiNumbers, index) => {
+      return {
+        time: index * stepDuration,
+        notes: midiNumbers,
+        duration: stepDuration,
+      };
+    });
+    console.log(JSON.stringify(serialization, null, 4));
+  };
+
+  play = () => {
+    this.props.onPlay(this.props.notesArray);
+  };
+
+  render() {
+    return (
+      <div>
+        {this.props.notesArray.join(' ')}
+        <button onClick={this.export}>Export</button>
+        <button onClick={this.props.onClear}>Clear</button>
+        <button onClick={this.play}>Play</button>
+        <button onClick={this.props.onStop}>Stop</button>
+      </div>
+    );
+  }
+}
+
+class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       activeAudioNodes: {},
       instrument: null,
+      isPlaying: false,
+      isRecording: true,
+      notesArray: [],
+      notesArrayIndex: 0,
     };
 
     this.oscillator = new Oscillator({
       audioContext,
       gain: 0.1,
     });
+
+    this.playbackIntervalHandler = null;
   }
 
   componentDidMount() {
@@ -154,6 +227,15 @@ class App extends Component {
     });
   };
 
+  onStop = () => {
+    clearInterval(this.playbackIntervalHandler);
+    this.setState({
+      isPlaying: false,
+      isRecording: true,
+      notesArrayIndex: 0,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -167,74 +249,57 @@ class App extends Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <PianoContainer>
-                {(width) => (
-                  <Piano
-                    startNote="c4"
-                    endNote="c6"
-                    onNoteDown={this.onNoteDown}
-                    onNoteUp={this.onNoteUp}
-                    disabled={!this.state.instrument}
-                    keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
-                    width={width}
-                    renderNoteLabel={({ isBlack, keyboardShortcut }) => {
-                      if (!keyboardShortcut) {
-                        return null;
+              <div>
+                <DimensionsProvider>
+                  {(width) => (
+                    <PianoManager
+                      startNote="c4"
+                      endNote="c6"
+                      notes={
+                        this.state.isPlaying
+                          ? this.state.notesArray[this.state.notesArrayIndex]
+                          : null
                       }
-                      return (
-                        <div className="text-center">
-                          {isBlack ? (
-                            <div
-                              style={{
-                                color: themeColor,
-                                fontSize: '12px',
-                                textTransform: 'capitalize',
-                                marginBottom: 3,
-                              }}
-                            >
-                              {keyboardShortcut}
-                            </div>
-                          ) : (
-                            <div
-                              style={{
-                                color: themeColor,
-                                backgroundColor: '#aaa',
-                                padding: '4px 0',
-                                margin: 3,
-                                border: '1px solid #fff',
-                                borderRadius: 4,
-                                fontSize: '12px',
-                                textTransform: 'capitalize',
-                              }}
-                            >
-                              {keyboardShortcut}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    }}
-                  />
-                )}
-              </PianoContainer>
+                      onNoteDown={this.onNoteDown}
+                      onNoteUp={this.onNoteUp}
+                      disabled={!this.state.instrument}
+                      keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
+                      width={width}
+                      renderNoteLabel={renderNoteLabel}
+                      onRecordNotes={(midiNumbers) => {
+                        if (this.state.isRecording) {
+                          this.setState({
+                            notesArray: this.state.notesArray.concat([midiNumbers]),
+                          });
+                        }
+                      }}
+                    />
+                  )}
+                </DimensionsProvider>
+              </div>
+              <Composition
+                notesArray={this.state.notesArray}
+                onClear={() => {
+                  this.onStop();
+                  this.setState({
+                    notesArray: [],
+                  });
+                }}
+                onPlay={(notesArray) => {
+                  this.setState({
+                    isPlaying: true,
+                    isRecording: false,
+                  });
+                  this.playbackIntervalHandler = setInterval(() => {
+                    this.setState({
+                      notesArrayIndex: (this.state.notesArrayIndex + 1) % notesArray.length,
+                    });
+                  }, 250);
+                }}
+                onStop={this.onStop}
+              />
             </div>
           </div>
-          <div className="row mt-5">
-            <div className="col-md-4 offset-md-4">
-              <PianoContainer>
-                {(width) => (
-                  <Piano
-                    startNote="c3"
-                    endNote="c4"
-                    onNoteDown={this.onNoteDown}
-                    onNoteUp={this.onNoteUp}
-                    width={width}
-                    disabled={!this.state.instrument}
-                  />
-                )}
-              </PianoContainer>
-            </div>
-          </div>
-          <hr className="mt-5" />
           <div className="row mt-5">
             <div className="col">
               <div className="text-center">
