@@ -290,6 +290,7 @@ class App extends React.Component {
                     isPlaying: true,
                     isRecording: false,
                   });
+                  // TODO: configurable playback timing
                   this.playbackIntervalHandler = setInterval(() => {
                     this.setState({
                       notesArrayIndex: (this.state.notesArrayIndex + 1) % notesArray.length,

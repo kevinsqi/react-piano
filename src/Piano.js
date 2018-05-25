@@ -74,6 +74,10 @@ class Piano extends React.Component {
   };
 
   handleKeyUp = (event) => {
+    // TODO: refactor this into keyboardConfig
+    if (event.key === 'Shift') {
+      this.props.onRecordNotes([]);
+    }
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
     }
