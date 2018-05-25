@@ -61,7 +61,6 @@ class PianoManager extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // noreintegrate
     if (this.props.notes !== prevProps.notes) {
       this.triggerNotesDown(prevProps.notes, this.props.notes);
     }
@@ -136,11 +135,7 @@ class PianoManager extends React.Component {
         notes: prevState.notes.concat(midiNumber).sort(),
       }),
       () => {
-        // Don't record on playback
-        // noreintegrate
-        if (!this.props.notes) {
-          this.props.onRecordNotes(this.state.notes);
-        }
+        this.props.onRecordNotes(this.state.notes);
       },
     );
     const attrs = getMidiNumberAttributes(midiNumber);
@@ -169,15 +164,14 @@ class PianoManager extends React.Component {
     this.props.onNoteUp(attrs);
   };
 
-  // TODO: use renderProps instead?
   render() {
-    // noreintegrate pass all props explicitly
-    const { onNoteDown, onNoteUp, keyboardConfig, notes, ...otherProps } = this.props;
-
     return (
       <Piano
-        {...otherProps}
+        startNote={this.props.startNote}
+        endNote={this.props.endNote}
+        disabled={this.props.disabled}
         notes={this.props.notes || this.state.notes}
+        width={this.props.width}
         gliss={this.state.isMouseDown}
         onNoteDown={this.handleNoteDown}
         onNoteUp={this.handleNoteUp}

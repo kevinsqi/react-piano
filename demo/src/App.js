@@ -141,7 +141,7 @@ function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
 class Composition extends React.Component {
   export = () => {
     const stepDuration = 1 / 4;
-    const serialization = this.props.sequence.map((midiNumbers, index) => {
+    const serialization = this.props.notesArray.map((midiNumbers, index) => {
       return {
         time: index * stepDuration,
         notes: midiNumbers,
@@ -152,13 +152,13 @@ class Composition extends React.Component {
   };
 
   play = () => {
-    this.props.onPlay(this.props.sequence);
+    this.props.onPlay(this.props.notesArray);
   };
 
   render() {
     return (
       <div>
-        {this.props.sequence.join(' ')}
+        {this.props.notesArray.join(' ')}
         <button onClick={this.export}>Export</button>
         <button onClick={this.props.onClear}>Clear</button>
         <button onClick={this.play}>Play</button>
@@ -175,10 +175,10 @@ class App extends React.Component {
     this.state = {
       activeAudioNodes: {},
       instrument: null,
-      // noreintegrate refactor
-      // noreintegrate rename notesArray
-      noteSequence: [],
-      notes: null,
+      isPlaying: false,
+      isRecording: true,
+      notesArray: [],
+      notesArrayIndex: 0,
     };
 
     this.oscillator = new Oscillator({
@@ -227,6 +227,15 @@ class App extends React.Component {
     });
   };
 
+  onStop = () => {
+    clearInterval(this.playbackIntervalHandler);
+    this.setState({
+      isPlaying: false,
+      isRecording: true,
+      notesArrayIndex: 0,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -246,7 +255,11 @@ class App extends React.Component {
                     <PianoManager
                       startNote="c4"
                       endNote="c6"
-                      notes={this.state.notes}
+                      notes={
+                        this.state.isPlaying
+                          ? this.state.notesArray[this.state.notesArrayIndex]
+                          : null
+                      }
                       onNoteDown={this.onNoteDown}
                       onNoteUp={this.onNoteUp}
                       disabled={!this.state.instrument}
@@ -254,37 +267,36 @@ class App extends React.Component {
                       width={width}
                       renderNoteLabel={renderNoteLabel}
                       onRecordNotes={(midiNumbers) => {
-                        this.setState({
-                          noteSequence: this.state.noteSequence.concat([midiNumbers]),
-                        });
+                        if (this.state.isRecording) {
+                          this.setState({
+                            notesArray: this.state.notesArray.concat([midiNumbers]),
+                          });
+                        }
                       }}
                     />
                   )}
                 </DimensionsProvider>
               </div>
               <Composition
-                sequence={this.state.noteSequence}
+                notesArray={this.state.notesArray}
                 onClear={() => {
+                  this.onStop();
                   this.setState({
-                    noteSequence: [],
+                    notesArray: [],
                   });
                 }}
-                onPlay={(sequence) => {
-                  let index = 0;
+                onPlay={(notesArray) => {
+                  this.setState({
+                    isPlaying: true,
+                    isRecording: false,
+                  });
                   this.playbackIntervalHandler = setInterval(() => {
-                    const notes = sequence[index];
                     this.setState({
-                      notes,
+                      notesArrayIndex: (this.state.notesArrayIndex + 1) % notesArray.length,
                     });
-                    index = (index + 1) % sequence.length;
                   }, 250);
                 }}
-                onStop={() => {
-                  clearInterval(this.playbackIntervalHandler);
-                  this.setState({
-                    notes: null,
-                  });
-                }}
+                onStop={this.onStop}
               />
             </div>
           </div>
