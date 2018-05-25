@@ -1,5 +1,6 @@
 import React from 'react';
-import { Piano } from 'react-piano';
+import classNames from 'classnames';
+import { Piano, getMidiNumberAttributes } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
@@ -51,6 +52,7 @@ const KEYBOARD_CONFIG = {
 
 const audioContext = new window.AudioContext();
 
+// TODO: css class
 const themeColor = '#f8e8d5';
 
 function GithubLink() {
@@ -157,12 +159,40 @@ class Composition extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.notesArray.join(' ')}
-        <button onClick={this.export}>Export</button>
-        <button onClick={this.props.onClear}>Clear</button>
-        <button onClick={this.play}>Play</button>
-        <button onClick={this.props.onStop}>Stop</button>
+      <div className={this.props.className}>
+        <div>
+          <div className="btn-group">
+            <button className="btn btn-info btn-sm" onClick={this.play}>
+              Play
+            </button>
+            <button className="btn btn-outline-secondary btn-sm" onClick={this.props.onStop}>
+              Stop
+            </button>
+          </div>
+          <span className="ml-1">
+            <button className="btn btn-outline-danger btn-sm" onClick={this.props.onClear}>
+              Clear
+            </button>
+          </span>
+          <span className="ml-1">
+            <button className="btn btn-outline-secondary btn-sm" onClick={this.export}>
+              Export
+            </button>
+          </span>
+        </div>
+        <div className="mt-2">
+          {this.props.notesArray.map((notes, index) => {
+            return (
+              <span
+                className={classNames('Notes mr-1', {
+                  'Notes--active': index === this.props.notesArrayIndex,
+                })}
+              >
+                {notes.map((note) => getMidiNumberAttributes(note).note.toUpperCase()).join(' ')}
+              </span>
+            );
+          })}
+        </div>
       </div>
     );
   }
@@ -278,7 +308,9 @@ class App extends React.Component {
                 </DimensionsProvider>
               </div>
               <Composition
+                className="mt-3"
                 notesArray={this.state.notesArray}
+                notesArrayIndex={this.state.notesArrayIndex}
                 onClear={() => {
                   this.onStop();
                   this.setState({

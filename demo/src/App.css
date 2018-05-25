@@ -2,6 +2,17 @@
   box-sizing: border-box;
 }
 
+.Notes {
+  background: #f8e8d5;
+  padding: 5px;
+  color: #888;
+}
+
+.Notes--active {
+  background: #63b0cd;
+  color: #fff;
+}
+
 /* highlight key options
 #9AC2C9
 #63B0CD
