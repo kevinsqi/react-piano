@@ -14,6 +14,7 @@ class Piano extends React.Component {
     this.state = {
       notes: [],
       isMouseDown: false,
+      isRecorded: false,
     };
   }
 
@@ -99,14 +100,10 @@ class Piano extends React.Component {
     if (this.state.notes.includes(midiNumber) || this.props.disabled) {
       return;
     }
-    this.setState(
-      (prevState) => ({
-        notes: prevState.notes.concat(midiNumber).sort(),
-      }),
-      () => {
-        this.props.onRecordNotes(this.state.notes);
-      },
-    );
+    this.setState((prevState) => ({
+      notes: prevState.notes.concat(midiNumber).sort(),
+      isRecorded: false,
+    }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteDown(attrs);
   };
@@ -115,8 +112,13 @@ class Piano extends React.Component {
     if (!this.state.notes.includes(midiNumber) || this.props.disabled) {
       return;
     }
+    const willRecord = !this.state.isRecorded;
+    if (willRecord) {
+      this.props.onRecordNotes(this.state.notes);
+    }
     this.setState((prevState) => ({
       notes: prevState.notes.filter((note) => midiNumber !== note),
+      isRecorded: willRecord,
     }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteUp(attrs);
