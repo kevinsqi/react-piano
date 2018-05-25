@@ -63,7 +63,7 @@ class PianoManager extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     // noreintegrate
-    if (this.props.notes && this.props.notes !== prevProps.notes) {
+    if (this.props.notes !== prevProps.notes) {
       this.triggerNotesDown(prevProps.notes, this.props.notes);
     }
   }
@@ -78,6 +78,15 @@ class PianoManager extends React.Component {
         }, {}),
       };
     }
+    /*
+    // Handle lingering note when stopping playback
+    if (!nextProps.notes && prevState.notes) {
+      console.log('stopping...?', nextProps, prevState);
+      return {
+        keysDown: {},
+      };
+    }
+    */
     return null;
   }
 
@@ -172,7 +181,7 @@ class PianoManager extends React.Component {
       const attrs = getMidiNumberAttributes(number);
       this.props.onNoteUp(attrs);
     });
-    midiNumbers.forEach((number) => {
+    (midiNumbers || []).forEach((number) => {
       const attrs = getMidiNumberAttributes(number);
       this.props.onNoteDown(attrs);
     });
@@ -193,7 +202,7 @@ class PianoManager extends React.Component {
 
   // TODO: use renderProps instead?
   render() {
-    const { onNoteDown, onNoteUp, keyboardConfig, noteSequence, ...otherProps } = this.props;
+    const { onNoteDown, onNoteUp, keyboardConfig, notes, noteSequence, ...otherProps } = this.props;
 
     return (
       <Piano
