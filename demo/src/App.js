@@ -3,7 +3,7 @@ import { PianoManager } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Oscillator from './Oscillator';
-import PianoContainer from './PianoContainer';
+import DimensionsProvider from './DimensionsProvider';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import './App.css';
 
@@ -239,7 +239,7 @@ class App extends React.Component {
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
               <div>
-                <PianoContainer>
+                <DimensionsProvider>
                   {(width) => (
                     <PianoManager
                       startNote="c4"
@@ -258,7 +258,7 @@ class App extends React.Component {
                       }}
                     />
                   )}
-                </PianoContainer>
+                </DimensionsProvider>
               </div>
               <Composition
                 sequence={this.state.noteSequence}
