@@ -112,13 +112,15 @@ class Piano extends React.Component {
     if (!this.state.notes.includes(midiNumber) || this.props.disabled) {
       return;
     }
-    const willRecord = !this.state.isRecorded;
+    // When playing a chord, record when the first note is released, and
+    // stop recording subsequent note releases, UNLESS a new note is added
+    const willRecord = this.state.isRecorded === false;
     if (willRecord) {
       this.props.onRecordNotes(this.state.notes);
     }
     this.setState((prevState) => ({
       notes: prevState.notes.filter((note) => midiNumber !== note),
-      isRecorded: willRecord,
+      isRecorded: this.state.isRecorded || willRecord,
     }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteUp(attrs);
