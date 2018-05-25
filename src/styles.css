@@ -32,8 +32,7 @@
   background: #63b0cd;
 }
 
-
-.ReactPiano__Key--black.ReactPiano__Key--disabled {
+.ReactPiano__Key.ReactPiano__Key--disabled {
   cursor: progress;
 }
 

@@ -154,7 +154,13 @@ class Composition extends React.Component {
   };
 
   play = () => {
-    this.props.onPlay(this.props.notesArray);
+    if (this.props.notesArray) {
+      this.props.onPlay(this.props.notesArray);
+    }
+  };
+
+  isPlayable = () => {
+    return this.props.notesArray.length > 0 && !this.props.isPlaying;
   };
 
   render() {
@@ -162,15 +168,27 @@ class Composition extends React.Component {
       <div className={this.props.className}>
         <div>
           <div className="btn-group">
-            <button className="btn btn-info btn-sm" onClick={this.play}>
+            <button
+              className="btn btn-info btn-sm"
+              disabled={!this.isPlayable()}
+              onClick={this.play}
+            >
               Play
             </button>
-            <button className="btn btn-outline-secondary btn-sm" onClick={this.props.onStop}>
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              disabled={!this.props.isPlaying}
+              onClick={this.props.onStop}
+            >
               Stop
             </button>
           </div>
           <span className="ml-1">
-            <button className="btn btn-outline-danger btn-sm" onClick={this.props.onClear}>
+            <button
+              className="btn btn-outline-danger btn-sm"
+              disabled={this.props.notesArray.length === 0}
+              onClick={this.props.onClear}
+            >
               Clear
             </button>
           </span>
@@ -182,13 +200,18 @@ class Composition extends React.Component {
         </div>
         <div className="mt-2">
           {this.props.notesArray.map((notes, index) => {
+            const label =
+              notes.length > 0
+                ? notes.map((note) => getMidiNumberAttributes(note).note.toUpperCase()).join(' ')
+                : '&nbsp;';
             return (
               <span
                 className={classNames('Notes mr-1', {
                   'Notes--active': index === this.props.notesArrayIndex,
                 })}
+                key={[index, label]}
               >
-                {notes.map((note) => getMidiNumberAttributes(note).note.toUpperCase()).join(' ')}
+                {label}
               </span>
             );
           })}
@@ -309,6 +332,7 @@ class App extends React.Component {
               </div>
               <Composition
                 className="mt-3"
+                isPlaying={this.state.isPlaying}
                 notesArray={this.state.notesArray}
                 notesArrayIndex={this.state.notesArrayIndex}
                 onClear={() => {
@@ -318,6 +342,9 @@ class App extends React.Component {
                   });
                 }}
                 onPlay={(notesArray) => {
+                  if (this.state.isPlaying) {
+                    return;
+                  }
                   this.setState({
                     isPlaying: true,
                     isRecording: false,

@@ -3,9 +3,12 @@
 }
 
 .Notes {
+  text-align: center;
   background: #f8e8d5;
-  padding: 5px;
+  padding: 2px 5px;
   color: #888;
+  min-width: 2rem;
+  display: inline-block;
 }
 
 .Notes--active {
