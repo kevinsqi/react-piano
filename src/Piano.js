@@ -99,7 +99,7 @@ class Piano extends React.Component {
         {this.getMidiNumbers().map((num) => {
           const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
-          const isKeyDown = this.props.keysDown[num];
+          const isKeyDown = this.props.notes.includes(num);
           return (
             <Key
               className={classNames('ReactPiano__Key', {

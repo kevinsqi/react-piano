@@ -175,6 +175,8 @@ class App extends React.Component {
     this.state = {
       activeAudioNodes: {},
       instrument: null,
+      // noreintegrate refactor
+      // noreintegrate rename notesArray
       noteSequence: [],
       notes: null,
     };

@@ -37,9 +37,8 @@ class PianoManager extends React.Component {
     super(props);
 
     this.state = {
-      keysDown: {},
+      notes: [],
       isMouseDown: false,
-      noteSequenceIndex: 0,
     };
   }
 
@@ -66,28 +65,6 @@ class PianoManager extends React.Component {
     if (this.props.notes !== prevProps.notes) {
       this.triggerNotesDown(prevProps.notes, this.props.notes);
     }
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // noreintegrate keysDown comparison
-    if (nextProps.notes) {
-      return {
-        keysDown: nextProps.notes.reduce((obj, note) => {
-          obj[note] = true;
-          return obj;
-        }, {}),
-      };
-    }
-    /*
-    // Handle lingering note when stopping playback
-    if (!nextProps.notes && prevState.notes) {
-      console.log('stopping...?', nextProps, prevState);
-      return {
-        keysDown: {},
-      };
-    }
-    */
-    return null;
   }
 
   // TODO dedupe
@@ -151,24 +128,18 @@ class PianoManager extends React.Component {
 
   handleNoteDown = (midiNumber) => {
     // Prevents duplicate note firings
-    if (this.state.keysDown[midiNumber] || this.props.disabled) {
+    if (this.state.notes.includes(midiNumber) || this.props.disabled) {
       return;
     }
     this.setState(
       (prevState) => ({
-        keysDown: Object.assign({}, prevState.keysDown, {
-          [midiNumber]: true,
-        }),
+        notes: prevState.notes.concat(midiNumber).sort(),
       }),
       () => {
-        const sortedNotes = Object.keys(this.state.keysDown)
-          .filter((key) => this.state.keysDown[key])
-          .map((key) => parseInt(key, 10))
-          .sort();
-        // Playback
+        // Don't record on playback
         // noreintegrate
         if (!this.props.notes) {
-          this.props.onRecordNotes(sortedNotes);
+          this.props.onRecordNotes(this.state.notes);
         }
       },
     );
@@ -188,13 +159,11 @@ class PianoManager extends React.Component {
   };
 
   handleNoteUp = (midiNumber) => {
-    if (!this.state.keysDown[midiNumber] || this.props.disabled) {
+    if (!this.state.notes.includes(midiNumber) || this.props.disabled) {
       return;
     }
     this.setState((prevState) => ({
-      keysDown: Object.assign({}, prevState.keysDown, {
-        [midiNumber]: false,
-      }),
+      notes: prevState.notes.filter((note) => midiNumber !== note),
     }));
     const attrs = getMidiNumberAttributes(midiNumber);
     this.props.onNoteUp(attrs);
@@ -202,12 +171,13 @@ class PianoManager extends React.Component {
 
   // TODO: use renderProps instead?
   render() {
-    const { onNoteDown, onNoteUp, keyboardConfig, notes, noteSequence, ...otherProps } = this.props;
+    // noreintegrate pass all props explicitly
+    const { onNoteDown, onNoteUp, keyboardConfig, notes, ...otherProps } = this.props;
 
     return (
       <Piano
         {...otherProps}
-        keysDown={this.state.keysDown}
+        notes={this.props.notes || this.state.notes}
         gliss={this.state.isMouseDown}
         onNoteDown={this.handleNoteDown}
         onNoteUp={this.handleNoteUp}
