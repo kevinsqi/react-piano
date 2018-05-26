@@ -175,6 +175,11 @@ class App extends React.Component {
     window.removeEventListener('keyup', this.handleKeyUp);
   }
 
+  getShiftedNotesArrayIndex = (value) => {
+    const base = this.state.notesArray.length;
+    return (this.state.notesArrayIndex + value + base) % base;
+  };
+
   handleKeyDown = (event) => {
     // TODO: refactor this into keyboardConfig
     if (event.key === '-') {
@@ -184,12 +189,19 @@ class App extends React.Component {
         // Delete note at notesArrayIndex
         const notesArrayCopy = this.state.notesArray.slice();
         notesArrayCopy.splice(notesArrayCopy.length - 1, 1);
-        console.log(notesArrayCopy);
         this.setState({
           notesArray: notesArrayCopy,
           notesArrayIndex: notesArrayCopy.length - 1,
         });
       }
+    } else if (event.key === 'ArrowLeft') {
+      this.setState({
+        notesArrayIndex: this.getShiftedNotesArrayIndex(-1),
+      });
+    } else if (event.key === 'ArrowRight') {
+      this.setState({
+        notesArrayIndex: this.getShiftedNotesArrayIndex(1),
+      });
     }
   };
 
@@ -319,7 +331,7 @@ class App extends React.Component {
                   // TODO: configurable playback timing
                   this.playbackIntervalHandler = setInterval(() => {
                     this.setState({
-                      notesArrayIndex: (this.state.notesArrayIndex + 1) % notesArray.length,
+                      notesArrayIndex: this.getShiftedNotesArrayIndex(1),
                     });
                   }, 250);
                 }}
