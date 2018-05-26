@@ -163,6 +163,26 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.loadInstrument();
+    window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('keyup', this.handleKeyUp);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('keyup', this.handleKeyUp);
+  }
+
+  handleKeyDown = (event) => {
+    // TODO: refactor this into keyboardConfig
+    if (event.key === 'Shift') {
+      this.onRecordNotes([]);
+    }
+    if (event.key === 'Backspace') {
+    }
+  };
+
+  loadInstrument = () => {
     // Sound names here: http://gleitz.github.io/midi-js-soundfonts/MusyngKite/names.json
     Soundfont.instrument(audioContext, 'acoustic_grand_piano', {
       nameToUrl: (name, soundfont, format) => {
@@ -173,7 +193,7 @@ class App extends React.Component {
         instrument,
       });
     });
-  }
+  };
 
   onNoteDown = ({ midiNumber, frequency }) => {
     audioContext.resume().then(() => {
@@ -202,6 +222,14 @@ class App extends React.Component {
       });
       // TODO: add back oscillator
     });
+  };
+
+  onRecordNotes = (midiNumbers) => {
+    if (this.state.isRecording) {
+      this.setState({
+        notesArray: this.state.notesArray.concat([midiNumbers]),
+      });
+    }
   };
 
   onStop = () => {
@@ -243,13 +271,7 @@ class App extends React.Component {
                       keyboardConfig={KEYBOARD_CONFIG.MIDDLE}
                       width={width}
                       renderNoteLabel={renderNoteLabel}
-                      onRecordNotes={(midiNumbers) => {
-                        if (this.state.isRecording) {
-                          this.setState({
-                            notesArray: this.state.notesArray.concat([midiNumbers]),
-                          });
-                        }
-                      }}
+                      onRecordNotes={this.onRecordNotes}
                     />
                   )}
                 </DimensionsProvider>
