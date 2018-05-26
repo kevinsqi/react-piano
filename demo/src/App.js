@@ -1,11 +1,12 @@
 import React from 'react';
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import { Piano } from 'react-piano';
 import 'react-piano/build/styles.css';
 import Soundfont from 'soundfont-player';
 import Composer from './Composer';
 import Oscillator from './Oscillator';
 import DimensionsProvider from './DimensionsProvider';
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
+import SAMPLE_SONGS from './sampleSongs';
 import './App.css';
 
 // TODO: move this to be exported from Piano.js (index.js)
@@ -150,7 +151,7 @@ class App extends React.Component {
       instrument: null,
       isPlaying: false,
       isRecording: true,
-      notesArray: [],
+      notesArray: SAMPLE_SONGS.lost_woods_theme,
       notesArrayIndex: 0,
     };
 
