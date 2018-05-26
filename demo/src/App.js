@@ -244,7 +244,11 @@ class App extends React.Component {
 
   componentDidMount() {
     // Sound names here: http://gleitz.github.io/midi-js-soundfonts/MusyngKite/names.json
-    Soundfont.instrument(audioContext, 'acoustic_grand_piano').then((instrument) => {
+    Soundfont.instrument(audioContext, 'acoustic_grand_piano', {
+      nameToUrl: (name, soundfont, format) => {
+        return `/soundfonts/${name}-mp3.js`;
+      },
+    }).then((instrument) => {
       this.setState({
         instrument,
       });
