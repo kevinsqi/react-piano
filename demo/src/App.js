@@ -103,6 +103,7 @@ function Header() {
   );
 }
 
+// TODO make component
 function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
   if (!keyboardShortcut) {
     return null;
@@ -123,8 +124,8 @@ function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
       ) : (
         <div
           style={{
-            color: themeColor,
-            backgroundColor: '#aaa',
+            background: '#ddd',
+            color: '#888',
             padding: '4px 0',
             margin: 3,
             border: '1px solid #fff',
