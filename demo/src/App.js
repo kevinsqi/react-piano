@@ -181,11 +181,13 @@ class App extends React.Component {
       this.onRecordNotes([]);
     } else if (event.key === 'Backspace') {
       if (!this.state.isPlaying) {
+        // Delete note at notesArrayIndex
         const notesArrayCopy = this.state.notesArray.slice();
         notesArrayCopy.splice(notesArrayCopy.length - 1, 1);
         console.log(notesArrayCopy);
         this.setState({
           notesArray: notesArrayCopy,
+          notesArrayIndex: notesArrayCopy.length - 1,
         });
       }
     }
@@ -242,8 +244,11 @@ class App extends React.Component {
 
   onRecordNotes = (midiNumbers) => {
     if (this.state.isRecording) {
+      const notesArrayCopy = this.state.notesArray.slice();
+      notesArrayCopy.splice(this.state.notesArrayIndex, 0, midiNumbers);
       this.setState({
-        notesArray: this.state.notesArray.concat([midiNumbers]),
+        notesArray: notesArrayCopy,
+        notesArrayIndex: this.state.notesArrayIndex + 1,
       });
     }
   };
