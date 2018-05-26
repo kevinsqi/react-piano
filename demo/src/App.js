@@ -274,7 +274,7 @@ class App extends React.Component {
     this.setState({
       isPlaying: false,
       isRecording: true,
-      notesArrayIndex: this.state.notesArray.length - 1,
+      notesArrayIndex: this.state.notesArray.length - 1, // Set this to end of composition so can keep writing
     });
   };
 
