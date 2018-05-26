@@ -175,9 +175,13 @@ class App extends React.Component {
     window.removeEventListener('keyup', this.handleKeyUp);
   }
 
-  getShiftedNotesArrayIndex = (value) => {
-    const base = this.state.notesArray.length;
-    return (this.state.notesArrayIndex + value + base) % base;
+  // TODO: refactor
+  getShiftedNotesArrayIndex = (value, base) => {
+    if (base === 0) {
+      return 0;
+    }
+    console.log('getShiftedNotesArrayIndex', value, base);
+    return (this.state.notesArrayIndex + value + base) % base; // Need to add base to prevent negative numbers
   };
 
   handleKeyDown = (event) => {
@@ -191,16 +195,16 @@ class App extends React.Component {
         notesArrayCopy.splice(this.state.notesArrayIndex, 1);
         this.setState({
           notesArray: notesArrayCopy,
-          notesArrayIndex: this.getShiftedNotesArrayIndex(-1),
+          notesArrayIndex: this.getShiftedNotesArrayIndex(-1, notesArrayCopy.length),
         });
       }
     } else if (event.key === 'ArrowLeft') {
       this.setState({
-        notesArrayIndex: this.getShiftedNotesArrayIndex(-1),
+        notesArrayIndex: this.getShiftedNotesArrayIndex(-1, this.state.notesArray.length),
       });
     } else if (event.key === 'ArrowRight') {
       this.setState({
-        notesArrayIndex: this.getShiftedNotesArrayIndex(1),
+        notesArrayIndex: this.getShiftedNotesArrayIndex(1, this.state.notesArray.length),
       });
     }
   };
@@ -257,10 +261,10 @@ class App extends React.Component {
   onRecordNotes = (midiNumbers) => {
     if (this.state.isRecording) {
       const notesArrayCopy = this.state.notesArray.slice();
-      notesArrayCopy.splice(this.state.notesArrayIndex, 0, midiNumbers);
+      notesArrayCopy.splice(this.state.notesArrayIndex + 1, 0, midiNumbers);
       this.setState({
         notesArray: notesArrayCopy,
-        notesArrayIndex: this.state.notesArrayIndex + 1,
+        notesArrayIndex: this.getShiftedNotesArrayIndex(1, notesArrayCopy.length),
       });
     }
   };
@@ -318,6 +322,7 @@ class App extends React.Component {
                   this.onStop();
                   this.setState({
                     notesArray: [],
+                    notesArrayIndex: 0,
                   });
                 }}
                 onPlay={(notesArray) => {
@@ -331,7 +336,10 @@ class App extends React.Component {
                   // TODO: configurable playback timing
                   this.playbackIntervalHandler = setInterval(() => {
                     this.setState({
-                      notesArrayIndex: this.getShiftedNotesArrayIndex(1),
+                      notesArrayIndex: this.getShiftedNotesArrayIndex(
+                        1,
+                        this.state.notesArray.length,
+                      ),
                     });
                   }, 250);
                 }}
