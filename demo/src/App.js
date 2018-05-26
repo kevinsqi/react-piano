@@ -177,8 +177,15 @@ class App extends React.Component {
     // TODO: refactor this into keyboardConfig
     if (event.key === 'Shift') {
       this.onRecordNotes([]);
-    }
-    if (event.key === 'Backspace') {
+    } else if (event.key === 'Backspace') {
+      if (!this.state.isPlaying) {
+        const notesArrayCopy = this.state.notesArray.slice();
+        notesArrayCopy.splice(notesArrayCopy.length - 1, 1);
+        console.log(notesArrayCopy);
+        this.setState({
+          notesArray: notesArrayCopy,
+        });
+      }
     }
   };
 
