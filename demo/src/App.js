@@ -2,6 +2,7 @@ import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import { Piano } from 'react-piano';
 import 'react-piano/build/styles.css';
+import classNames from 'classnames';
 import Soundfont from 'soundfont-player';
 import Composer from './Composer';
 import Oscillator from './Oscillator';
@@ -11,9 +12,6 @@ import KEYBOARD_CONFIGS from './keyboardConfigs';
 import './App.css';
 
 const audioContext = new window.AudioContext();
-
-// TODO: css class
-const themeColor = '#f8e8d5';
 
 function GithubLink() {
   return (
@@ -25,7 +23,7 @@ function GithubLink() {
 
 function Footer(props) {
   return (
-    <div className="mt-5 py-5" style={{ backgroundColor: themeColor }}>
+    <div className="bg-yellow mt-5 py-5">
       <div className="container">
         <div className="text-center text-secondary">
           Made with{' '}
@@ -70,33 +68,14 @@ function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
   }
   return (
     <div className="text-center">
-      {isAccidental ? (
-        <div
-          style={{
-            color: themeColor,
-            fontSize: '12px',
-            textTransform: 'capitalize',
-            marginBottom: 3,
-          }}
-        >
-          {keyboardShortcut}
-        </div>
-      ) : (
-        <div
-          style={{
-            background: '#ddd',
-            color: '#888',
-            padding: '4px 0',
-            margin: 3,
-            border: '1px solid #fff',
-            borderRadius: 4,
-            fontSize: '12px',
-            textTransform: 'capitalize',
-          }}
-        >
-          {keyboardShortcut}
-        </div>
-      )}
+      <div
+        className={classNames({
+          'NoteLabel--black': isAccidental,
+          'NoteLabel--white': !isAccidental,
+        })}
+      >
+        {keyboardShortcut}
+      </div>
     </div>
   );
 }
@@ -306,15 +285,14 @@ class App extends React.Component {
               />
             </div>
           </div>
+          <hr className="mt-5" />
           <div className="row mt-5">
             <div className="col">
               <div className="text-center">
                 <h2>Installation</h2>
                 <p className="mt-4">Install with yarn or npm:</p>
                 <p className="mt-3">
-                  <code className="p-2 text-dark" style={{ backgroundColor: themeColor }}>
-                    yarn add react-piano
-                  </code>
+                  <code className="p-2 text-dark bg-yellow">yarn add react-piano</code>
                 </p>
                 <div className="mt-5">
                   <GithubLink />

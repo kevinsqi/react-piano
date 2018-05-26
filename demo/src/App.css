@@ -2,6 +2,11 @@
   box-sizing: border-box;
 }
 
+.bg-yellow {
+  background-color: #f8e8d5;
+}
+
+/* TODO: rename these classes */
 .Notes {
   text-align: center;
   background: #f8e8d5;
@@ -10,12 +15,28 @@
   min-width: 2rem;
   display: inline-block;
 }
-
 .Notes--active {
   background: #63b0cd;
   color: #fff;
 }
-
 .Note--subscript {
   font-size: 0.5em;
+}
+
+.NoteLabel--black {
+  color: #f8e8d5;
+  font-size: 12px;
+  text-transform: capitalize;
+  margin-bottom: 3px;
+}
+
+.NoteLabel--white {
+  background: #ddd;
+  color: #888;
+  padding: 4px 0;
+  margin: 3px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  text-transform: capitalize;
 }
