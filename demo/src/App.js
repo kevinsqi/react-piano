@@ -4,62 +4,17 @@ import { Piano } from 'react-piano';
 import 'react-piano/build/styles.css';
 import classNames from 'classnames';
 import Soundfont from 'soundfont-player';
+
 import Composer from './Composer';
-import Oscillator from './Oscillator';
 import DimensionsProvider from './DimensionsProvider';
-import SAMPLE_SONGS from './sampleSongs';
+import Header from './Header';
+import Footer from './Footer';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
+import Oscillator from './Oscillator';
+import SAMPLE_SONGS from './sampleSongs';
 import './App.css';
 
 const audioContext = new window.AudioContext();
-
-function GithubLink() {
-  return (
-    <a className="btn btn-info btn-lg" href="https://github.com/iqnivek/react-piano">
-      View docs on Github
-    </a>
-  );
-}
-
-function Footer(props) {
-  return (
-    <div className="bg-yellow mt-5 py-5">
-      <div className="container">
-        <div className="text-center text-secondary">
-          Made with{' '}
-          <span role="img" aria-label="keyboard emoji">
-            🎹
-          </span>
-          by{' '}
-          <a className="text-secondary" href="http://www.kevinqi.com/">
-            <strong>@iqnivek</strong>
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Header() {
-  return (
-    <div style={{ background: '#333' }}>
-      <div className="container">
-        <div className="text-center text-white p-5">
-          <h1>react-piano</h1>
-          <p>A responsive, configurable, programmable piano keyboard for React</p>
-          <div className="mt-4">
-            <a
-              className="btn btn-outline-light btn-lg"
-              href="https://github.com/iqnivek/react-piano"
-            >
-              View docs on Github
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // TODO make component
 function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
@@ -295,7 +250,9 @@ class App extends React.Component {
                   <code className="p-2 text-dark bg-yellow">yarn add react-piano</code>
                 </p>
                 <div className="mt-5">
-                  <GithubLink />
+                  <a className="btn btn-info btn-lg" href="https://github.com/iqnivek/react-piano">
+                    View docs on Github
+                  </a>
                 </div>
               </div>
             </div>
