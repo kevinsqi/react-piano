@@ -64,7 +64,15 @@ class Composer extends React.Component {
           {this.props.notesArray.map((notes, index) => {
             const label =
               notes.length > 0
-                ? notes.map((note) => getMidiNumberAttributes(note).note.toUpperCase()).join(' ')
+                ? notes.map((note) => {
+                    const { basenote, octave } = getMidiNumberAttributes(note);
+                    return (
+                      <span>
+                        <span>{`${basenote.charAt(0).toUpperCase()}${basenote.slice(1)}`}</span>
+                        <span className="Note--subscript">{octave}</span>
+                      </span>
+                    );
+                  })
                 : '_';
             return (
               <span

@@ -16,6 +16,10 @@
   color: #fff;
 }
 
+.Note--subscript {
+  font-size: 0.5em;
+}
+
 /* highlight key options
 #9AC2C9
 #63B0CD
