@@ -84,7 +84,7 @@ class Composer extends React.Component {
             return (
               <span
                 className={classNames('Notes mr-1 mb-1', {
-                  'Notes--active': this.props.isPlaying && index === this.props.notesArrayIndex,
+                  'Notes--active': index === this.props.notesArrayIndex,
                 })}
                 key={index}
               >

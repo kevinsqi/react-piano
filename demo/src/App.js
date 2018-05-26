@@ -151,7 +151,7 @@ class App extends React.Component {
       instrument: null,
       isPlaying: false,
       isRecording: true,
-      notesArray: SAMPLE_SONGS.lost_woods_theme,
+      notesArray: [],
       notesArrayIndex: 0,
     };
 
@@ -165,6 +165,7 @@ class App extends React.Component {
 
   componentDidMount() {
     this.loadInstrument();
+    this.loadNotes(SAMPLE_SONGS.lost_woods_theme);
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
   }
@@ -176,7 +177,7 @@ class App extends React.Component {
 
   handleKeyDown = (event) => {
     // TODO: refactor this into keyboardConfig
-    if (event.key === 'Shift') {
+    if (event.key === '-') {
       this.onRecordNotes([]);
     } else if (event.key === 'Backspace') {
       if (!this.state.isPlaying) {
@@ -188,6 +189,13 @@ class App extends React.Component {
         });
       }
     }
+  };
+
+  loadNotes = (notesArray) => {
+    this.setState({
+      notesArray,
+      notesArrayIndex: notesArray.length - 1,
+    });
   };
 
   loadInstrument = () => {
@@ -245,7 +253,7 @@ class App extends React.Component {
     this.setState({
       isPlaying: false,
       isRecording: true,
-      notesArrayIndex: 0,
+      notesArrayIndex: this.state.notesArray.length - 1,
     });
   };
 
