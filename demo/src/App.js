@@ -35,6 +35,23 @@ function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
   );
 }
 
+function Installation() {
+  return (
+    <div className="text-center">
+      <h2>Installation</h2>
+      <p className="mt-4">Install with yarn or npm:</p>
+      <p className="mt-3">
+        <code className="p-2 text-dark bg-yellow">yarn add react-piano</code>
+      </p>
+      <div className="mt-5">
+        <a className="btn btn-info btn-lg" href="https://github.com/iqnivek/react-piano">
+          View docs on Github
+        </a>
+      </div>
+    </div>
+  );
+}
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -243,18 +260,7 @@ class App extends React.Component {
           <hr className="mt-5" />
           <div className="row mt-5">
             <div className="col">
-              <div className="text-center">
-                <h2>Installation</h2>
-                <p className="mt-4">Install with yarn or npm:</p>
-                <p className="mt-3">
-                  <code className="p-2 text-dark bg-yellow">yarn add react-piano</code>
-                </p>
-                <div className="mt-5">
-                  <a className="btn btn-info btn-lg" href="https://github.com/iqnivek/react-piano">
-                    View docs on Github
-                  </a>
-                </div>
-              </div>
+              <Installation />
             </div>
           </div>
         </div>
