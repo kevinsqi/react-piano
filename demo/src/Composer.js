@@ -4,6 +4,7 @@ import { getMidiNumberAttributes } from 'react-piano';
 
 class Composer extends React.Component {
   export = () => {
+    /*
     const stepDuration = 1 / 4;
     const serialization = this.props.notesArray.map((midiNumbers, index) => {
       return {
@@ -13,6 +14,12 @@ class Composer extends React.Component {
       };
     });
     console.log(JSON.stringify(serialization, null, 4));
+    */
+    const exportJSON = JSON.stringify({
+      notes: this.props.notesArray,
+    });
+    console.log(exportJSON);
+    alert('Composition exported to developer console');
   };
 
   play = () => {
