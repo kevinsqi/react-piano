@@ -188,10 +188,10 @@ class App extends React.Component {
       if (!this.state.isPlaying) {
         // Delete note at notesArrayIndex
         const notesArrayCopy = this.state.notesArray.slice();
-        notesArrayCopy.splice(notesArrayCopy.length - 1, 1);
+        notesArrayCopy.splice(this.state.notesArrayIndex, 1);
         this.setState({
           notesArray: notesArrayCopy,
-          notesArrayIndex: notesArrayCopy.length - 1,
+          notesArrayIndex: this.getShiftedNotesArrayIndex(-1),
         });
       }
     } else if (event.key === 'ArrowLeft') {
