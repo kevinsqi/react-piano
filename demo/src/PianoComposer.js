@@ -112,6 +112,30 @@ class PianoComposer extends React.Component {
     }
   };
 
+  onClear = () => {
+    this.onStop();
+    this.setState({
+      notesArray: [],
+      notesArrayIndex: 0,
+    });
+  };
+
+  onPlay = (notesArray) => {
+    if (this.state.isPlaying) {
+      return;
+    }
+    this.setState({
+      isPlaying: true,
+      isRecording: false,
+    });
+    // TODO: configurable playback timing
+    this.playbackIntervalHandler = setInterval(() => {
+      this.setState({
+        notesArrayIndex: this.getShiftedNotesArrayIndex(1, this.state.notesArray.length),
+      });
+    }, 250);
+  };
+
   onStop = () => {
     clearInterval(this.playbackIntervalHandler);
     this.setState({
@@ -155,28 +179,8 @@ class PianoComposer extends React.Component {
           isPlaying={this.state.isPlaying}
           notesArray={this.state.notesArray}
           notesArrayIndex={this.state.notesArrayIndex}
-          onClear={() => {
-            this.onStop();
-            this.setState({
-              notesArray: [],
-              notesArrayIndex: 0,
-            });
-          }}
-          onPlay={(notesArray) => {
-            if (this.state.isPlaying) {
-              return;
-            }
-            this.setState({
-              isPlaying: true,
-              isRecording: false,
-            });
-            // TODO: configurable playback timing
-            this.playbackIntervalHandler = setInterval(() => {
-              this.setState({
-                notesArrayIndex: this.getShiftedNotesArrayIndex(1, this.state.notesArray.length),
-              });
-            }, 250);
-          }}
+          onClear={this.onClear}
+          onPlay={this.onPlay}
           onStop={this.onStop}
         />
       </div>
