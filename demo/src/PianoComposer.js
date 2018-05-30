@@ -1,6 +1,8 @@
 import React from 'react';
 import { Piano } from 'react-piano';
 import classNames from 'classnames';
+import MdArrowBack from 'react-icons/lib/md/arrow-back';
+import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 
 import Composer from './Composer';
 import DimensionsProvider from './DimensionsProvider';
@@ -84,13 +86,9 @@ class PianoComposer extends React.Component {
         });
       }
     } else if (event.key === 'ArrowLeft') {
-      this.setState({
-        notesArrayIndex: this.getShiftedNotesArrayIndex(-1, this.state.notesArray.length),
-      });
+      this.onStepBackward();
     } else if (event.key === 'ArrowRight') {
-      this.setState({
-        notesArrayIndex: this.getShiftedNotesArrayIndex(1, this.state.notesArray.length),
-      });
+      this.onStepForward();
     }
   };
 
@@ -110,6 +108,18 @@ class PianoComposer extends React.Component {
         notesArrayIndex: this.getShiftedNotesArrayIndex(1, notesArrayCopy.length),
       });
     }
+  };
+
+  onStepBackward = () => {
+    this.setState({
+      notesArrayIndex: this.getShiftedNotesArrayIndex(-1, this.state.notesArray.length),
+    });
+  };
+
+  onStepForward = () => {
+    this.setState({
+      notesArrayIndex: this.getShiftedNotesArrayIndex(1, this.state.notesArray.length),
+    });
   };
 
   onClear = () => {
@@ -182,6 +192,8 @@ class PianoComposer extends React.Component {
           onClear={this.onClear}
           onPlay={this.onPlay}
           onStop={this.onStop}
+          onStepForward={this.onStepForward}
+          onStepBackward={this.onStepBackward}
         />
       </div>
     );

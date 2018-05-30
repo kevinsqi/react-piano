@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { getMidiNumberAttributes } from 'react-piano';
+import MdArrowBack from 'react-icons/lib/md/arrow-back';
+import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 
 class Composer extends React.Component {
   export = () => {
@@ -59,6 +61,19 @@ class Composer extends React.Component {
               onClick={this.props.onClear}
             >
               Clear
+            </button>
+          </span>
+          <span className="ml-1">
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              onClick={this.props.onStepBackward}
+            >
+              <MdArrowBack />
+            </button>
+          </span>
+          <span className="ml-1">
+            <button className="btn btn-outline-secondary btn-sm" onClick={this.props.onStepForward}>
+              <MdArrowForward />
             </button>
           </span>
           <span className="ml-1">
