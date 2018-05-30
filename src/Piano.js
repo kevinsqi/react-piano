@@ -104,8 +104,7 @@ class Piano extends React.Component {
       notes: prevState.notes.concat(midiNumber).sort(),
       isRecorded: false,
     }));
-    const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onNoteDown(attrs);
+    this.props.onNoteDown(midiNumber);
   };
 
   handleNoteUp = (midiNumber) => {
@@ -122,20 +121,17 @@ class Piano extends React.Component {
       notes: prevState.notes.filter((note) => midiNumber !== note),
       isRecorded: this.state.isRecorded || willRecord,
     }));
-    const attrs = getMidiNumberAttributes(midiNumber);
-    this.props.onNoteUp(attrs);
+    this.props.onNoteUp(midiNumber);
   };
 
   // TODO: rename this more clearly relative to handleNoteDown
   // For triggering playback
   triggerNotesDown = (prevMidiNumbers, midiNumbers) => {
     (prevMidiNumbers || []).forEach((number) => {
-      const attrs = getMidiNumberAttributes(number);
-      this.props.onNoteUp(attrs);
+      this.props.onNoteUp(number);
     });
     (midiNumbers || []).forEach((number) => {
-      const attrs = getMidiNumberAttributes(number);
-      this.props.onNoteDown(attrs);
+      this.props.onNoteDown(number);
     });
   };
 

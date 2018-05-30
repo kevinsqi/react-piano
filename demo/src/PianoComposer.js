@@ -1,10 +1,10 @@
 import React from 'react';
 import { Piano } from 'react-piano';
 import classNames from 'classnames';
+
 import Composer from './Composer';
 import DimensionsProvider from './DimensionsProvider';
-import Soundfont from 'soundfont-player';
-
+import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
@@ -34,9 +34,8 @@ class PianoComposer extends React.Component {
   constructor(props) {
     super(props);
 
+    // TODO: split state into multiple components
     this.state = {
-      activeAudioNodes: {},
-      instrument: null,
       isPlaying: false,
       isRecording: true,
       notesArray: [],
@@ -52,7 +51,6 @@ class PianoComposer extends React.Component {
   }
 
   componentDidMount() {
-    this.loadInstrument();
     this.loadNotes(SAMPLE_SONGS.lost_woods_theme);
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
@@ -68,7 +66,6 @@ class PianoComposer extends React.Component {
     if (base === 0) {
       return 0;
     }
-    console.log('getShiftedNotesArrayIndex', value, base);
     return (this.state.notesArrayIndex + value + base) % base; // Need to add base to prevent negative numbers
   };
 
@@ -104,48 +101,6 @@ class PianoComposer extends React.Component {
     });
   };
 
-  loadInstrument = () => {
-    // Sound names here: http://gleitz.github.io/midi-js-soundfonts/MusyngKite/names.json
-    Soundfont.instrument(audioContext, 'acoustic_grand_piano', {
-      nameToUrl: (name, soundfont, format) => {
-        return `${window.location.pathname}soundfonts/${name}-mp3.js`;
-      },
-    }).then((instrument) => {
-      this.setState({
-        instrument,
-      });
-    });
-  };
-
-  onNoteDown = ({ midiNumber, frequency }) => {
-    audioContext.resume().then(() => {
-      const audioNode = this.state.instrument.play(midiNumber);
-      this.setState({
-        activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, {
-          [midiNumber]: audioNode,
-        }),
-      });
-      // TODO: add back oscillator
-    });
-  };
-
-  onNoteUp = ({ midiNumber, frequency }) => {
-    audioContext.resume().then(() => {
-      if (!this.state.activeAudioNodes[midiNumber]) {
-        return;
-      }
-      // TODO: refactor
-      const audioNode = this.state.activeAudioNodes[midiNumber];
-      audioNode.stop();
-      const activeAudioNodes = Object.assign({}, this.state.activeAudioNodes);
-      delete activeAudioNodes[midiNumber];
-      this.setState({
-        activeAudioNodes,
-      });
-      // TODO: add back oscillator
-    });
-  };
-
   onRecordNotes = (midiNumbers) => {
     if (this.state.isRecording) {
       const notesArrayCopy = this.state.notesArray.slice();
@@ -172,20 +127,26 @@ class PianoComposer extends React.Component {
         <div>
           <DimensionsProvider>
             {(width) => (
-              <Piano
-                startNote="c4"
-                endNote="c6"
-                notes={
-                  this.state.isPlaying ? this.state.notesArray[this.state.notesArrayIndex] : null
-                }
-                onNoteDown={this.onNoteDown}
-                onNoteUp={this.onNoteUp}
-                disabled={!this.state.instrument}
-                keyboardConfig={KEYBOARD_CONFIGS.MIDDLE}
-                width={width}
-                renderNoteLabel={renderNoteLabel}
-                onRecordNotes={this.onRecordNotes}
-              />
+              <InstrumentProvider audioContext={audioContext}>
+                {({ isLoading, onNoteDown, onNoteUp }) => (
+                  <Piano
+                    startNote="c4"
+                    endNote="c6"
+                    notes={
+                      this.state.isPlaying
+                        ? this.state.notesArray[this.state.notesArrayIndex]
+                        : null
+                    }
+                    onNoteDown={onNoteDown}
+                    onNoteUp={onNoteUp}
+                    disabled={!isLoading}
+                    keyboardConfig={KEYBOARD_CONFIGS.MIDDLE}
+                    width={width}
+                    renderNoteLabel={renderNoteLabel}
+                    onRecordNotes={this.onRecordNotes}
+                  />
+                )}
+              </InstrumentProvider>
             )}
           </DimensionsProvider>
         </div>
