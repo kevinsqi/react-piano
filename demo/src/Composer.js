@@ -37,50 +37,60 @@ class Composer extends React.Component {
   render() {
     return (
       <div className={this.props.className}>
-        <div>
-          <div className="btn-group">
-            <button
-              className="btn btn-info btn-sm"
-              disabled={!this.isPlayable()}
-              onClick={this.play}
-            >
-              Play
-            </button>
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              disabled={!this.props.isPlaying}
-              onClick={this.props.onStop}
-            >
-              Stop
-            </button>
+        <div className="d-flex flex-row">
+          <div style={{ flex: 1 }}>
+            <div className="btn-group">
+              <button
+                className="btn btn-info btn-sm"
+                disabled={!this.isPlayable()}
+                onClick={this.play}
+              >
+                Play
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                disabled={!this.props.isPlaying}
+                onClick={this.props.onStop}
+              >
+                Stop
+              </button>
+            </div>
+            <div className="btn-group ml-4">
+              <button
+                className="btn btn-outline-danger btn-sm"
+                disabled={this.props.notesArray.length === 0}
+                onClick={this.props.onDeleteNote}
+              >
+                Delete note
+              </button>
+              <button
+                className="btn btn-outline-danger btn-sm"
+                disabled={this.props.notesArray.length === 0}
+                onClick={this.props.onClear}
+              >
+                Clear all
+              </button>
+            </div>
+            <div className="btn-group ml-4">
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={this.props.onStepBackward}
+              >
+                <MdArrowBack />
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={this.props.onStepForward}
+              >
+                <MdArrowForward />
+              </button>
+            </div>
           </div>
-          <span className="ml-1">
-            <button
-              className="btn btn-outline-danger btn-sm"
-              disabled={this.props.notesArray.length === 0}
-              onClick={this.props.onClear}
-            >
-              Clear
-            </button>
-          </span>
-          <span className="ml-1">
-            <button
-              className="btn btn-outline-secondary btn-sm"
-              onClick={this.props.onStepBackward}
-            >
-              <MdArrowBack />
-            </button>
-          </span>
-          <span className="ml-1">
-            <button className="btn btn-outline-secondary btn-sm" onClick={this.props.onStepForward}>
-              <MdArrowForward />
-            </button>
-          </span>
-          <span className="ml-1">
+          <div>
             <button className="btn btn-outline-secondary btn-sm" onClick={this.export}>
               Export
             </button>
-          </span>
+          </div>
         </div>
         <div className="mt-3">
           {this.props.notesArray.map((notes, index) => {

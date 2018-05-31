@@ -1,8 +1,6 @@
 import React from 'react';
 import { Piano } from 'react-piano';
 import classNames from 'classnames';
-import MdArrowBack from 'react-icons/lib/md/arrow-back';
-import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 
 import Composer from './Composer';
 import DimensionsProvider from './DimensionsProvider';
@@ -76,15 +74,7 @@ class PianoComposer extends React.Component {
     if (event.key === '-') {
       this.onRecordNotes([]);
     } else if (event.key === 'Backspace') {
-      if (!this.state.isPlaying) {
-        // Delete note at notesArrayIndex
-        const notesArrayCopy = this.state.notesArray.slice();
-        notesArrayCopy.splice(this.state.notesArrayIndex, 1);
-        this.setState({
-          notesArray: notesArrayCopy,
-          notesArrayIndex: this.getShiftedNotesArrayIndex(-1, notesArrayCopy.length),
-        });
-      }
+      this.onDeleteNote();
     } else if (event.key === 'ArrowLeft') {
       this.onStepBackward();
     } else if (event.key === 'ArrowRight') {
@@ -106,6 +96,18 @@ class PianoComposer extends React.Component {
       this.setState({
         notesArray: notesArrayCopy,
         notesArrayIndex: this.getShiftedNotesArrayIndex(1, notesArrayCopy.length),
+      });
+    }
+  };
+
+  onDeleteNote = () => {
+    if (!this.state.isPlaying) {
+      // Delete note at notesArrayIndex
+      const notesArrayCopy = this.state.notesArray.slice();
+      notesArrayCopy.splice(this.state.notesArrayIndex, 1);
+      this.setState({
+        notesArray: notesArrayCopy,
+        notesArrayIndex: this.getShiftedNotesArrayIndex(-1, notesArrayCopy.length),
       });
     }
   };
@@ -189,6 +191,7 @@ class PianoComposer extends React.Component {
           isPlaying={this.state.isPlaying}
           notesArray={this.state.notesArray}
           notesArrayIndex={this.state.notesArrayIndex}
+          onDeleteNote={this.onDeleteNote}
           onClear={this.onClear}
           onPlay={this.onPlay}
           onStop={this.onStop}
