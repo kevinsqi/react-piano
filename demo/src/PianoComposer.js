@@ -72,7 +72,7 @@ class PianoComposer extends React.Component {
   handleKeyDown = (event) => {
     // TODO: refactor this into keyboardConfig
     if (event.key === '-') {
-      this.onRecordNotes([]);
+      this.onAddRest();
     } else if (event.key === 'Backspace') {
       this.onDeleteNote();
     } else if (event.key === 'ArrowLeft') {
@@ -98,6 +98,10 @@ class PianoComposer extends React.Component {
         notesArrayIndex: this.getShiftedNotesArrayIndex(1, notesArrayCopy.length),
       });
     }
+  };
+
+  onAddRest = () => {
+    this.onRecordNotes([]);
   };
 
   onDeleteNote = () => {
@@ -191,6 +195,7 @@ class PianoComposer extends React.Component {
           isPlaying={this.state.isPlaying}
           notesArray={this.state.notesArray}
           notesArrayIndex={this.state.notesArrayIndex}
+          onAddRest={this.onAddRest}
           onDeleteNote={this.onDeleteNote}
           onClear={this.onClear}
           onPlay={this.onPlay}

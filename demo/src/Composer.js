@@ -55,14 +55,7 @@ class Composer extends React.Component {
                 Stop
               </button>
             </div>
-            <div className="btn-group ml-4">
-              <button
-                className="btn btn-outline-danger btn-sm"
-                disabled={this.props.notesArray.length === 0}
-                onClick={this.props.onDeleteNote}
-              >
-                Delete note
-              </button>
+            <span className="ml-4">
               <button
                 className="btn btn-outline-danger btn-sm"
                 disabled={this.props.notesArray.length === 0}
@@ -70,7 +63,7 @@ class Composer extends React.Component {
               >
                 Clear all
               </button>
-            </div>
+            </span>
             <div className="btn-group ml-4">
               <button
                 className="btn btn-outline-secondary btn-sm"
@@ -83,6 +76,22 @@ class Composer extends React.Component {
                 onClick={this.props.onStepForward}
               >
                 <MdArrowForward />
+              </button>
+            </div>
+            <div className="btn-group ml-4">
+              <button
+                className="btn btn-outline-secondary btn-sm text-left"
+                disabled={this.props.notesArray.length === 0}
+                onClick={this.props.onAddRest}
+              >
+                Add rest <span className="KeyboardShortcutLabel">Dash (-)</span>
+              </button>
+              <button
+                className="btn btn-outline-danger btn-sm text-left"
+                disabled={this.props.notesArray.length === 0}
+                onClick={this.props.onDeleteNote}
+              >
+                Delete note <span className="KeyboardShortcutLabel">Backspace</span>
               </button>
             </div>
           </div>

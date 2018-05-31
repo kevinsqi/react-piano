@@ -40,3 +40,10 @@
   font-size: 12px;
   text-transform: capitalize;
 }
+
+
+.KeyboardShortcutLabel {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.7em;
+}
