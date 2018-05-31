@@ -40,13 +40,10 @@ class InstrumentProvider extends React.Component {
       if (!this.state.activeAudioNodes[midiNumber]) {
         return;
       }
-      // TODO: refactor
       const audioNode = this.state.activeAudioNodes[midiNumber];
       audioNode.stop();
-      const activeAudioNodes = Object.assign({}, this.state.activeAudioNodes);
-      delete activeAudioNodes[midiNumber];
       this.setState({
-        activeAudioNodes,
+        activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, { [midiNumber]: null }),
       });
     });
   };
