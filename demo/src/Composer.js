@@ -55,7 +55,7 @@ class Composer extends React.Component {
                 Stop
               </button>
             </div>
-            <span className="ml-4">
+            <span className="ml-3">
               <button
                 className="btn btn-outline-danger btn-sm"
                 disabled={this.props.notesArray.length === 0}
@@ -64,40 +64,49 @@ class Composer extends React.Component {
                 Clear all
               </button>
             </span>
-            <div className="btn-group ml-4">
-              <button
-                className="btn btn-outline-secondary btn-sm"
-                onClick={this.props.onStepBackward}
-              >
-                <MdArrowBack />
-              </button>
-              <button
-                className="btn btn-outline-secondary btn-sm"
-                onClick={this.props.onStepForward}
-              >
-                <MdArrowForward />
-              </button>
-            </div>
-            <div className="btn-group ml-4">
-              <button
-                className="btn btn-outline-secondary btn-sm text-left"
-                disabled={this.props.notesArray.length === 0}
-                onClick={this.props.onAddRest}
-              >
-                Add rest <span className="KeyboardShortcutLabel">Dash (-)</span>
-              </button>
-              <button
-                className="btn btn-outline-danger btn-sm text-left"
-                disabled={this.props.notesArray.length === 0}
-                onClick={this.props.onDeleteNote}
-              >
-                Delete note <span className="KeyboardShortcutLabel">Backspace</span>
-              </button>
-            </div>
           </div>
           <div>
             <button className="btn btn-outline-secondary btn-sm" onClick={this.export}>
               Export
+            </button>
+          </div>
+        </div>
+        <div className="d-flex flex-row mt-3">
+          <div className="btn-group" style={{ flex: 1 }}>
+            <button
+              className="btn btn-outline-secondary btn-sm text-left"
+              onClick={this.props.onStepBackward}
+            >
+              Step back{' '}
+              <span className="KeyboardShortcutLabel">
+                <MdArrowBack />
+              </span>
+            </button>
+            <button
+              className="btn btn-outline-secondary btn-sm text-left"
+              onClick={this.props.onStepForward}
+            >
+              Step forward
+              <span className="KeyboardShortcutLabel">
+                <MdArrowForward />
+              </span>
+            </button>
+          </div>
+
+          <div className="btn-group ml-3">
+            <button
+              className="btn btn-outline-secondary btn-sm text-left"
+              disabled={this.props.notesArray.length === 0}
+              onClick={this.props.onAddRest}
+            >
+              Add rest <span className="KeyboardShortcutLabel">Dash (-)</span>
+            </button>
+            <button
+              className="btn btn-outline-danger btn-sm text-left"
+              disabled={this.props.notesArray.length === 0}
+              onClick={this.props.onDeleteNote}
+            >
+              Delete note <span className="KeyboardShortcutLabel">Backspace</span>
             </button>
           </div>
         </div>
