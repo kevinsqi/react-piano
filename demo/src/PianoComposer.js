@@ -191,7 +191,7 @@ class PianoComposer extends React.Component {
           </DimensionsProvider>
         </div>
         <Composer
-          className="mt-3"
+          className="Composer mt-3"
           isPlaying={this.state.isPlaying}
           notesArray={this.state.notesArray}
           notesArrayIndex={this.state.notesArrayIndex}
