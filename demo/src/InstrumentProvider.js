@@ -4,18 +4,11 @@ import Soundfont from 'soundfont-player';
 class InstrumentProvider extends React.Component {
   state = {
     activeAudioNodes: {},
-    events: [],
     instrument: null,
   };
 
   componentDidMount() {
     this.loadInstrument();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.events !== this.state.events) {
-      this.props.onEventsUpdated(this.state.events);
-    }
   }
 
   loadInstrument = () => {
@@ -38,11 +31,6 @@ class InstrumentProvider extends React.Component {
         activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, {
           [midiNumber]: audioNode,
         }),
-        events: this.state.events.concat({
-          type: 'NOTE_START',
-          time: this.props.audioContext.currentTime,
-          midiNumber: midiNumber,
-        }),
       });
     });
   };
@@ -56,11 +44,6 @@ class InstrumentProvider extends React.Component {
       audioNode.stop();
       this.setState({
         activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, { [midiNumber]: null }),
-        events: this.state.events.concat({
-          type: 'NOTE_END',
-          time: this.props.audioContext.currentTime,
-          midiNumber: midiNumber,
-        }),
       });
     });
   };

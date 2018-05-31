@@ -167,10 +167,7 @@ class PianoComposer extends React.Component {
         <div>
           <DimensionsProvider>
             {(width) => (
-              <InstrumentProvider
-                audioContext={audioContext}
-                onEventsUpdated={(events) => console.log('onEventsUpdated', events)}
-              >
+              <InstrumentProvider audioContext={audioContext}>
                 {({ isLoading, onNoteDown, onNoteUp }) => (
                   <Piano
                     startNote="c4"
