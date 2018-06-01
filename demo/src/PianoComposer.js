@@ -56,13 +56,6 @@ class PianoComposer extends React.Component {
 
   componentDidMount() {
     this.loadNotes(SAMPLE_SONGS.lost_woods_theme);
-    window.addEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('keyup', this.handleKeyUp);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-    window.removeEventListener('keyup', this.handleKeyUp);
   }
 
   // TODO: refactor
@@ -71,19 +64,6 @@ class PianoComposer extends React.Component {
       return 0;
     }
     return (this.state.notesArrayIndex + value + base) % base; // Need to add base to prevent negative numbers
-  };
-
-  handleKeyDown = (event) => {
-    // TODO: refactor this into keyboardConfig
-    if (event.key === '-') {
-      this.onAddRest();
-    } else if (event.key === 'Backspace') {
-      this.onDeleteNote();
-    } else if (event.key === 'ArrowLeft') {
-      this.onStepBackward();
-    } else if (event.key === 'ArrowRight') {
-      this.onStepForward();
-    }
   };
 
   loadNotes = (notesArray) => {
@@ -165,24 +145,41 @@ class PianoComposer extends React.Component {
     });
   };
 
+  onKeyDown = (event) => {
+    if (event.key === '-') {
+      this.onAddRest();
+    } else if (event.key === 'Backspace') {
+      this.onDeleteNote();
+    } else if (event.key === 'ArrowLeft') {
+      this.onStepBackward();
+    } else if (event.key === 'ArrowRight') {
+      this.onStepForward();
+    }
+  };
+
+  onMouseDown = () => {
+    this.setState({
+      input: Object.assign({}, this.state.input, {
+        isMouseDown: true,
+      }),
+    });
+  };
+
+  onMouseUp = () => {
+    this.setState({
+      input: Object.assign({}, this.state.input, {
+        isMouseDown: false,
+      }),
+    });
+  };
+
   render() {
     return (
       <div>
         <InputManager
-          onMouseDown={(event) => {
-            this.setState({
-              input: Object.assign({}, this.state.input, {
-                isMouseDown: true,
-              }),
-            });
-          }}
-          onMouseUp={(event) => {
-            this.setState({
-              input: Object.assign({}, this.state.input, {
-                isMouseDown: false,
-              }),
-            });
-          }}
+          onKeyDown={this.onKeyDown}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
         />
         <div>
           <DimensionsProvider>
