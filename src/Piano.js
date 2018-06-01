@@ -1,11 +1,13 @@
 import React from 'react';
+import _ from 'lodash';
+
 import Keyboard from './Keyboard';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
 
 class Piano extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.notes !== prevProps.notes) {
-      this.triggerNotesDown(prevProps.notes, this.props.notes);
+      this.triggerNotesDown(prevProps.notes || [], this.props.notes || []);
     }
   }
 
@@ -14,13 +16,14 @@ class Piano extends React.Component {
     return _.range(this.props.startNote, this.props.endNote + 1);
   }
 
-  // TODO: rename this more clearly relative to handleNoteDown
   // For triggering playback
   triggerNotesDown = (prevMidiNumbers, midiNumbers) => {
-    (prevMidiNumbers || []).forEach((number) => {
+    const notesUp = _.difference(prevMidiNumbers, midiNumbers);
+    const notesDown = _.difference(midiNumbers, prevMidiNumbers);
+    notesUp.forEach((number) => {
       this.props.onNoteUp(number);
     });
-    (midiNumbers || []).forEach((number) => {
+    notesDown.forEach((number) => {
       this.props.onNoteDown(number);
     });
   };

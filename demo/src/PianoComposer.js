@@ -30,6 +30,8 @@ function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
   );
 }
 
+// noreintegrate add back recording
+// noreintegrate add back note labels
 class PianoComposer extends React.Component {
   constructor(props) {
     super(props);
@@ -225,6 +227,7 @@ class PianoComposer extends React.Component {
       <div>
         <InputManager
           onKeyDown={this.onKeyDown}
+          onKeyUp={this.onKeyUp}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
         />
