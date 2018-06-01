@@ -2,6 +2,12 @@
   box-sizing: border-box;
 }
 
+.Composer {
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 10px;
+}
+
 .bg-yellow {
   background-color: #f8e8d5;
 }
@@ -14,6 +20,7 @@
   color: #888;
   min-width: 2rem;
   display: inline-block;
+  border-radius: 2px;
 }
 .Notes--active {
   background: #63b0cd;

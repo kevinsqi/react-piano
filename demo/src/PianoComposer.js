@@ -6,6 +6,7 @@ import Composer from './Composer';
 import DimensionsProvider from './DimensionsProvider';
 import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
+import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
@@ -40,6 +41,9 @@ class PianoComposer extends React.Component {
       isRecording: true,
       notesArray: [],
       notesArrayIndex: 0,
+      input: {
+        isMouseDown: false,
+      },
     };
 
     this.oscillator = new Oscillator({
@@ -52,13 +56,6 @@ class PianoComposer extends React.Component {
 
   componentDidMount() {
     this.loadNotes(SAMPLE_SONGS.lost_woods_theme);
-    window.addEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('keyup', this.handleKeyUp);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-    window.removeEventListener('keyup', this.handleKeyUp);
   }
 
   // TODO: refactor
@@ -67,19 +64,6 @@ class PianoComposer extends React.Component {
       return 0;
     }
     return (this.state.notesArrayIndex + value + base) % base; // Need to add base to prevent negative numbers
-  };
-
-  handleKeyDown = (event) => {
-    // TODO: refactor this into keyboardConfig
-    if (event.key === '-') {
-      this.onAddRest();
-    } else if (event.key === 'Backspace') {
-      this.onDeleteNote();
-    } else if (event.key === 'ArrowLeft') {
-      this.onStepBackward();
-    } else if (event.key === 'ArrowRight') {
-      this.onStepForward();
-    }
   };
 
   loadNotes = (notesArray) => {
@@ -161,9 +145,42 @@ class PianoComposer extends React.Component {
     });
   };
 
+  onKeyDown = (event) => {
+    if (event.key === '-') {
+      this.onAddRest();
+    } else if (event.key === 'Backspace') {
+      this.onDeleteNote();
+    } else if (event.key === 'ArrowLeft') {
+      this.onStepBackward();
+    } else if (event.key === 'ArrowRight') {
+      this.onStepForward();
+    }
+  };
+
+  onMouseDown = () => {
+    this.setState({
+      input: Object.assign({}, this.state.input, {
+        isMouseDown: true,
+      }),
+    });
+  };
+
+  onMouseUp = () => {
+    this.setState({
+      input: Object.assign({}, this.state.input, {
+        isMouseDown: false,
+      }),
+    });
+  };
+
   render() {
     return (
       <div>
+        <InputManager
+          onKeyDown={this.onKeyDown}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+        />
         <div>
           <DimensionsProvider>
             {(width) => (
@@ -182,6 +199,7 @@ class PianoComposer extends React.Component {
                     disabled={!isLoading}
                     keyboardConfig={KEYBOARD_CONFIGS.MIDDLE}
                     width={width}
+                    gliss={this.state.input.isMouseDown}
                     renderNoteLabel={renderNoteLabel}
                     onRecordNotes={this.onRecordNotes}
                   />
@@ -191,7 +209,7 @@ class PianoComposer extends React.Component {
           </DimensionsProvider>
         </div>
         <Composer
-          className="mt-3"
+          className="Composer mt-3"
           isPlaying={this.state.isPlaying}
           notesArray={this.state.notesArray}
           notesArrayIndex={this.state.notesArrayIndex}

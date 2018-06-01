@@ -13,14 +13,11 @@ class Piano extends React.Component {
 
     this.state = {
       notes: [],
-      isMouseDown: false,
       isRecorded: false,
     };
   }
 
   componentDidMount() {
-    window.addEventListener('mousedown', this.handleMouseDown);
-    window.addEventListener('mouseup', this.handleMouseUp);
     if (this.props.keyboardConfig) {
       window.addEventListener('keydown', this.handleKeyDown);
       window.addEventListener('keyup', this.handleKeyUp);
@@ -28,8 +25,6 @@ class Piano extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('mousedown', this.handleMouseDown);
-    window.removeEventListener('mouseup', this.handleMouseUp);
     if (this.props.keyboardConfig) {
       window.removeEventListener('keydown', this.handleKeyDown);
       window.removeEventListener('keyup', this.handleKeyUp);
@@ -83,18 +78,6 @@ class Piano extends React.Component {
     }
   };
 
-  handleMouseDown = (event) => {
-    this.setState({
-      isMouseDown: true,
-    });
-  };
-
-  handleMouseUp = (event) => {
-    this.setState({
-      isMouseDown: false,
-    });
-  };
-
   handleNoteDown = (midiNumber) => {
     // Prevents duplicate note firings
     if (this.state.notes.includes(midiNumber) || this.props.disabled) {
@@ -143,7 +126,7 @@ class Piano extends React.Component {
         disabled={this.props.disabled}
         notes={this.props.notes || this.state.notes}
         width={this.props.width}
-        gliss={this.state.isMouseDown}
+        gliss={this.props.gliss}
         onNoteDown={this.handleNoteDown}
         onNoteUp={this.handleNoteUp}
         renderNoteLabel={(midiNumber) => {
