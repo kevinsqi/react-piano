@@ -6,6 +6,7 @@ import Composer from './Composer';
 import DimensionsProvider from './DimensionsProvider';
 import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
+import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
@@ -40,6 +41,9 @@ class PianoComposer extends React.Component {
       isRecording: true,
       notesArray: [],
       notesArrayIndex: 0,
+      input: {
+        isMouseDown: false,
+      },
     };
 
     this.oscillator = new Oscillator({
@@ -164,6 +168,22 @@ class PianoComposer extends React.Component {
   render() {
     return (
       <div>
+        <InputManager
+          onMouseDown={(event) => {
+            this.setState({
+              input: Object.assign({}, this.state.input, {
+                isMouseDown: true,
+              }),
+            });
+          }}
+          onMouseUp={(event) => {
+            this.setState({
+              input: Object.assign({}, this.state.input, {
+                isMouseDown: false,
+              }),
+            });
+          }}
+        />
         <div>
           <DimensionsProvider>
             {(width) => (
@@ -182,6 +202,7 @@ class PianoComposer extends React.Component {
                     disabled={!isLoading}
                     keyboardConfig={KEYBOARD_CONFIGS.MIDDLE}
                     width={width}
+                    gliss={this.state.input.isMouseDown}
                     renderNoteLabel={renderNoteLabel}
                     onRecordNotes={this.onRecordNotes}
                   />
