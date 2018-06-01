@@ -1,16 +1,15 @@
 import React from 'react';
 import { Piano } from 'react-piano';
 import classNames from 'classnames';
+import _ from 'lodash';
 
 import Composer from './Composer';
 import DimensionsProvider from './DimensionsProvider';
-import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
+import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
-
-const audioContext = new window.AudioContext();
 
 // TODO make component
 function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
@@ -39,6 +38,7 @@ class PianoComposer extends React.Component {
     this.state = {
       isPlaying: false,
       isRecording: true,
+      notes: [],
       notesArray: [],
       notesArrayIndex: 0,
       input: {
@@ -47,7 +47,7 @@ class PianoComposer extends React.Component {
     };
 
     this.oscillator = new Oscillator({
-      audioContext,
+      audioContext: props.audioContext,
       gain: 0.1,
     });
 
@@ -64,6 +64,16 @@ class PianoComposer extends React.Component {
       return 0;
     }
     return (this.state.notesArrayIndex + value + base) % base; // Need to add base to prevent negative numbers
+  };
+
+  // TODO dedupe
+  getMidiNumbers() {
+    return _.range(this.props.startNote, this.props.endNote + 1);
+  }
+
+  getMidiNumberForKey = (key) => {
+    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
+    return mapping[key];
   };
 
   loadNotes = (notesArray) => {
@@ -146,7 +156,13 @@ class PianoComposer extends React.Component {
   };
 
   onKeyDown = (event) => {
-    if (event.key === '-') {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const midiNumber = this.getMidiNumberForKey(event.key);
+    if (midiNumber) {
+      this.onNoteDown(midiNumber);
+    } else if (event.key === '-') {
       this.onAddRest();
     } else if (event.key === 'Backspace') {
       this.onDeleteNote();
@@ -155,6 +171,37 @@ class PianoComposer extends React.Component {
     } else if (event.key === 'ArrowRight') {
       this.onStepForward();
     }
+  };
+
+  onKeyUp = (event) => {
+    if (event.ctrlKey || event.metaKey || event.shiftKey) {
+      return;
+    }
+    const midiNumber = this.getMidiNumberForKey(event.key);
+    if (midiNumber) {
+      this.onNoteUp(midiNumber);
+    }
+  };
+
+  onNoteDown = (midiNumber) => {
+    // Prevents duplicate note firings
+    if (this.state.notes.includes(midiNumber) || this.props.isLoading) {
+      return;
+    }
+    this.setState((prevState) => ({
+      notes: prevState.notes.concat(midiNumber).sort(),
+    }));
+    this.props.onNoteDown(midiNumber);
+  };
+
+  onNoteUp = (midiNumber) => {
+    if (!this.state.notes.includes(midiNumber) || this.props.isLoading) {
+      return;
+    }
+    this.setState((prevState) => ({
+      notes: prevState.notes.filter((note) => midiNumber !== note),
+    }));
+    this.props.onNoteUp(midiNumber);
   };
 
   onMouseDown = () => {
@@ -184,27 +231,21 @@ class PianoComposer extends React.Component {
         <div>
           <DimensionsProvider>
             {(width) => (
-              <InstrumentProvider audioContext={audioContext}>
-                {({ isLoading, onNoteDown, onNoteUp }) => (
-                  <Piano
-                    startNote="c4"
-                    endNote="c6"
-                    notes={
-                      this.state.isPlaying
-                        ? this.state.notesArray[this.state.notesArrayIndex]
-                        : null
-                    }
-                    onNoteDown={onNoteDown}
-                    onNoteUp={onNoteUp}
-                    disabled={!isLoading}
-                    keyboardConfig={KEYBOARD_CONFIGS.MIDDLE}
-                    width={width}
-                    gliss={this.state.input.isMouseDown}
-                    renderNoteLabel={renderNoteLabel}
-                    onRecordNotes={this.onRecordNotes}
-                  />
-                )}
-              </InstrumentProvider>
+              <Piano
+                startNote={this.props.startNote}
+                endNote={this.props.endNote}
+                notes={
+                  this.state.isPlaying
+                    ? this.state.notesArray[this.state.notesArrayIndex]
+                    : this.state.notes
+                }
+                disabled={this.props.isLoading}
+                width={width}
+                gliss={this.state.input.isMouseDown}
+                renderNoteLabel={renderNoteLabel}
+                onNoteDown={this.onNoteDown}
+                onNoteUp={this.onNoteUp}
+              />
             )}
           </DimensionsProvider>
         </div>

@@ -50,7 +50,7 @@ class InstrumentProvider extends React.Component {
 
   render() {
     return this.props.children({
-      isLoading: !!this.state.instrument,
+      isLoading: !this.state.instrument,
       onNoteDown: this.onNoteDown,
       onNoteUp: this.onNoteUp,
     });
