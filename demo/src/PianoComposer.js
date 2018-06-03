@@ -11,7 +11,6 @@ import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
-// noreintegrate fix lingering note on stop again
 // noreintegrate add back recording
 class PianoComposer extends React.Component {
   constructor(props) {
@@ -149,6 +148,9 @@ class PianoComposer extends React.Component {
 
   onStop = () => {
     clearInterval(this.playbackIntervalHandler);
+    // Trigger residual notes that have started playing, to stop playing.
+    // Otherwise, there's usually a lingering note.
+    this.props.onStopAll();
     this.setState({
       isPlaying: false,
       isRecording: true,
