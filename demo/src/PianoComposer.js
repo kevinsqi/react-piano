@@ -11,7 +11,6 @@ import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
-// noreintegrate fix lingering note when stopping
 // noreintegrate add back recording
 class PianoComposer extends React.Component {
   constructor(props) {
@@ -40,6 +39,13 @@ class PianoComposer extends React.Component {
   componentDidMount() {
     this.loadNotes(SAMPLE_SONGS.lost_woods_theme);
   }
+
+  getActiveNotes = () => {
+    // Returns playback notes, or currently active notes from user input
+    return this.state.isPlaying
+      ? this.state.notesArray[this.state.notesArrayIndex]
+      : this.state.notes;
+  };
 
   // TODO: refactor
   getShiftedNotesArrayIndex = (value, base) => {
@@ -177,24 +183,41 @@ class PianoComposer extends React.Component {
   };
 
   onNoteDown = (midiNumber) => {
-    // Prevents duplicate note firings
-    if (this.state.notes.includes(midiNumber) || this.props.isLoading) {
+    if (this.props.isLoading) {
       return;
     }
-    this.setState((prevState) => ({
-      notes: prevState.notes.concat(midiNumber).sort(),
-    }));
-    this.props.onNoteDown(midiNumber);
+    if (this.state.isPlaying) {
+      this.props.onNoteDown(midiNumber);
+    } else {
+      // Prevent duplicate note firings
+      const alreadyFired = this.state.notes.includes(midiNumber);
+      if (!alreadyFired) {
+        this.props.onNoteDown(midiNumber);
+
+        // Only set notes for user input, not programmatic firings
+        this.setState((prevState) => ({
+          notes: prevState.notes.concat(midiNumber).sort(),
+        }));
+      }
+    }
   };
 
   onNoteUp = (midiNumber) => {
-    if (!this.state.notes.includes(midiNumber) || this.props.isLoading) {
+    if (this.props.isLoading) {
       return;
     }
-    this.setState((prevState) => ({
-      notes: prevState.notes.filter((note) => midiNumber !== note),
-    }));
-    this.props.onNoteUp(midiNumber);
+    if (this.state.isPlaying) {
+      this.props.onNoteUp(midiNumber);
+    } else {
+      const alreadyFired = !this.state.notes.includes(midiNumber);
+      if (!alreadyFired) {
+        this.props.onNoteUp(midiNumber);
+        // Only set notes for user input, not programmatic firings
+        this.setState((prevState) => ({
+          notes: prevState.notes.filter((note) => midiNumber !== note),
+        }));
+      }
+    }
   };
 
   onMouseDown = () => {
@@ -248,11 +271,7 @@ class PianoComposer extends React.Component {
               <Piano
                 startNote={this.props.startNote}
                 endNote={this.props.endNote}
-                notes={
-                  this.state.isPlaying
-                    ? this.state.notesArray[this.state.notesArrayIndex]
-                    : this.state.notes
-                }
+                notes={this.getActiveNotes()}
                 disabled={this.props.isLoading}
                 width={width}
                 gliss={this.state.input.isMouseDown}
