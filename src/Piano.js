@@ -11,11 +11,6 @@ class Piano extends React.Component {
     }
   }
 
-  // TODO dedupe
-  getMidiNumbers() {
-    return _.range(this.props.startNote, this.props.endNote + 1);
-  }
-
   handleNoteChanges = (prevMidiNumbers, midiNumbers) => {
     const notesUp = _.difference(prevMidiNumbers, midiNumbers);
     const notesDown = _.difference(midiNumbers, prevMidiNumbers);
