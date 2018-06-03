@@ -11,6 +11,7 @@ import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
+// noreintegrate fix lingering note on stop again
 // noreintegrate add back recording
 class PianoComposer extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class PianoComposer extends React.Component {
       notes: [],
       notesArray: [],
       notesArrayIndex: 0,
+      noteEvents: [],
       input: {
         isMouseDown: false,
       },
@@ -191,14 +193,20 @@ class PianoComposer extends React.Component {
     } else {
       // Prevent duplicate note firings
       const alreadyFired = this.state.notes.includes(midiNumber);
-      if (!alreadyFired) {
-        this.props.onNoteDown(midiNumber);
-
-        // Only set notes for user input, not programmatic firings
-        this.setState((prevState) => ({
-          notes: prevState.notes.concat(midiNumber).sort(),
-        }));
+      if (alreadyFired) {
+        return;
       }
+      this.props.onNoteDown(midiNumber);
+      // Only set notes for user input, not programmatic firings
+      this.setState((prevState) => ({
+        notes: prevState.notes.concat(midiNumber).sort(),
+        // TODO: isRecording?
+        noteEvents: this.state.noteEvents.concat({
+          type: 'NOTE_START',
+          time: this.props.audioContext.currentTime,
+          midiNumber: midiNumber,
+        }),
+      }));
     }
   };
 
@@ -210,13 +218,20 @@ class PianoComposer extends React.Component {
       this.props.onNoteUp(midiNumber);
     } else {
       const alreadyFired = !this.state.notes.includes(midiNumber);
-      if (!alreadyFired) {
-        this.props.onNoteUp(midiNumber);
-        // Only set notes for user input, not programmatic firings
-        this.setState((prevState) => ({
-          notes: prevState.notes.filter((note) => midiNumber !== note),
-        }));
+      if (alreadyFired) {
+        return;
       }
+      this.props.onNoteUp(midiNumber);
+      // Only set notes for user input, not programmatic firings
+      this.setState((prevState) => ({
+        notes: prevState.notes.filter((note) => midiNumber !== note),
+        // TODO: isRecording?
+        noteEvents: this.state.noteEvents.concat({
+          type: 'NOTE_END',
+          time: this.props.audioContext.currentTime,
+          midiNumber: midiNumber,
+        }),
+      }));
     }
   };
 
