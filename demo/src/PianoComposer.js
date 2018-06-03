@@ -1,5 +1,5 @@
 import React from 'react';
-import { Piano } from 'react-piano';
+import { Piano, getMidiNumberAttributes } from 'react-piano';
 import classNames from 'classnames';
 import _ from 'lodash';
 
@@ -11,27 +11,8 @@ import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
-// TODO make component
-function renderNoteLabel({ isAccidental }, { keyboardShortcut }) {
-  if (!keyboardShortcut) {
-    return null;
-  }
-  return (
-    <div className="text-center">
-      <div
-        className={classNames({
-          'NoteLabel--black': isAccidental,
-          'NoteLabel--white': !isAccidental,
-        })}
-      >
-        {keyboardShortcut}
-      </div>
-    </div>
-  );
-}
-
+// noreintegrate fix lingering note when stopping
 // noreintegrate add back recording
-// noreintegrate add back note labels
 class PianoComposer extends React.Component {
   constructor(props) {
     super(props);
@@ -76,6 +57,16 @@ class PianoComposer extends React.Component {
   getMidiNumberForKey = (key) => {
     const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
     return mapping[key];
+  };
+
+  getKeyForMidiNumber = (midiNumber) => {
+    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
+    for (let key in mapping) {
+      if (mapping[key] === midiNumber) {
+        return key;
+      }
+    }
+    return null;
   };
 
   loadNotes = (notesArray) => {
@@ -222,6 +213,26 @@ class PianoComposer extends React.Component {
     });
   };
 
+  renderNoteLabel = (midiNumber) => {
+    const keyboardShortcut = this.getKeyForMidiNumber(midiNumber);
+    if (!keyboardShortcut) {
+      return null;
+    }
+    const { isAccidental } = getMidiNumberAttributes(midiNumber);
+    return (
+      <div className="text-center">
+        <div
+          className={classNames({
+            'NoteLabel--black': isAccidental,
+            'NoteLabel--white': !isAccidental,
+          })}
+        >
+          {keyboardShortcut}
+        </div>
+      </div>
+    );
+  };
+
   render() {
     return (
       <div>
@@ -245,7 +256,7 @@ class PianoComposer extends React.Component {
                 disabled={this.props.isLoading}
                 width={width}
                 gliss={this.state.input.isMouseDown}
-                renderNoteLabel={renderNoteLabel}
+                renderNoteLabel={this.renderNoteLabel}
                 onNoteDown={this.onNoteDown}
                 onNoteUp={this.onNoteUp}
               />

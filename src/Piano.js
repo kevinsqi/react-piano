@@ -38,16 +38,7 @@ class Piano extends React.Component {
         gliss={this.props.gliss}
         onNoteDown={this.props.onNoteDown}
         onNoteUp={this.props.onNoteUp}
-        renderNoteLabel={
-          () => {}
-          /*
-          (midiNumber) => {
-            return this.props.renderNoteLabel(getMidiNumberAttributes(midiNumber), {
-              keyboardShortcut: this.getKeyForMidiNumber(midiNumber),
-            });
-          }
-          */
-        }
+        renderNoteLabel={this.props.renderNoteLabel}
       />
     );
   }
