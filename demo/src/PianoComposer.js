@@ -11,7 +11,6 @@ import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
-// noreintegrate add back recording
 class PianoComposer extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +20,7 @@ class PianoComposer extends React.Component {
       isPlaying: false,
       isRecording: true,
       notes: [],
+      notesRecorded: false,
       notesArray: [],
       notesArrayIndex: 0,
       noteEvents: [],
@@ -76,6 +76,7 @@ class PianoComposer extends React.Component {
     return null;
   };
 
+  // TODO: move note recording logic to separate helper file
   loadNotes = (notesArray) => {
     this.setState({
       notesArray,
@@ -202,12 +203,15 @@ class PianoComposer extends React.Component {
       // Only set notes for user input, not programmatic firings
       this.setState((prevState) => ({
         notes: prevState.notes.concat(midiNumber).sort(),
-        // TODO: isRecording?
+        // Initiate a new batch of notes if a chord is being played
+        notesRecorded: false,
+        /* TODO recording raw events
         noteEvents: this.state.noteEvents.concat({
           type: 'NOTE_START',
           time: this.props.audioContext.currentTime,
           midiNumber: midiNumber,
         }),
+        */
       }));
     }
   };
@@ -224,15 +228,26 @@ class PianoComposer extends React.Component {
         return;
       }
       this.props.onNoteUp(midiNumber);
+
+      // Recording logic
+      // When playing a chord, record when the first note is released, and
+      // stop recording subsequent note releases, UNLESS a new note is added
+      const willRecord = this.state.notesRecorded === false;
+      if (willRecord) {
+        this.onRecordNotes(this.state.notes);
+      }
+
       // Only set notes for user input, not programmatic firings
       this.setState((prevState) => ({
         notes: prevState.notes.filter((note) => midiNumber !== note),
-        // TODO: isRecording?
-        noteEvents: this.state.noteEvents.concat({
+        notesRecorded: prevState.notesRecorded || willRecord,
+        /* TODO recording raw events
+        noteEvents: prevState.noteEvents.concat({
           type: 'NOTE_END',
           time: this.props.audioContext.currentTime,
           midiNumber: midiNumber,
         }),
+        */
       }));
     }
   };
