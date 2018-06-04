@@ -4,6 +4,37 @@ import { getMidiNumberAttributes } from 'react-piano';
 import MdArrowBack from 'react-icons/lib/md/arrow-back';
 import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 
+function NotesArray(props) {
+  return (
+    <div>
+      {props.notesArray.map((notes, index) => {
+        const label =
+          notes.length > 0
+            ? notes.map((note, index) => {
+                const { basenote, octave } = getMidiNumberAttributes(note);
+                return (
+                  <span key={[index, note]}>
+                    <span>{`${basenote.charAt(0).toUpperCase()}${basenote.slice(1)}`}</span>
+                    <span className="Note--subscript">{octave}</span>
+                  </span>
+                );
+              })
+            : '_';
+        return (
+          <span
+            className={classNames('Notes mr-1 mb-1', {
+              'Notes--active': index === props.notesArrayIndex,
+            })}
+            key={index}
+          >
+            {label}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+
 class Composer extends React.Component {
   export = () => {
     /*
@@ -111,30 +142,10 @@ class Composer extends React.Component {
           </div>
         </div>
         <div className="mt-3">
-          {this.props.notesArray.map((notes, index) => {
-            const label =
-              notes.length > 0
-                ? notes.map((note, index) => {
-                    const { basenote, octave } = getMidiNumberAttributes(note);
-                    return (
-                      <span key={[index, note]}>
-                        <span>{`${basenote.charAt(0).toUpperCase()}${basenote.slice(1)}`}</span>
-                        <span className="Note--subscript">{octave}</span>
-                      </span>
-                    );
-                  })
-                : '_';
-            return (
-              <span
-                className={classNames('Notes mr-1 mb-1', {
-                  'Notes--active': index === this.props.notesArrayIndex,
-                })}
-                key={index}
-              >
-                {label}
-              </span>
-            );
-          })}
+          <NotesArray
+            notesArray={this.props.notesArray}
+            notesArrayIndex={this.props.notesArrayIndex}
+          />
         </div>
       </div>
     );
