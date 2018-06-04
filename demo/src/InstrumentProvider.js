@@ -48,11 +48,27 @@ class InstrumentProvider extends React.Component {
     });
   };
 
+  // Clear any residual notes that don't get called with onNoteUp
+  onStopAll = () => {
+    this.props.audioContext.resume().then(() => {
+      const activeAudioNodes = Object.values(this.state.activeAudioNodes);
+      activeAudioNodes.forEach((node) => {
+        if (node) {
+          node.stop();
+        }
+      });
+      this.setState({
+        activeAudioNodes: {},
+      });
+    });
+  };
+
   render() {
     return this.props.children({
-      isLoading: !!this.state.instrument,
+      isLoading: !this.state.instrument,
       onNoteDown: this.onNoteDown,
       onNoteUp: this.onNoteUp,
+      onStopAll: this.onStopAll,
     });
   }
 }

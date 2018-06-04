@@ -43,8 +43,7 @@ class Keyboard extends React.Component {
 
   // Range of midi numbers from startNote to endNote
   getMidiNumbers() {
-    const startNum = noteToMidiNumber(this.props.startNote);
-    return _.range(startNum, noteToMidiNumber(this.props.endNote) + 1);
+    return _.range(this.props.startNote, this.props.endNote + 1);
   }
 
   getWhiteKeyCount() {
@@ -69,8 +68,9 @@ class Keyboard extends React.Component {
     const OCTAVE_WIDTH = 7;
     const { octave, basenote } = getMidiNumberAttributes(midiNumber);
     const offsetFromC = this.props.config.noteOffsetsFromC[basenote];
-    const startNum = noteToMidiNumber(this.props.startNote);
-    const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(startNum);
+    const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(
+      this.props.startNote,
+    );
     const startOffsetFromC = this.props.config.noteOffsetsFromC[startBasenote];
     const offsetFromStartNote = offsetFromC - startOffsetFromC;
     const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);

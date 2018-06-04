@@ -4,6 +4,7 @@ import 'react-piano/build/styles.css';
 
 import Header from './Header';
 import Footer from './Footer';
+import InstrumentProvider from './InstrumentProvider';
 import PianoComposer from './PianoComposer';
 import './App.css';
 
@@ -24,6 +25,8 @@ function Installation() {
   );
 }
 
+const audioContext = new window.AudioContext();
+
 class App extends React.Component {
   render() {
     return (
@@ -38,7 +41,19 @@ class App extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <PianoComposer />
+              <InstrumentProvider audioContext={audioContext}>
+                {({ isLoading, onNoteDown, onNoteUp, onStopAll }) => (
+                  <PianoComposer
+                    startNote={55}
+                    endNote={79}
+                    audioContext={audioContext}
+                    onNoteDown={onNoteDown}
+                    onNoteUp={onNoteUp}
+                    onStopAll={onStopAll}
+                    isLoading={isLoading}
+                  />
+                )}
+              </InstrumentProvider>
             </div>
           </div>
           <hr className="mt-5" />
