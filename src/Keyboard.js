@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import range from 'lodash.range';
 import classNames from 'classnames';
 import Key from './Key';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
@@ -43,7 +43,7 @@ class Keyboard extends React.Component {
 
   // Range of midi numbers from startNote to endNote
   getMidiNumbers() {
-    return _.range(this.props.startNote, this.props.endNote + 1);
+    return range(this.props.startNote, this.props.endNote + 1);
   }
 
   getWhiteKeyCount() {

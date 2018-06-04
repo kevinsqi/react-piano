@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import range from 'lodash.range';
 
 const BASENOTES = ['c', 'db', 'd', 'eb', 'e', 'f', 'gb', 'g', 'ab', 'a', 'bb', 'b'];
 const ACCIDENTALS = ['db', 'eb', 'gb', 'ab', 'bb'];
@@ -37,7 +37,7 @@ function buildMidiNumberAttributes(number) {
 }
 
 function buildMidiNumberAttributesCache() {
-  return _.range(MIDI_NUMBER_C0, MIDI_NUMBER_G8 + 1).reduce((cache, midiNumber) => {
+  return range(MIDI_NUMBER_C0, MIDI_NUMBER_G8 + 1).reduce((cache, midiNumber) => {
     cache[midiNumber] = buildMidiNumberAttributes(midiNumber);
     return cache;
   }, {});

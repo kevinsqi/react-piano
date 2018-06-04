@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import difference from 'lodash.difference';
 
 import Keyboard from './Keyboard';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
@@ -12,8 +12,8 @@ class Piano extends React.Component {
   }
 
   handleNoteChanges = (prevMidiNumbers, midiNumbers) => {
-    const notesUp = _.difference(prevMidiNumbers, midiNumbers);
-    const notesDown = _.difference(midiNumbers, prevMidiNumbers);
+    const notesUp = difference(prevMidiNumbers, midiNumbers);
+    const notesDown = difference(midiNumbers, prevMidiNumbers);
     notesUp.forEach((number) => {
       this.props.onNoteUp(number);
     });
