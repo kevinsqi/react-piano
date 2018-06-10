@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import difference from 'lodash.difference';
 
 import Keyboard from './Keyboard';
@@ -38,5 +39,22 @@ class Piano extends React.Component {
     );
   }
 }
+
+Piano.propTypes = {
+  startNote: PropTypes.number.isRequired,
+  endNote: PropTypes.number.isRequired,
+  onNoteDown: PropTypes.func.isRequired,
+  onNoteUp: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  notes: PropTypes.array,
+  gliss: PropTypes.bool,
+  renderNoteLabel: PropTypes.func,
+  width: PropTypes.number,
+};
+
+Piano.defaultProps = {
+  disabled: false,
+  gliss: false,
+};
 
 export default Piano;
