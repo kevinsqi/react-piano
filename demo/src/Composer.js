@@ -6,7 +6,7 @@ import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 
 function NotesArray(props) {
   return (
-    <div>
+    <div className={props.className}>
       {props.notesArray.map((notes, index) => {
         const label =
           notes.length > 0
@@ -66,6 +66,7 @@ class Composer extends React.Component {
   };
 
   render() {
+    const hasNotes = this.props.notesArray.length > 0;
     return (
       <div className={this.props.className}>
         <div className="d-flex flex-row">
@@ -89,7 +90,7 @@ class Composer extends React.Component {
             <span className="ml-3">
               <button
                 className="btn btn-outline-danger btn-sm"
-                disabled={this.props.notesArray.length === 0}
+                disabled={!hasNotes}
                 onClick={this.props.onClear}
               >
                 Clear all
@@ -97,7 +98,11 @@ class Composer extends React.Component {
             </span>
           </div>
           <div>
-            <button className="btn btn-outline-secondary btn-sm" onClick={this.export}>
+            <button
+              className="btn btn-outline-secondary btn-sm"
+              disabled={!hasNotes}
+              onClick={this.export}
+            >
               Export
             </button>
           </div>
@@ -106,6 +111,7 @@ class Composer extends React.Component {
           <div className="btn-group" style={{ flex: 1 }}>
             <button
               className="btn btn-outline-secondary btn-sm text-left"
+              disabled={!hasNotes}
               onClick={this.props.onStepBackward}
             >
               Step back{' '}
@@ -115,6 +121,7 @@ class Composer extends React.Component {
             </button>
             <button
               className="btn btn-outline-secondary btn-sm text-left"
+              disabled={!hasNotes}
               onClick={this.props.onStepForward}
             >
               Step forward
@@ -127,26 +134,26 @@ class Composer extends React.Component {
           <div className="btn-group ml-3">
             <button
               className="btn btn-outline-secondary btn-sm text-left"
-              disabled={this.props.notesArray.length === 0}
               onClick={this.props.onAddRest}
             >
               Add rest <span className="KeyboardShortcutLabel">Dash (-)</span>
             </button>
             <button
               className="btn btn-outline-danger btn-sm text-left"
-              disabled={this.props.notesArray.length === 0}
+              disabled={!hasNotes}
               onClick={this.props.onDeleteNote}
             >
               Delete note <span className="KeyboardShortcutLabel">Backspace</span>
             </button>
           </div>
         </div>
-        <div className="mt-3">
+        {hasNotes ? (
           <NotesArray
+            className="mt-3"
             notesArray={this.props.notesArray}
             notesArrayIndex={this.props.notesArrayIndex}
           />
-        </div>
+        ) : null}
       </div>
     );
   }

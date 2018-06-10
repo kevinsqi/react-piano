@@ -15,17 +15,19 @@ class PianoComposer extends React.Component {
   constructor(props) {
     super(props);
 
-    // TODO: split state into multiple components
     this.state = {
+      // TODO: replace with a single state.status string
       isPlaying: false,
       isRecording: true,
+      // TODO: group into an 'input' obj
       notes: [],
       notesRecorded: false,
-      notesArray: [],
-      notesArrayIndex: 0,
       input: {
         isMouseDown: false,
       },
+      // TODO: group into a 'recording' obj
+      notesArray: [],
+      notesArrayIndex: 0,
     };
 
     this.oscillator = new Oscillator({
