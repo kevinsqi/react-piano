@@ -118,6 +118,7 @@ class Keyboard extends React.Component {
               onNoteDown={this.props.onNoteDown.bind(this, num)}
               onNoteUp={this.props.onNoteUp.bind(this, num)}
               gliss={this.props.gliss}
+              touchEvents={this.props.touchEvents}
               key={num}
             >
               {this.props.disabled ? null : this.props.renderNoteLabel(num)}

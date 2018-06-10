@@ -32,6 +32,7 @@ class Piano extends React.Component {
         notes={this.props.notes}
         width={this.props.width}
         gliss={this.props.gliss}
+        touchEvents={this.props.touchEvents}
         onNoteDown={this.props.onNoteDown}
         onNoteUp={this.props.onNoteUp}
         renderNoteLabel={this.props.renderNoteLabel}
@@ -48,6 +49,7 @@ Piano.propTypes = {
   disabled: PropTypes.bool.isRequired,
   notes: PropTypes.array,
   gliss: PropTypes.bool,
+  touchEvents: PropTypes.bool,
   renderNoteLabel: PropTypes.func,
   width: PropTypes.number,
 };
@@ -55,6 +57,7 @@ Piano.propTypes = {
 Piano.defaultProps = {
   disabled: false,
   gliss: false,
+  touchEvents: false,
 };
 
 export default Piano;

@@ -250,6 +250,14 @@ class PianoComposer extends React.Component {
     });
   };
 
+  onTouchStart = () => {
+    this.setState({
+      input: Object.assign({}, this.state.input, {
+        touchEvents: true,
+      }),
+    });
+  };
+
   renderNoteLabel = (midiNumber) => {
     const keyboardShortcut = this.getKeyForMidiNumber(midiNumber);
     if (!keyboardShortcut) {
@@ -278,6 +286,7 @@ class PianoComposer extends React.Component {
           onKeyUp={this.onKeyUp}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
+          onTouchStart={this.onTouchStart}
         />
         <div>
           <DimensionsProvider>
@@ -289,6 +298,7 @@ class PianoComposer extends React.Component {
                 disabled={this.props.isLoading}
                 width={width}
                 gliss={this.state.input.isMouseDown}
+                touchEvents={this.state.input.touchEvents}
                 renderNoteLabel={this.renderNoteLabel}
                 onNoteDown={this.onNoteDown}
                 onNoteUp={this.onNoteUp}

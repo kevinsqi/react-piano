@@ -1,45 +1,39 @@
 import React from 'react';
 
 class Key extends React.Component {
-  state = {
-    touchEvent: false,
-  };
-
-  onTouchStart = (event) => {
-    this.setState({
-      touchEvent: true,
-    });
-    this.props.onNoteDown();
-  };
-
-  onMouseDown = (event) => {
-    if (this.state.touchEvent) {
-      return;
-    }
-    this.props.onNoteDown();
-  };
-
   render() {
+    const {
+      className,
+      left,
+      width,
+      height,
+      onNoteDown,
+      onNoteUp,
+      gliss,
+      children,
+      touchEvents,
+    } = this.props;
+
     return (
       <div
-        className={this.props.className}
+        className={className}
         style={{
           position: 'absolute',
           top: 0,
-          left: this.props.left,
-          width: this.props.width,
-          height: this.props.height,
+          left: left,
+          width: width,
+          height: height,
           display: 'flex',
         }}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.props.onNoteUp}
-        onMouseEnter={this.props.gliss ? this.props.onNoteDown : null}
-        onMouseLeave={this.props.gliss ? this.props.onNoteUp : null}
-        onTouchStart={this.onTouchStart}
-        onTouchCancel={this.props.onNoteUp}
-        onTouchEnd={this.props.onNoteUp}
+        onMouseDown={touchEvents ? null : onNoteDown}
+        onMouseUp={touchEvents ? null : onNoteUp}
+        onMouseEnter={gliss ? onNoteDown : null}
+        onMouseLeave={gliss ? onNoteUp : null}
+        onTouchStart={touchEvents ? onNoteDown : null}
+        onTouchCancel={touchEvents ? onNoteUp : null}
+        onTouchEnd={touchEvents ? onNoteUp : null}
       >
-        <div style={{ alignSelf: 'flex-end', flex: 1 }}>{this.props.children}</div>
+        <div style={{ alignSelf: 'flex-end', flex: 1 }}>{children}</div>
       </div>
     );
   }
