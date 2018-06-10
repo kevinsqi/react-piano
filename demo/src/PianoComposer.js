@@ -9,7 +9,6 @@ import KEYBOARD_CONFIGS from './keyboardConfigs';
 import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import InputManager from './InputManager';
 import Oscillator from './Oscillator';
-import SAMPLE_SONGS from './sampleSongs';
 
 // TODO: move note recording logic to separate helper file
 class PianoComposer extends React.Component {
@@ -24,7 +23,6 @@ class PianoComposer extends React.Component {
       notesRecorded: false,
       notesArray: [],
       notesArrayIndex: 0,
-      noteEvents: [],
       input: {
         isMouseDown: false,
       },
@@ -201,13 +199,6 @@ class PianoComposer extends React.Component {
         notes: prevState.notes.concat(midiNumber).sort(),
         // Initiate a new batch of notes if a chord is being played
         notesRecorded: false,
-        /* TODO recording raw events
-        noteEvents: this.state.noteEvents.concat({
-          type: 'NOTE_START',
-          time: this.props.audioContext.currentTime,
-          midiNumber: midiNumber,
-        }),
-        */
       }));
     }
   };
@@ -237,13 +228,6 @@ class PianoComposer extends React.Component {
       this.setState((prevState) => ({
         notes: prevState.notes.filter((note) => midiNumber !== note),
         notesRecorded: prevState.notesRecorded || willRecord,
-        /* TODO recording raw events
-        noteEvents: prevState.noteEvents.concat({
-          type: 'NOTE_END',
-          time: this.props.audioContext.currentTime,
-          midiNumber: midiNumber,
-        }),
-        */
       }));
     }
   };
