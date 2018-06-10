@@ -11,6 +11,7 @@ import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 import SAMPLE_SONGS from './sampleSongs';
 
+// TODO: move note recording logic to separate helper file
 class PianoComposer extends React.Component {
   constructor(props) {
     super(props);
@@ -35,10 +36,6 @@ class PianoComposer extends React.Component {
     });
 
     this.playbackIntervalHandler = null;
-  }
-
-  componentDidMount() {
-    this.loadNotes(SAMPLE_SONGS.lost_woods_theme);
   }
 
   getActiveNotes = () => {
@@ -76,7 +73,6 @@ class PianoComposer extends React.Component {
     return null;
   };
 
-  // TODO: move note recording logic to separate helper file
   loadNotes = (notesArray) => {
     this.setState({
       notesArray,
