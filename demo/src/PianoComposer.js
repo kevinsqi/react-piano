@@ -161,7 +161,7 @@ class PianoComposer extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onNoteDown(midiNumber);
+      this.onNoteStart(midiNumber);
     } else if (event.key === '-') {
       this.onAddRest();
     } else if (event.key === 'Backspace') {
@@ -183,19 +183,19 @@ class PianoComposer extends React.Component {
     }
   };
 
-  onNoteDown = (midiNumber) => {
+  onNoteStart = (midiNumber) => {
     if (this.props.isLoading) {
       return;
     }
     if (this.state.isPlaying) {
-      this.props.onNoteDown(midiNumber);
+      this.props.onNoteStart(midiNumber);
     } else {
       // Prevent duplicate note firings
       const alreadyFired = this.state.notes.includes(midiNumber);
       if (alreadyFired) {
         return;
       }
-      this.props.onNoteDown(midiNumber);
+      this.props.onNoteStart(midiNumber);
       // Only set notes for user input, not programmatic firings
       this.setState((prevState) => ({
         notes: prevState.notes.concat(midiNumber).sort(),
@@ -300,7 +300,7 @@ class PianoComposer extends React.Component {
                 gliss={this.state.input.isMouseDown}
                 touchEvents={this.state.input.touchEvents}
                 renderNoteLabel={this.renderNoteLabel}
-                onNoteDown={this.onNoteDown}
+                onNoteStart={this.onNoteStart}
                 onNoteUp={this.onNoteUp}
               />
             )}

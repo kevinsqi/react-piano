@@ -24,7 +24,7 @@ class InstrumentProvider extends React.Component {
     });
   };
 
-  onNoteDown = (midiNumber) => {
+  onNoteStart = (midiNumber) => {
     this.props.audioContext.resume().then(() => {
       const audioNode = this.state.instrument.play(midiNumber);
       this.setState({
@@ -66,7 +66,7 @@ class InstrumentProvider extends React.Component {
   render() {
     return this.props.children({
       isLoading: !this.state.instrument,
-      onNoteDown: this.onNoteDown,
+      onNoteStart: this.onNoteStart,
       onNoteUp: this.onNoteUp,
       onStopAll: this.onStopAll,
     });

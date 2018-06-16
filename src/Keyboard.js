@@ -115,7 +115,7 @@ class Keyboard extends React.Component {
               height={ratioToPercentage(
                 isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              onNoteDown={this.props.onNoteDown.bind(this, num)}
+              onNoteStart={this.props.onNoteStart.bind(this, num)}
               onNoteUp={this.props.onNoteUp.bind(this, num)}
               gliss={this.props.gliss}
               touchEvents={this.props.touchEvents}

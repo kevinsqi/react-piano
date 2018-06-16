@@ -19,7 +19,7 @@ class Piano extends React.Component {
       this.props.onNoteUp(number);
     });
     notesDown.forEach((number) => {
-      this.props.onNoteDown(number);
+      this.props.onNoteStart(number);
     });
   };
 
@@ -33,7 +33,7 @@ class Piano extends React.Component {
         width={this.props.width}
         gliss={this.props.gliss}
         touchEvents={this.props.touchEvents}
-        onNoteDown={this.props.onNoteDown}
+        onNoteStart={this.props.onNoteStart}
         onNoteUp={this.props.onNoteUp}
         renderNoteLabel={this.props.renderNoteLabel}
       />
@@ -44,7 +44,7 @@ class Piano extends React.Component {
 Piano.propTypes = {
   startNote: PropTypes.number.isRequired,
   endNote: PropTypes.number.isRequired,
-  onNoteDown: PropTypes.func.isRequired,
+  onNoteStart: PropTypes.func.isRequired,
   onNoteUp: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   notes: PropTypes.array,
