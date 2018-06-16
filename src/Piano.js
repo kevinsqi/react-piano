@@ -12,14 +12,13 @@ class Piano extends React.Component {
     }
   }
 
-  handleNoteChanges = (prevMidiNumbers, midiNumbers) => {
-    // TODO: rename notesStart notesStop
-    const notesUp = difference(prevMidiNumbers, midiNumbers);
-    const notesDown = difference(midiNumbers, prevMidiNumbers);
-    notesUp.forEach((number) => {
+  handleNoteChanges = (prevMidiNumbers, nextMidiNumbers) => {
+    const notesStarted = difference(prevMidiNumbers, nextMidiNumbers);
+    const notesStopped = difference(nextMidiNumbers, prevMidiNumbers);
+    notesStarted.forEach((number) => {
       this.props.onNoteStop(number);
     });
-    notesDown.forEach((number) => {
+    notesStopped.forEach((number) => {
       this.props.onNoteStart(number);
     });
   };
