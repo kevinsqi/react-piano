@@ -7,12 +7,13 @@ import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
 
 class Piano extends React.Component {
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.notes !== prevProps.notes) {
-      this.handleNoteChanges(prevProps.notes || [], this.props.notes || []);
+    if (this.props.activeNotes !== prevProps.activeNotes) {
+      this.handleNoteChanges(prevProps.activeNotes || [], this.props.activeNotes || []);
     }
   }
 
   handleNoteChanges = (prevMidiNumbers, midiNumbers) => {
+    // TODO: rename notesStart notesStop
     const notesUp = difference(prevMidiNumbers, midiNumbers);
     const notesDown = difference(midiNumbers, prevMidiNumbers);
     notesUp.forEach((number) => {
@@ -29,7 +30,7 @@ class Piano extends React.Component {
         startNote={this.props.startNote}
         endNote={this.props.endNote}
         disabled={this.props.disabled}
-        notes={this.props.notes}
+        activeNotes={this.props.activeNotes}
         width={this.props.width}
         gliss={this.props.gliss}
         touchEvents={this.props.touchEvents}
@@ -47,7 +48,7 @@ Piano.propTypes = {
   onNoteStart: PropTypes.func.isRequired,
   onNoteStop: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  notes: PropTypes.array,
+  activeNotes: PropTypes.array,
   gliss: PropTypes.bool,
   touchEvents: PropTypes.bool,
   renderNoteLabel: PropTypes.func,

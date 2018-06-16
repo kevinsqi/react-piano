@@ -20,7 +20,7 @@ class PianoComposer extends React.Component {
       isPlaying: false,
       isRecording: true,
       // TODO: group into an 'input' obj
-      notes: [],
+      activeNotes: [],
       notesRecorded: false,
       input: {
         isMouseDown: false,
@@ -42,7 +42,7 @@ class PianoComposer extends React.Component {
     // Returns playback notes, or currently active notes from user input
     return this.state.isPlaying
       ? this.state.notesArray[this.state.notesArrayIndex]
-      : this.state.notes;
+      : this.state.activeNotes;
   };
 
   // TODO: refactor
@@ -191,14 +191,14 @@ class PianoComposer extends React.Component {
       this.props.onNoteStart(midiNumber);
     } else {
       // Prevent duplicate note firings
-      const alreadyFired = this.state.notes.includes(midiNumber);
+      const alreadyFired = this.state.activeNotes.includes(midiNumber);
       if (alreadyFired) {
         return;
       }
       this.props.onNoteStart(midiNumber);
       // Only set notes for user input, not programmatic firings
       this.setState((prevState) => ({
-        notes: prevState.notes.concat(midiNumber).sort(),
+        activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
         // Initiate a new batch of notes if a chord is being played
         notesRecorded: false,
       }));
@@ -212,7 +212,7 @@ class PianoComposer extends React.Component {
     if (this.state.isPlaying) {
       this.props.onNoteStop(midiNumber);
     } else {
-      const alreadyFired = !this.state.notes.includes(midiNumber);
+      const alreadyFired = !this.state.activeNotes.includes(midiNumber);
       if (alreadyFired) {
         return;
       }
@@ -223,12 +223,12 @@ class PianoComposer extends React.Component {
       // stop recording subsequent note releases, UNLESS a new note is added
       const willRecord = this.state.notesRecorded === false;
       if (willRecord) {
-        this.onRecordNotes(this.state.notes);
+        this.onRecordNotes(this.state.activeNotes);
       }
 
       // Only set notes for user input, not programmatic firings
       this.setState((prevState) => ({
-        notes: prevState.notes.filter((note) => midiNumber !== note),
+        activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
         notesRecorded: prevState.notesRecorded || willRecord,
       }));
     }
@@ -294,7 +294,7 @@ class PianoComposer extends React.Component {
               <Piano
                 startNote={this.props.startNote}
                 endNote={this.props.endNote}
-                notes={this.getActiveNotes()}
+                activeNotes={this.getActiveNotes()}
                 disabled={this.props.isLoading}
                 width={width}
                 gliss={this.state.input.isMouseDown}
