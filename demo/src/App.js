@@ -42,13 +42,13 @@ class App extends React.Component {
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
               <InstrumentProvider audioContext={audioContext}>
-                {({ isLoading, onNoteStart, onNoteUp, onStopAll }) => (
+                {({ isLoading, onNoteStart, onNoteStop, onStopAll }) => (
                   <PianoComposer
                     startNote={55}
                     endNote={79}
                     audioContext={audioContext}
                     onNoteStart={onNoteStart}
-                    onNoteUp={onNoteUp}
+                    onNoteStop={onNoteStop}
                     onStopAll={onStopAll}
                     isLoading={isLoading}
                   />

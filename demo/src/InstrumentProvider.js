@@ -35,7 +35,7 @@ class InstrumentProvider extends React.Component {
     });
   };
 
-  onNoteUp = (midiNumber) => {
+  onNoteStop = (midiNumber) => {
     this.props.audioContext.resume().then(() => {
       if (!this.state.activeAudioNodes[midiNumber]) {
         return;
@@ -48,7 +48,7 @@ class InstrumentProvider extends React.Component {
     });
   };
 
-  // Clear any residual notes that don't get called with onNoteUp
+  // Clear any residual notes that don't get called with onNoteStop
   onStopAll = () => {
     this.props.audioContext.resume().then(() => {
       const activeAudioNodes = Object.values(this.state.activeAudioNodes);
@@ -67,7 +67,7 @@ class InstrumentProvider extends React.Component {
     return this.props.children({
       isLoading: !this.state.instrument,
       onNoteStart: this.onNoteStart,
-      onNoteUp: this.onNoteUp,
+      onNoteStop: this.onNoteStop,
       onStopAll: this.onStopAll,
     });
   }

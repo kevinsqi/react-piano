@@ -8,7 +8,7 @@ class Key extends React.Component {
       width,
       height,
       onNoteStart,
-      onNoteUp,
+      onNoteStop,
       gliss,
       children,
       touchEvents,
@@ -26,12 +26,12 @@ class Key extends React.Component {
           display: 'flex',
         }}
         onMouseDown={touchEvents ? null : onNoteStart}
-        onMouseUp={touchEvents ? null : onNoteUp}
+        onMouseUp={touchEvents ? null : onNoteStop}
         onMouseEnter={gliss ? onNoteStart : null}
-        onMouseLeave={gliss ? onNoteUp : null}
+        onMouseLeave={gliss ? onNoteStop : null}
         onTouchStart={touchEvents ? onNoteStart : null}
-        onTouchCancel={touchEvents ? onNoteUp : null}
-        onTouchEnd={touchEvents ? onNoteUp : null}
+        onTouchCancel={touchEvents ? onNoteStop : null}
+        onTouchEnd={touchEvents ? onNoteStop : null}
       >
         <div style={{ alignSelf: 'flex-end', flex: 1 }}>{children}</div>
       </div>

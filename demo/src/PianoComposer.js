@@ -179,7 +179,7 @@ class PianoComposer extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onNoteUp(midiNumber);
+      this.onNoteStop(midiNumber);
     }
   };
 
@@ -205,18 +205,18 @@ class PianoComposer extends React.Component {
     }
   };
 
-  onNoteUp = (midiNumber) => {
+  onNoteStop = (midiNumber) => {
     if (this.props.isLoading) {
       return;
     }
     if (this.state.isPlaying) {
-      this.props.onNoteUp(midiNumber);
+      this.props.onNoteStop(midiNumber);
     } else {
       const alreadyFired = !this.state.notes.includes(midiNumber);
       if (alreadyFired) {
         return;
       }
-      this.props.onNoteUp(midiNumber);
+      this.props.onNoteStop(midiNumber);
 
       // Recording logic
       // When playing a chord, record when the first note is released, and
@@ -301,7 +301,7 @@ class PianoComposer extends React.Component {
                 touchEvents={this.state.input.touchEvents}
                 renderNoteLabel={this.renderNoteLabel}
                 onNoteStart={this.onNoteStart}
-                onNoteUp={this.onNoteUp}
+                onNoteStop={this.onNoteStop}
               />
             )}
           </DimensionsProvider>
