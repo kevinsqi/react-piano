@@ -10,8 +10,8 @@
   "scripts": {
     "build": "npm-run-all clean build:css build:development build:production",
     "build:css": "postcss src/styles.css --use autoprefixer -d build/ --no-map",
-    "build:development": "cross-env NODE_ENV=development webpack --mode development",
-    "build:production": "cross-env NODE_ENV=production webpack --mode production",
+    "build:development": "cross-env NODE_ENV=development webpack -d",
+    "build:production": "cross-env NODE_ENV=production webpack -p",
     "clean": "rimraf build",
     "prepare": "npm run build",
     "start": "npm-run-all --parallel start:js start:css",
