@@ -2,26 +2,56 @@ import React from 'react';
 import Soundfont from 'soundfont-player';
 
 class InstrumentProvider extends React.Component {
-  state = {
-    activeAudioNodes: {},
-    instrument: null,
+  static defaultProps = {
+    format: 'mp3',
+    soundfont: 'MusyngKite',
+    instrumentName: 'acoustic_grand_piano',
   };
 
-  componentDidMount() {
-    this.loadInstrument();
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeAudioNodes: {},
+      instrument: null,
+      instrumentName: props.instrumentName,
+      instrumentList: [props.instrumentName],
+    };
   }
 
-  loadInstrument = () => {
-    // Sound names here: http://gleitz.github.io/midi-js-soundfonts/MusyngKite/names.json
-    Soundfont.instrument(this.props.audioContext, 'acoustic_grand_piano', {
+  componentDidMount() {
+    this.loadInstrument(this.props.instrumentName);
+    this.loadInstrumentList();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.instrumentName !== this.state.instrumentName) {
+      this.loadInstrument(this.state.instrumentName);
+    }
+  }
+
+  // TODO: change this to load instrumentURL instead
+  loadInstrument = (instrumentName) => {
+    Soundfont.instrument(this.props.audioContext, instrumentName, {
+      format: this.props.format,
+      soundfont: this.props.soundfont,
       nameToUrl: (name, soundfont, format) => {
-        return `${window.location.pathname}soundfonts/${name}-mp3.js`;
+        return `${this.props.hostname}/${soundfont}/${name}-${format}.js`;
       },
     }).then((instrument) => {
       this.setState({
         instrument,
       });
     });
+  };
+
+  loadInstrumentList = () => {
+    fetch('http://d1pzp51pvbm36p.cloudfront.net/MusyngKite/names.json')
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          instrumentList: data,
+        });
+      });
   };
 
   onNoteStart = (midiNumber) => {
@@ -63,12 +93,22 @@ class InstrumentProvider extends React.Component {
     });
   };
 
+  onChangeInstrument = (instrumentName) => {
+    this.setState({
+      instrument: null, // Re-trigger loading state
+      instrumentName,
+    });
+  };
+
   render() {
     return this.props.children({
-      isLoading: !this.state.instrument,
+      isLoading: !(this.state.instrument && this.state.instrumentList),
       onNoteStart: this.onNoteStart,
       onNoteStop: this.onNoteStop,
       onStopAll: this.onStopAll,
+      onChangeInstrument: this.onChangeInstrument,
+      instrumentName: this.state.instrumentName,
+      instrumentList: this.state.instrumentList,
     });
   }
 }

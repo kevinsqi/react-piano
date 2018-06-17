@@ -41,17 +41,40 @@ class App extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <InstrumentProvider audioContext={audioContext}>
-                {({ isLoading, onNoteStart, onNoteStop, onStopAll }) => (
-                  <PianoComposer
-                    startNote={55}
-                    endNote={79}
-                    audioContext={audioContext}
-                    onNoteStart={onNoteStart}
-                    onNoteStop={onNoteStop}
-                    onStopAll={onStopAll}
-                    isLoading={isLoading}
-                  />
+              <InstrumentProvider
+                audioContext={audioContext}
+                hostname="http://d1pzp51pvbm36p.cloudfront.net"
+              >
+                {({
+                  isLoading,
+                  instrumentList,
+                  instrumentName,
+                  onChangeInstrument,
+                  onNoteStart,
+                  onNoteStop,
+                  onStopAll,
+                }) => (
+                  <div>
+                    <select
+                      value={instrumentName}
+                      onChange={(event) => onChangeInstrument(event.target.value)}
+                    >
+                      {instrumentList.map((value) => (
+                        <option value={value} key={value}>
+                          {value}
+                        </option>
+                      ))}
+                    </select>
+                    <PianoComposer
+                      startNote={55}
+                      endNote={79}
+                      audioContext={audioContext}
+                      onNoteStart={onNoteStart}
+                      onNoteStop={onNoteStop}
+                      onStopAll={onStopAll}
+                      isLoading={isLoading}
+                    />
+                  </div>
                 )}
               </InstrumentProvider>
             </div>
