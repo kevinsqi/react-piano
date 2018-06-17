@@ -55,25 +55,31 @@ class App extends React.Component {
                   onStopAll,
                 }) => (
                   <div>
-                    <select
-                      value={instrumentName}
-                      onChange={(event) => onChangeInstrument(event.target.value)}
-                    >
-                      {instrumentList.map((value) => (
-                        <option value={value} key={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
-                    <PianoComposer
-                      startNote={55}
-                      endNote={79}
-                      audioContext={audioContext}
-                      onNoteStart={onNoteStart}
-                      onNoteStop={onNoteStop}
-                      onStopAll={onStopAll}
-                      isLoading={isLoading}
-                    />
+                    <div className="text-center">
+                      <select
+                        className="form-control d-inline-block"
+                        style={{ width: 200 }}
+                        value={instrumentName}
+                        onChange={(event) => onChangeInstrument(event.target.value)}
+                      >
+                        {instrumentList.map((value) => (
+                          <option value={value} key={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="mt-3">
+                      <PianoComposer
+                        startNote={55}
+                        endNote={79}
+                        audioContext={audioContext}
+                        onNoteStart={onNoteStart}
+                        onNoteStop={onNoteStop}
+                        onStopAll={onStopAll}
+                        isLoading={isLoading}
+                      />
+                    </div>
                   </div>
                 )}
               </InstrumentProvider>
