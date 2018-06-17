@@ -61,11 +61,16 @@ class Composer extends React.Component {
     }
   };
 
+  isEditable = () => {
+    return this.props.notesArray.length > 0 && !this.props.isPlaying;
+  };
+
   isPlayable = () => {
     return this.props.notesArray.length > 0 && !this.props.isPlaying;
   };
 
   render() {
+    const isEditable = this.isEditable();
     const hasNotes = this.props.notesArray.length > 0;
     return (
       <div className={this.props.className}>
@@ -111,7 +116,7 @@ class Composer extends React.Component {
           <div className="btn-group" style={{ flex: 1 }}>
             <button
               className="btn btn-outline-secondary btn-sm text-left"
-              disabled={!hasNotes}
+              disabled={!isEditable}
               onClick={this.props.onStepBackward}
             >
               Step back{' '}
@@ -121,7 +126,7 @@ class Composer extends React.Component {
             </button>
             <button
               className="btn btn-outline-secondary btn-sm text-left"
-              disabled={!hasNotes}
+              disabled={!isEditable}
               onClick={this.props.onStepForward}
             >
               Step forward
@@ -134,13 +139,14 @@ class Composer extends React.Component {
           <div className="btn-group ml-3">
             <button
               className="btn btn-outline-secondary btn-sm text-left"
+              disabled={!isEditable}
               onClick={this.props.onAddRest}
             >
               Add rest <span className="KeyboardShortcutLabel">Dash (-)</span>
             </button>
             <button
               className="btn btn-outline-danger btn-sm text-left"
-              disabled={!hasNotes}
+              disabled={!isEditable}
               onClick={this.props.onDeleteNote}
             >
               Delete note <span className="KeyboardShortcutLabel">Backspace</span>
