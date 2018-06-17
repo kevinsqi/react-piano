@@ -25,6 +25,36 @@ function Installation() {
   );
 }
 
+class InstrumentPicker extends React.Component {
+  constructor(props) {
+    super(props);
+    this.selectRef = React.createRef();
+  }
+
+  onChange = (event) => {
+    this.props.onChange(event.target.value);
+    this.selectRef.current.blur();
+  };
+
+  render() {
+    return (
+      <select
+        className={this.props.className}
+        style={this.props.style}
+        value={this.props.instrumentName}
+        onChange={this.onChange}
+        ref={this.selectRef}
+      >
+        {this.props.instrumentList.map((value) => (
+          <option value={value} key={value}>
+            {value}
+          </option>
+        ))}
+      </select>
+    );
+  }
+}
+
 const audioContext = new window.AudioContext();
 
 class App extends React.Component {
@@ -56,18 +86,13 @@ class App extends React.Component {
                 }) => (
                   <div>
                     <div className="text-center">
-                      <select
+                      <InstrumentPicker
                         className="form-control d-inline-block"
                         style={{ width: 200 }}
-                        value={instrumentName}
-                        onChange={(event) => onChangeInstrument(event.target.value)}
-                      >
-                        {instrumentList.map((value) => (
-                          <option value={value} key={value}>
-                            {value}
-                          </option>
-                        ))}
-                      </select>
+                        onChange={onChangeInstrument}
+                        instrumentName={instrumentName}
+                        instrumentList={instrumentList}
+                      />
                     </div>
                     <div className="mt-3">
                       <PianoComposer
