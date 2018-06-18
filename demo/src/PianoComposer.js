@@ -10,6 +10,7 @@ import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import InputManager from './InputManager';
 import Oscillator from './Oscillator';
 
+// TODO: reimplement with new Piano component
 // TODO: move note recording logic to separate helper file
 class PianoComposer extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class PianoComposer extends React.Component {
       notesRecorded: false,
       input: {
         isMouseDown: false,
+        touchEvents: false,
       },
       // TODO: group into a 'recording' obj
       notesArray: [],

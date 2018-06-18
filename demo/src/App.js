@@ -4,8 +4,8 @@ import 'react-piano/build/styles.css';
 
 import Header from './Header';
 import Footer from './Footer';
+import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
-import PianoComposer from './PianoComposer';
 import './App.css';
 
 function Installation() {
@@ -82,7 +82,6 @@ class App extends React.Component {
                   onChangeInstrument,
                   onNoteStart,
                   onNoteStop,
-                  onStopAll,
                 }) => (
                   <div>
                     <div className="text-center">
@@ -95,13 +94,11 @@ class App extends React.Component {
                       />
                     </div>
                     <div className="mt-3">
-                      <PianoComposer
+                      <InputPiano
                         startNote={55}
                         endNote={79}
-                        audioContext={audioContext}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
-                        onStopAll={onStopAll}
                         isLoading={isLoading}
                       />
                     </div>
