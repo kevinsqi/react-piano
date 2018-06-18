@@ -1,10 +1,13 @@
 import React from 'react';
 import { Piano, getMidiNumberAttributes } from 'react-piano';
 import classNames from 'classnames';
+// TODO: lodash.range
 import _ from 'lodash';
 
 import DimensionsProvider from './DimensionsProvider';
+// TODO: extract out
 import KEYBOARD_CONFIGS from './keyboardConfigs';
+// TODO: extract out
 import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import InputManager from './InputManager';
 
@@ -16,10 +19,8 @@ class InputPiano extends React.Component {
     this.state = {
       // TODO: group into an 'input' obj
       activeNotes: [],
-      input: {
-        isMouseDown: false,
-        touchEvents: false,
-      },
+      isMouseDown: false,
+      touchEvents: false,
     };
   }
 
@@ -102,25 +103,19 @@ class InputPiano extends React.Component {
 
   onMouseDown = () => {
     this.setState({
-      input: Object.assign({}, this.state.input, {
-        isMouseDown: true,
-      }),
+      isMouseDown: true,
     });
   };
 
   onMouseUp = () => {
     this.setState({
-      input: Object.assign({}, this.state.input, {
-        isMouseDown: false,
-      }),
+      isMouseDown: false,
     });
   };
 
   onTouchStart = () => {
     this.setState({
-      input: Object.assign({}, this.state.input, {
-        touchEvents: true,
-      }),
+      touchEvents: true,
     });
   };
 
@@ -163,8 +158,8 @@ class InputPiano extends React.Component {
                 activeNotes={this.state.activeNotes}
                 disabled={this.props.isLoading}
                 width={width}
-                gliss={this.state.input.isMouseDown}
-                touchEvents={this.state.input.touchEvents}
+                gliss={this.state.isMouseDown}
+                touchEvents={this.state.touchEvents}
                 renderNoteLabel={this.renderNoteLabel}
                 onNoteStart={this.onNoteStart}
                 onNoteStop={this.onNoteStop}
