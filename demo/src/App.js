@@ -59,8 +59,18 @@ class InstrumentPicker extends React.Component {
 
 const audioContext = new window.AudioContext();
 
+function getPianoConfig(startNote, endNote) {
+  return {
+    keyboardShortcuts: buildKeyboardShortcuts(startNote, KEYBOARD_CONFIGS.MIDDLE),
+  };
+}
+
 class App extends React.Component {
   render() {
+    const startNote = 55;
+    const endNote = 79;
+    const { keyboardShortcuts } = getPianoConfig(startNote, endNote);
+
     return (
       <div>
         <Header />
@@ -86,23 +96,23 @@ class App extends React.Component {
                   onNoteStop,
                 }) => (
                   <div>
-                    <div className="text-center">
+                    <div>
+                      <InputPiano
+                        startNote={startNote}
+                        endNote={endNote}
+                        keyboardShortcuts={keyboardShortcuts}
+                        onNoteStart={onNoteStart}
+                        onNoteStop={onNoteStop}
+                        isLoading={isLoading}
+                      />
+                    </div>
+                    <div className="text-center mt-5">
                       <InstrumentPicker
                         className="form-control d-inline-block"
                         style={{ width: 200 }}
                         onChange={onChangeInstrument}
                         instrumentName={instrumentName}
                         instrumentList={instrumentList}
-                      />
-                    </div>
-                    <div className="mt-3">
-                      <InputPiano
-                        startNote={55}
-                        endNote={79}
-                        keyboardShortcuts={buildKeyboardShortcuts(65, KEYBOARD_CONFIGS.MIDDLE)}
-                        onNoteStart={onNoteStart}
-                        onNoteStop={onNoteStop}
-                        isLoading={isLoading}
                       />
                     </div>
                   </div>
