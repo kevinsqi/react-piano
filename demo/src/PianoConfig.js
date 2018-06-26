@@ -46,6 +46,10 @@ class InstrumentPicker extends React.Component {
   }
 }
 
+function Label(props) {
+  return <div className="mb-1 text-secondary">{props.children}</div>;
+}
+
 function PianoConfig(props) {
   const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
     (midiNumber) => getMidiNumberAttributes(midiNumber).note,
@@ -68,7 +72,7 @@ function PianoConfig(props) {
   return (
     <div className="form-row">
       <div className="col-3">
-        <div>Start note</div>
+        <Label>Start note</Label>
         <AutoblurSelect
           className="form-control"
           onChange={onChangeStartNote}
@@ -82,7 +86,7 @@ function PianoConfig(props) {
         </AutoblurSelect>
       </div>
       <div className="col-3">
-        <div>End note</div>
+        <Label>End note</Label>
         <AutoblurSelect
           className="form-control"
           onChange={onChangeEndNote}
@@ -96,7 +100,7 @@ function PianoConfig(props) {
         </AutoblurSelect>
       </div>
       <div className="col-6">
-        <div>Instrument</div>
+        <Label>Instrument</Label>
         <InstrumentPicker
           className="form-control"
           onChange={props.onChangeInstrument}
