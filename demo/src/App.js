@@ -99,7 +99,7 @@ class App extends React.Component {
                       <InputPiano
                         startNote={55}
                         endNote={79}
-                        keyboardShortcuts={buildKeyboardShortcuts(55, KEYBOARD_CONFIGS.MIDDLE)}
+                        keyboardShortcuts={buildKeyboardShortcuts(65, KEYBOARD_CONFIGS.MIDDLE)}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
                         isLoading={isLoading}
