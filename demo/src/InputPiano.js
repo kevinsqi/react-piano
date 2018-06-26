@@ -5,10 +5,6 @@ import classNames from 'classnames';
 import _ from 'lodash';
 
 import DimensionsProvider from './DimensionsProvider';
-// TODO: extract out
-import KEYBOARD_CONFIGS from './keyboardConfigs';
-// TODO: extract out
-import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import InputManager from './InputManager';
 
 // TODO: have getMidiNumberForKey be passed as a prop function
@@ -17,7 +13,6 @@ class InputPiano extends React.Component {
     super(props);
 
     this.state = {
-      // TODO: group into an 'input' obj
       activeNotes: [],
       isMouseDown: false,
       touchEvents: false,
@@ -30,12 +25,12 @@ class InputPiano extends React.Component {
   }
 
   getMidiNumberForKey = (key) => {
-    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
+    const mapping = this.props.keyboardShortcuts;
     return mapping[key];
   };
 
   getKeyForMidiNumber = (midiNumber) => {
-    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
+    const mapping = this.props.keyboardShortcuts;
     for (let key in mapping) {
       if (mapping[key] === midiNumber) {
         return key;

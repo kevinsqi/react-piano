@@ -6,6 +6,8 @@ import Header from './Header';
 import Footer from './Footer';
 import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
+import KEYBOARD_CONFIGS from './keyboardConfigs';
+import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import './App.css';
 
 function Installation() {
@@ -97,6 +99,10 @@ class App extends React.Component {
                       <InputPiano
                         startNote={55}
                         endNote={79}
+                        keyboardShortcuts={getKeyboardShortcutMapping(
+                          [55, 56, 57],
+                          KEYBOARD_CONFIGS.MIDDLE,
+                        )}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
                         isLoading={isLoading}
