@@ -69,6 +69,10 @@ function PianoConfig(props) {
     });
   }
 
+  const fullNoteRange = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
+    (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
+  );
+
   return (
     <div className="form-row">
       <div className="col-3">
@@ -78,7 +82,7 @@ function PianoConfig(props) {
           onChange={onChangeStartNote}
           value={props.range.startNote}
         >
-          {_.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
+          {fullNoteRange.map((midiNumber) => (
             <option value={midiNumber} key={midiNumber}>
               {midiNumbersToNotes[midiNumber]}
             </option>
@@ -92,7 +96,7 @@ function PianoConfig(props) {
           onChange={onChangeEndNote}
           value={props.range.endNote}
         >
-          {_.range(props.range.startNote + 1, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
+          {fullNoteRange.map((midiNumber) => (
             <option value={midiNumber} key={midiNumber}>
               {midiNumbersToNotes[midiNumber]}
             </option>
