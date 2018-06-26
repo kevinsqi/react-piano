@@ -1,15 +1,14 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
-import _ from 'lodash';
-import { getMidiNumberAttributes, MIN_MIDI_NUMBER, MAX_MIDI_NUMBER } from 'react-piano';
 import 'react-piano/build/styles.css';
 
+import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import Header from './Header';
 import Footer from './Footer';
 import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
-import buildKeyboardShortcuts from './buildKeyboardShortcuts';
+import PianoConfig from './PianoConfig';
 import './App.css';
 
 function Installation() {
@@ -29,109 +28,12 @@ function Installation() {
   );
 }
 
-class AutoblurSelect extends React.Component {
-  constructor(props) {
-    super(props);
-    this.selectRef = React.createRef();
-  }
-
-  onChange = (event) => {
-    this.props.onChange(event);
-    this.selectRef.current.blur();
-  };
-
-  render() {
-    const { children, onChange, ...otherProps } = this.props;
-    return (
-      <select {...otherProps} onChange={this.onChange} ref={this.selectRef}>
-        {children}
-      </select>
-    );
-  }
-}
-
-class InstrumentPicker extends React.Component {
-  onChange = (event) => {
-    this.props.onChange(event.target.value);
-  };
-
-  render() {
-    return (
-      <AutoblurSelect
-        className={this.props.className}
-        style={this.props.style}
-        value={this.props.instrumentName}
-        onChange={this.onChange}
-      >
-        {this.props.instrumentList.map((value) => (
-          <option value={value} key={value}>
-            {value}
-          </option>
-        ))}
-      </AutoblurSelect>
-    );
-  }
-}
-
 const audioContext = new window.AudioContext();
 
 function getPianoConfig(startNote, endNote) {
   return {
     keyboardShortcuts: buildKeyboardShortcuts(startNote, KEYBOARD_CONFIGS.MIDDLE),
   };
-}
-
-function PianoConfig(props) {
-  const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
-    (midiNumber) => getMidiNumberAttributes(midiNumber).note,
-  );
-
-  function onChangeStartNote(event) {
-    props.setRange({
-      startNote: parseInt(event.target.value, 10),
-      endNote: props.range.endNote,
-    });
-  }
-
-  function onChangeEndNote(event) {
-    props.setRange({
-      startNote: props.range.startNote,
-      endNote: parseInt(event.target.value, 10),
-    });
-  }
-
-  return (
-    <div>
-      <AutoblurSelect
-        className="form-control"
-        onChange={onChangeStartNote}
-        value={props.range.startNote}
-      >
-        {_.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
-          <option value={midiNumber} key={midiNumber}>
-            {midiNumbersToNotes[midiNumber]}
-          </option>
-        ))}
-      </AutoblurSelect>
-      <AutoblurSelect
-        className="form-control"
-        onChange={onChangeEndNote}
-        value={props.range.endNote}
-      >
-        {_.range(props.range.startNote + 1, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
-          <option value={midiNumber} key={midiNumber}>
-            {midiNumbersToNotes[midiNumber]}
-          </option>
-        ))}
-      </AutoblurSelect>
-      <InstrumentPicker
-        className="form-control"
-        onChange={props.onChangeInstrument}
-        instrumentName={props.instrumentName}
-        instrumentList={props.instrumentList}
-      />
-    </div>
-  );
 }
 
 class App extends React.Component {
@@ -183,16 +85,18 @@ class App extends React.Component {
                         isLoading={isLoading}
                       />
                     </div>
-                    <div className="text-center mt-5">
-                      <PianoConfig
-                        range={this.state.range}
-                        setRange={(range) => {
-                          this.setState({ range });
-                        }}
-                        onChangeInstrument={onChangeInstrument}
-                        instrumentName={instrumentName}
-                        instrumentList={instrumentList}
-                      />
+                    <div className="row mt-5">
+                      <div className="col-md-8 offset-md-2">
+                        <PianoConfig
+                          range={this.state.range}
+                          setRange={(range) => {
+                            this.setState({ range });
+                          }}
+                          onChangeInstrument={onChangeInstrument}
+                          instrumentName={instrumentName}
+                          instrumentList={instrumentList}
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
