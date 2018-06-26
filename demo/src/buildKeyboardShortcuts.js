@@ -1,6 +1,4 @@
-import { getMidiNumberAttributes } from 'react-piano';
-
-const MAX_MIDI_NUMBER = 127;
+import { getMidiNumberAttributes, MAX_MIDI_NUMBER } from 'react-piano';
 
 function buildKeyboardShortcuts(startNote, keyboardConfig) {
   let currentMidiNumber = startNote;

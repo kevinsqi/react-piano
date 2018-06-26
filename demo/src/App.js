@@ -1,6 +1,7 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import _ from 'lodash';
+import { getMidiNumberAttributes, MIN_MIDI_NUMBER, MAX_MIDI_NUMBER } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import Header from './Header';
@@ -10,8 +11,6 @@ import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
 import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import './App.css';
-
-const MAX_MIDI_NUMBER = 127;
 
 function Installation() {
   return (
@@ -30,32 +29,46 @@ function Installation() {
   );
 }
 
-class InstrumentPicker extends React.Component {
+class AutoblurSelect extends React.Component {
   constructor(props) {
     super(props);
     this.selectRef = React.createRef();
   }
 
   onChange = (event) => {
-    this.props.onChange(event.target.value);
+    this.props.onChange(event);
     this.selectRef.current.blur();
   };
 
   render() {
+    const { children, onChange, ...otherProps } = this.props;
     return (
-      <select
+      <select {...otherProps} onChange={this.onChange} ref={this.selectRef}>
+        {children}
+      </select>
+    );
+  }
+}
+
+class InstrumentPicker extends React.Component {
+  onChange = (event) => {
+    this.props.onChange(event.target.value);
+  };
+
+  render() {
+    return (
+      <AutoblurSelect
         className={this.props.className}
         style={this.props.style}
         value={this.props.instrumentName}
         onChange={this.onChange}
-        ref={this.selectRef}
       >
         {this.props.instrumentList.map((value) => (
           <option value={value} key={value}>
             {value}
           </option>
         ))}
-      </select>
+      </AutoblurSelect>
     );
   }
 }
@@ -76,6 +89,9 @@ class App extends React.Component {
 
   render() {
     const { keyboardShortcuts } = getPianoConfig(this.state.startNote, this.state.endNote);
+    const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
+      (midiNumber) => getMidiNumberAttributes(midiNumber).note,
+    );
 
     return (
       <div>
@@ -113,7 +129,7 @@ class App extends React.Component {
                       />
                     </div>
                     <div className="text-center mt-5">
-                      <select
+                      <AutoblurSelect
                         className="form-control"
                         onChange={(event) =>
                           this.setState({ startNote: parseInt(event.target.value, 10) })
@@ -121,10 +137,12 @@ class App extends React.Component {
                         value={this.state.startNote}
                       >
                         {_.range(12, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
-                          <option value={midiNumber}>{midiNumber}</option>
+                          <option value={midiNumber} key={midiNumber}>
+                            {midiNumbersToNotes[midiNumber]}
+                          </option>
                         ))}
-                      </select>
-                      <select
+                      </AutoblurSelect>
+                      <AutoblurSelect
                         className="form-control"
                         onChange={(event) =>
                           this.setState({ endNote: parseInt(event.target.value, 10) })
@@ -132,9 +150,13 @@ class App extends React.Component {
                         value={this.state.endNote}
                       >
                         {_.range(this.state.startNote + 1, MAX_MIDI_NUMBER + 1).map(
-                          (midiNumber) => <option value={midiNumber}>{midiNumber}</option>,
+                          (midiNumber) => (
+                            <option value={midiNumber} key={midiNumber}>
+                              {midiNumbersToNotes[midiNumber]}
+                            </option>
+                          ),
                         )}
-                      </select>
+                      </AutoblurSelect>
                       <InstrumentPicker
                         className="form-control"
                         onChange={onChangeInstrument}
