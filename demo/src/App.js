@@ -81,16 +81,71 @@ function getPianoConfig(startNote, endNote) {
   };
 }
 
+function PianoConfig(props) {
+  const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
+    (midiNumber) => getMidiNumberAttributes(midiNumber).note,
+  );
+
+  function onChangeStartNote(event) {
+    props.setRange({
+      startNote: parseInt(event.target.value, 10),
+      endNote: props.range.endNote,
+    });
+  }
+
+  function onChangeEndNote(event) {
+    props.setRange({
+      startNote: props.range.startNote,
+      endNote: parseInt(event.target.value, 10),
+    });
+  }
+
+  return (
+    <div>
+      <AutoblurSelect
+        className="form-control"
+        onChange={onChangeStartNote}
+        value={props.range.startNote}
+      >
+        {_.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
+          <option value={midiNumber} key={midiNumber}>
+            {midiNumbersToNotes[midiNumber]}
+          </option>
+        ))}
+      </AutoblurSelect>
+      <AutoblurSelect
+        className="form-control"
+        onChange={onChangeEndNote}
+        value={props.range.endNote}
+      >
+        {_.range(props.range.startNote + 1, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
+          <option value={midiNumber} key={midiNumber}>
+            {midiNumbersToNotes[midiNumber]}
+          </option>
+        ))}
+      </AutoblurSelect>
+      <InstrumentPicker
+        className="form-control"
+        onChange={props.onChangeInstrument}
+        instrumentName={props.instrumentName}
+        instrumentList={props.instrumentList}
+      />
+    </div>
+  );
+}
+
 class App extends React.Component {
   state = {
-    startNote: 55,
-    endNote: 79,
+    range: {
+      startNote: 55,
+      endNote: 79,
+    },
   };
 
   render() {
-    const { keyboardShortcuts } = getPianoConfig(this.state.startNote, this.state.endNote);
-    const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
-      (midiNumber) => getMidiNumberAttributes(midiNumber).note,
+    const { keyboardShortcuts } = getPianoConfig(
+      this.state.range.startNote,
+      this.state.range.endNote,
     );
 
     return (
@@ -120,8 +175,8 @@ class App extends React.Component {
                   <div>
                     <div>
                       <InputPiano
-                        startNote={this.state.startNote}
-                        endNote={this.state.endNote}
+                        startNote={this.state.range.startNote}
+                        endNote={this.state.range.endNote}
                         keyboardShortcuts={keyboardShortcuts}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
@@ -129,37 +184,12 @@ class App extends React.Component {
                       />
                     </div>
                     <div className="text-center mt-5">
-                      <AutoblurSelect
-                        className="form-control"
-                        onChange={(event) =>
-                          this.setState({ startNote: parseInt(event.target.value, 10) })
-                        }
-                        value={this.state.startNote}
-                      >
-                        {_.range(12, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
-                          <option value={midiNumber} key={midiNumber}>
-                            {midiNumbersToNotes[midiNumber]}
-                          </option>
-                        ))}
-                      </AutoblurSelect>
-                      <AutoblurSelect
-                        className="form-control"
-                        onChange={(event) =>
-                          this.setState({ endNote: parseInt(event.target.value, 10) })
-                        }
-                        value={this.state.endNote}
-                      >
-                        {_.range(this.state.startNote + 1, MAX_MIDI_NUMBER + 1).map(
-                          (midiNumber) => (
-                            <option value={midiNumber} key={midiNumber}>
-                              {midiNumbersToNotes[midiNumber]}
-                            </option>
-                          ),
-                        )}
-                      </AutoblurSelect>
-                      <InstrumentPicker
-                        className="form-control"
-                        onChange={onChangeInstrument}
+                      <PianoConfig
+                        range={this.state.range}
+                        setRange={(range) => {
+                          this.setState({ range });
+                        }}
+                        onChangeInstrument={onChangeInstrument}
                         instrumentName={instrumentName}
                         instrumentList={instrumentList}
                       />
