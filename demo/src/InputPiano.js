@@ -1,13 +1,12 @@
 import React from 'react';
 import { Piano, getMidiNumberAttributes } from 'react-piano';
 import classNames from 'classnames';
-// TODO: lodash.range
+// TODO: lodash.find
 import _ from 'lodash';
 
 import DimensionsProvider from './DimensionsProvider';
 import InputManager from './InputManager';
 
-// TODO: have getMidiNumberForKey be passed as a prop function
 class InputPiano extends React.Component {
   constructor(props) {
     super(props);
@@ -19,24 +18,14 @@ class InputPiano extends React.Component {
     };
   }
 
-  // TODO dedupe
-  getMidiNumbers() {
-    return _.range(this.props.startNote, this.props.endNote + 1);
-  }
-
   getMidiNumberForKey = (key) => {
-    const mapping = this.props.keyboardShortcuts;
-    return mapping[key];
+    const shortcut = _.find(this.props.keyboardShortcuts, { key: key });
+    return shortcut && shortcut.midiNumber;
   };
 
   getKeyForMidiNumber = (midiNumber) => {
-    const mapping = this.props.keyboardShortcuts;
-    for (let key in mapping) {
-      if (mapping[key] === midiNumber) {
-        return key;
-      }
-    }
-    return null;
+    const shortcut = _.find(this.props.keyboardShortcuts, { midiNumber: midiNumber });
+    return shortcut && shortcut.key;
   };
 
   onKeyDown = (event) => {
