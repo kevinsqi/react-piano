@@ -1,5 +1,6 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
+import _ from 'lodash';
 import 'react-piano/build/styles.css';
 
 import Header from './Header';
@@ -9,6 +10,8 @@ import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
 import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import './App.css';
+
+const MAX_MIDI_NUMBER = 127;
 
 function Installation() {
   return (
@@ -66,10 +69,13 @@ function getPianoConfig(startNote, endNote) {
 }
 
 class App extends React.Component {
+  state = {
+    startNote: 55,
+    endNote: 79,
+  };
+
   render() {
-    const startNote = 55;
-    const endNote = 79;
-    const { keyboardShortcuts } = getPianoConfig(startNote, endNote);
+    const { keyboardShortcuts } = getPianoConfig(this.state.startNote, this.state.endNote);
 
     return (
       <div>
@@ -98,8 +104,8 @@ class App extends React.Component {
                   <div>
                     <div>
                       <InputPiano
-                        startNote={startNote}
-                        endNote={endNote}
+                        startNote={this.state.startNote}
+                        endNote={this.state.endNote}
                         keyboardShortcuts={keyboardShortcuts}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
@@ -107,9 +113,30 @@ class App extends React.Component {
                       />
                     </div>
                     <div className="text-center mt-5">
+                      <select
+                        className="form-control"
+                        onChange={(event) =>
+                          this.setState({ startNote: parseInt(event.target.value, 10) })
+                        }
+                        value={this.state.startNote}
+                      >
+                        {_.range(12, MAX_MIDI_NUMBER + 1).map((midiNumber) => (
+                          <option value={midiNumber}>{midiNumber}</option>
+                        ))}
+                      </select>
+                      <select
+                        className="form-control"
+                        onChange={(event) =>
+                          this.setState({ endNote: parseInt(event.target.value, 10) })
+                        }
+                        value={this.state.endNote}
+                      >
+                        {_.range(this.state.startNote + 1, MAX_MIDI_NUMBER + 1).map(
+                          (midiNumber) => <option value={midiNumber}>{midiNumber}</option>,
+                        )}
+                      </select>
                       <InstrumentPicker
-                        className="form-control d-inline-block"
-                        style={{ width: 200 }}
+                        className="form-control"
                         onChange={onChangeInstrument}
                         instrumentName={instrumentName}
                         instrumentList={instrumentList}
