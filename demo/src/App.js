@@ -7,7 +7,7 @@ import Footer from './Footer';
 import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
 import KEYBOARD_CONFIGS from './keyboardConfigs';
-import { buildKeyboardShortcuts } from './keyboardShortcuts';
+import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import './App.css';
 
 function Installation() {

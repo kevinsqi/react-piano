@@ -1,6 +1,6 @@
 import { getMidiNumberAttributes } from 'react-piano';
 
-export function buildKeyboardShortcuts(midiNumbers, keyboardConfig) {
+function buildKeyboardShortcuts(midiNumbers, keyboardConfig) {
   let naturalKeyIndex = 0;
   let keyboardShortcuts = [];
   for (let index = 0; index < midiNumbers.length; index += 1) {
@@ -26,3 +26,5 @@ export function buildKeyboardShortcuts(midiNumbers, keyboardConfig) {
   }
   return keyboardShortcuts;
 }
+
+export default buildKeyboardShortcuts;
