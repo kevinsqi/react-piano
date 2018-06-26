@@ -2,10 +2,13 @@ import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import 'react-piano/build/styles.css';
 
+import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import Header from './Header';
 import Footer from './Footer';
 import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
+import KEYBOARD_CONFIGS from './keyboardConfigs';
+import PianoConfig from './PianoConfig';
 import './App.css';
 
 function Installation() {
@@ -25,40 +28,28 @@ function Installation() {
   );
 }
 
-class InstrumentPicker extends React.Component {
-  constructor(props) {
-    super(props);
-    this.selectRef = React.createRef();
-  }
+const audioContext = new window.AudioContext();
 
-  onChange = (event) => {
-    this.props.onChange(event.target.value);
-    this.selectRef.current.blur();
+function getPianoConfig(startNote, endNote) {
+  return {
+    keyboardShortcuts: buildKeyboardShortcuts(startNote, KEYBOARD_CONFIGS.MIDDLE),
+  };
+}
+
+class App extends React.Component {
+  state = {
+    range: {
+      startNote: 55,
+      endNote: 79,
+    },
   };
 
   render() {
-    return (
-      <select
-        className={this.props.className}
-        style={this.props.style}
-        value={this.props.instrumentName}
-        onChange={this.onChange}
-        ref={this.selectRef}
-      >
-        {this.props.instrumentList.map((value) => (
-          <option value={value} key={value}>
-            {value}
-          </option>
-        ))}
-      </select>
+    const { keyboardShortcuts } = getPianoConfig(
+      this.state.range.startNote,
+      this.state.range.endNote,
     );
-  }
-}
 
-const audioContext = new window.AudioContext();
-
-class App extends React.Component {
-  render() {
     return (
       <div>
         <Header />
@@ -84,23 +75,28 @@ class App extends React.Component {
                   onNoteStop,
                 }) => (
                   <div>
-                    <div className="text-center">
-                      <InstrumentPicker
-                        className="form-control d-inline-block"
-                        style={{ width: 200 }}
-                        onChange={onChangeInstrument}
-                        instrumentName={instrumentName}
-                        instrumentList={instrumentList}
-                      />
-                    </div>
-                    <div className="mt-3">
+                    <div>
                       <InputPiano
-                        startNote={55}
-                        endNote={79}
+                        startNote={this.state.range.startNote}
+                        endNote={this.state.range.endNote}
+                        keyboardShortcuts={keyboardShortcuts}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
                         isLoading={isLoading}
                       />
+                    </div>
+                    <div className="row mt-5">
+                      <div className="col-md-8 offset-md-2">
+                        <PianoConfig
+                          range={this.state.range}
+                          setRange={(range) => {
+                            this.setState({ range });
+                          }}
+                          onChangeInstrument={onChangeInstrument}
+                          instrumentName={instrumentName}
+                          instrumentList={instrumentList}
+                        />
+                      </div>
                     </div>
                   </div>
                 )}

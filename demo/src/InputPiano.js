@@ -1,47 +1,31 @@
 import React from 'react';
 import { Piano, getMidiNumberAttributes } from 'react-piano';
 import classNames from 'classnames';
-// TODO: lodash.range
+// TODO: lodash.find
 import _ from 'lodash';
 
 import DimensionsProvider from './DimensionsProvider';
-// TODO: extract out
-import KEYBOARD_CONFIGS from './keyboardConfigs';
-// TODO: extract out
-import { getKeyboardShortcutMapping } from './keyboardShortcuts';
 import InputManager from './InputManager';
 
-// TODO: have getMidiNumberForKey be passed as a prop function
 class InputPiano extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // TODO: group into an 'input' obj
       activeNotes: [],
       isMouseDown: false,
       touchEvents: false,
     };
   }
 
-  // TODO dedupe
-  getMidiNumbers() {
-    return _.range(this.props.startNote, this.props.endNote + 1);
-  }
-
   getMidiNumberForKey = (key) => {
-    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
-    return mapping[key];
+    const shortcut = _.find(this.props.keyboardShortcuts, { key: key });
+    return shortcut && shortcut.midiNumber;
   };
 
   getKeyForMidiNumber = (midiNumber) => {
-    const mapping = getKeyboardShortcutMapping(this.getMidiNumbers(), KEYBOARD_CONFIGS.MIDDLE);
-    for (let key in mapping) {
-      if (mapping[key] === midiNumber) {
-        return key;
-      }
-    }
-    return null;
+    const shortcut = _.find(this.props.keyboardShortcuts, { midiNumber: midiNumber });
+    return shortcut && shortcut.key;
   };
 
   onKeyDown = (event) => {
