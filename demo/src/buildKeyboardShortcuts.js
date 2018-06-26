@@ -1,28 +1,25 @@
 import { getMidiNumberAttributes } from 'react-piano';
 
-function buildKeyboardShortcuts(midiNumbers, keyboardConfig) {
+function buildKeyboardShortcuts(startNote, keyboardConfig) {
+  let currentMidiNumber = startNote;
   let naturalKeyIndex = 0;
   let keyboardShortcuts = [];
-  for (let index = 0; index < midiNumbers.length; index += 1) {
-    const midiNumber = midiNumbers[index];
+  while (naturalKeyIndex < keyboardConfig.length) {
     const key = keyboardConfig[naturalKeyIndex];
-    const { isAccidental } = getMidiNumberAttributes(midiNumber);
+    const { isAccidental } = getMidiNumberAttributes(currentMidiNumber);
     if (isAccidental) {
       keyboardShortcuts.push({
         key: key.flat,
-        midiNumber: midiNumber,
+        midiNumber: currentMidiNumber,
       });
     } else {
       keyboardShortcuts.push({
         key: key.natural,
-        midiNumber: midiNumber,
+        midiNumber: currentMidiNumber,
       });
       naturalKeyIndex += 1;
-
-      if (naturalKeyIndex >= keyboardConfig.length) {
-        break;
-      }
     }
+    currentMidiNumber += 1;
   }
   return keyboardShortcuts;
 }
