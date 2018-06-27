@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
+* {
+  box-sizing: border-box;
+}
