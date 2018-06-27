@@ -1,6 +1,8 @@
 # react-piano
 
 [![npm version](https://img.shields.io/npm/v/react-piano.svg)](https://www.npmjs.com/package/react-piano)
+[![build status](https://travis-ci.com/iqnivek/react-piano.svg?branch=master)](https://travis-ci.com/iqnivek/react-piano)
+[![bundle size](https://img.shields.io/bundlephobia/min/react.svg)](https://bundlephobia.com/result?p=react-piano)
 
 A super-customizable responsive piano keyboard for React 🎹
 
