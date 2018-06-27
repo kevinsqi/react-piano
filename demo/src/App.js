@@ -39,7 +39,7 @@ function getPianoConfig(startNote, endNote) {
 class App extends React.Component {
   state = {
     config: {
-      instrumentName: 'acoustic_grand_piano',
+      instrumentName: InstrumentProvider.defaultProps.instrumentName,
       startNote: 55,
       endNote: 79,
     },
@@ -65,6 +65,7 @@ class App extends React.Component {
             <div className="col-md-8 offset-md-2">
               <InstrumentProvider
                 audioContext={audioContext}
+                instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
               >
                 {({ isLoading, instrumentList, onNoteStart, onNoteStop }) => (
@@ -84,6 +85,7 @@ class App extends React.Component {
                         <PianoConfig
                           config={this.state.config}
                           setConfig={(config) => {
+                            console.log(config, Object.assign({}, this.state.config, config));
                             this.setState({
                               config: Object.assign({}, this.state.config, config),
                             });

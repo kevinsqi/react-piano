@@ -23,29 +23,6 @@ class AutoblurSelect extends React.Component {
   }
 }
 
-class InstrumentPicker extends React.Component {
-  onChange = (event) => {
-    this.props.onChange(event.target.value);
-  };
-
-  render() {
-    return (
-      <AutoblurSelect
-        className={this.props.className}
-        style={this.props.style}
-        value={this.props.instrumentName}
-        onChange={this.onChange}
-      >
-        {this.props.instrumentList.map((value) => (
-          <option value={value} key={value}>
-            {value}
-          </option>
-        ))}
-      </AutoblurSelect>
-    );
-  }
-}
-
 function Label(props) {
   return <div className="mb-1 text-secondary">{props.children}</div>;
 }
@@ -64,6 +41,12 @@ function PianoConfig(props) {
   function onChangeEndNote(event) {
     props.setConfig({
       endNote: parseInt(event.target.value, 10),
+    });
+  }
+
+  function onChangeInstrument(event) {
+    props.setConfig({
+      instrumentName: event.target.value,
     });
   }
 
@@ -97,12 +80,17 @@ function PianoConfig(props) {
       </div>
       <div className="col-6">
         <Label>Instrument</Label>
-        <InstrumentPicker
+        <AutoblurSelect
           className="form-control"
-          instrumentName={instrumentName}
-          instrumentList={props.instrumentList}
-          onChange={props.onChangeInstrument}
-        />
+          value={instrumentName}
+          onChange={onChangeInstrument}
+        >
+          {props.instrumentList.map((value) => (
+            <option value={value} key={value}>
+              {value}
+            </option>
+          ))}
+        </AutoblurSelect>
       </div>
     </div>
   );
