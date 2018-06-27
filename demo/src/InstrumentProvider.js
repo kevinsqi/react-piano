@@ -13,7 +13,6 @@ class InstrumentProvider extends React.Component {
     this.state = {
       activeAudioNodes: {},
       instrument: null,
-      instrumentName: props.instrumentName,
       instrumentList: [props.instrumentName],
     };
   }
@@ -24,8 +23,12 @@ class InstrumentProvider extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.instrumentName !== this.state.instrumentName) {
-      this.loadInstrument(this.state.instrumentName);
+    if (prevProps.instrumentName !== this.props.instrumentName) {
+      // Re-trigger loading state
+      this.setState({
+        instrument: null,
+      });
+      this.loadInstrument(this.props.instrumentName);
     }
   }
 
@@ -93,21 +96,12 @@ class InstrumentProvider extends React.Component {
     });
   };
 
-  onChangeInstrument = (instrumentName) => {
-    this.setState({
-      instrument: null, // Re-trigger loading state
-      instrumentName,
-    });
-  };
-
   render() {
     return this.props.children({
       isLoading: !(this.state.instrument && this.state.instrumentList),
       onNoteStart: this.onNoteStart,
       onNoteStop: this.onNoteStop,
       onStopAll: this.onStopAll,
-      onChangeInstrument: this.onChangeInstrument,
-      instrumentName: this.state.instrumentName,
       instrumentList: this.state.instrumentList,
     });
   }

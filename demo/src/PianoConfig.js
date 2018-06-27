@@ -56,33 +56,29 @@ function PianoConfig(props) {
   );
 
   function onChangeStartNote(event) {
-    props.setRange({
+    props.setConfig({
       startNote: parseInt(event.target.value, 10),
-      endNote: props.range.endNote,
     });
   }
 
   function onChangeEndNote(event) {
-    props.setRange({
-      startNote: props.range.startNote,
+    props.setConfig({
       endNote: parseInt(event.target.value, 10),
     });
   }
 
-  const fullNoteRange = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
+  const noteRange = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
     (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
   );
+
+  const { startNote, endNote, instrumentName } = props.config;
 
   return (
     <div className="form-row">
       <div className="col-3">
         <Label>Start note</Label>
-        <AutoblurSelect
-          className="form-control"
-          onChange={onChangeStartNote}
-          value={props.range.startNote}
-        >
-          {fullNoteRange.map((midiNumber) => (
+        <AutoblurSelect className="form-control" onChange={onChangeStartNote} value={startNote}>
+          {noteRange.map((midiNumber) => (
             <option value={midiNumber} key={midiNumber}>
               {midiNumbersToNotes[midiNumber]}
             </option>
@@ -91,12 +87,8 @@ function PianoConfig(props) {
       </div>
       <div className="col-3">
         <Label>End note</Label>
-        <AutoblurSelect
-          className="form-control"
-          onChange={onChangeEndNote}
-          value={props.range.endNote}
-        >
-          {fullNoteRange.map((midiNumber) => (
+        <AutoblurSelect className="form-control" onChange={onChangeEndNote} value={endNote}>
+          {noteRange.map((midiNumber) => (
             <option value={midiNumber} key={midiNumber}>
               {midiNumbersToNotes[midiNumber]}
             </option>
@@ -107,9 +99,9 @@ function PianoConfig(props) {
         <Label>Instrument</Label>
         <InstrumentPicker
           className="form-control"
-          onChange={props.onChangeInstrument}
-          instrumentName={props.instrumentName}
+          instrumentName={instrumentName}
           instrumentList={props.instrumentList}
+          onChange={props.onChangeInstrument}
         />
       </div>
     </div>

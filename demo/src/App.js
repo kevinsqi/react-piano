@@ -38,7 +38,8 @@ function getPianoConfig(startNote, endNote) {
 
 class App extends React.Component {
   state = {
-    range: {
+    config: {
+      instrumentName: 'acoustic_grand_piano',
       startNote: 55,
       endNote: 79,
     },
@@ -46,8 +47,8 @@ class App extends React.Component {
 
   render() {
     const { keyboardShortcuts } = getPianoConfig(
-      this.state.range.startNote,
-      this.state.range.endNote,
+      this.state.config.startNote,
+      this.state.config.endNote,
     );
 
     return (
@@ -66,19 +67,12 @@ class App extends React.Component {
                 audioContext={audioContext}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
               >
-                {({
-                  isLoading,
-                  instrumentList,
-                  instrumentName,
-                  onChangeInstrument,
-                  onNoteStart,
-                  onNoteStop,
-                }) => (
+                {({ isLoading, instrumentList, onNoteStart, onNoteStop }) => (
                   <div>
                     <div>
                       <InputPiano
-                        startNote={this.state.range.startNote}
-                        endNote={this.state.range.endNote}
+                        startNote={this.state.config.startNote}
+                        endNote={this.state.config.endNote}
                         keyboardShortcuts={keyboardShortcuts}
                         onNoteStart={onNoteStart}
                         onNoteStop={onNoteStop}
@@ -88,12 +82,12 @@ class App extends React.Component {
                     <div className="row mt-5">
                       <div className="col-md-8 offset-md-2">
                         <PianoConfig
-                          range={this.state.range}
-                          setRange={(range) => {
-                            this.setState({ range });
+                          config={this.state.config}
+                          setConfig={(config) => {
+                            this.setState({
+                              config: Object.assign({}, this.state.config, config),
+                            });
                           }}
-                          onChangeInstrument={onChangeInstrument}
-                          instrumentName={instrumentName}
                           instrumentList={instrumentList}
                         />
                       </div>
