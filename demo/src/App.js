@@ -1,5 +1,6 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
+import { KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import buildKeyboardShortcuts from './buildKeyboardShortcuts';
@@ -7,7 +8,6 @@ import Header from './Header';
 import Footer from './Footer';
 import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
-import KEYBOARD_CONFIGS from './keyboardConfigs';
 import PianoConfig from './PianoConfig';
 import './App.css';
 
@@ -30,12 +30,6 @@ function Installation() {
 
 const audioContext = new window.AudioContext();
 
-function getPianoConfig(startNote, endNote) {
-  return {
-    keyboardShortcuts: buildKeyboardShortcuts(startNote, KEYBOARD_CONFIGS.MIDDLE),
-  };
-}
-
 class App extends React.Component {
   state = {
     config: {
@@ -46,11 +40,10 @@ class App extends React.Component {
   };
 
   render() {
-    const { keyboardShortcuts } = getPianoConfig(
+    const keyboardShortcuts = buildKeyboardShortcuts(
       this.state.config.startNote,
-      this.state.config.endNote,
+      KEYBOARD_SHORTCUT_CONFIGS.MIDDLE,
     );
-
     return (
       <div>
         <Header />
@@ -81,11 +74,10 @@ class App extends React.Component {
                       />
                     </div>
                     <div className="row mt-5">
-                      <div className="col-md-8 offset-md-2">
+                      <div className="col-lg-8 offset-lg-2">
                         <PianoConfig
                           config={this.state.config}
                           setConfig={(config) => {
-                            console.log(config, Object.assign({}, this.state.config, config));
                             this.setState({
                               config: Object.assign({}, this.state.config, config),
                             });

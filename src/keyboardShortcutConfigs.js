@@ -1,5 +1,4 @@
-// TODO: move this to be exported from react-piano?
-const KEYBOARD_CONFIGS = {
+const KEYBOARD_SHORTCUT_CONFIGS = {
   BOTTOM: [
     { natural: 'z', flat: 'a', sharp: 's' },
     { natural: 'x', flat: 's', sharp: 'd' },
@@ -40,4 +39,4 @@ const KEYBOARD_CONFIGS = {
   ],
 };
 
-export default KEYBOARD_CONFIGS;
+export default KEYBOARD_SHORTCUT_CONFIGS;
