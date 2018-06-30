@@ -2,6 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import { getMidiNumberAttributes, MIN_MIDI_NUMBER, MAX_MIDI_NUMBER } from 'react-piano';
 
+const NUM_NOTES_IN_OCTAVE = 12;
+
 class AutoblurSelect extends React.Component {
   constructor(props) {
     super(props);
@@ -27,73 +29,97 @@ function Label(props) {
   return <div className="mb-1 text-secondary">{props.children}</div>;
 }
 
-function PianoConfig(props) {
-  const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
-    (midiNumber) => getMidiNumberAttributes(midiNumber).note,
-  );
+class PianoConfig extends React.Component {
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
 
-  function onChangeStartNote(event) {
-    props.setConfig({
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = (event) => {
+    if (event.key === 'ArrowLeft') {
+      this.props.setConfig({
+        keyboardShortcutOffset: this.props.config.keyboardShortcutOffset - NUM_NOTES_IN_OCTAVE,
+      });
+    } else if (event.key === 'ArrowRight') {
+      this.props.setConfig({
+        keyboardShortcutOffset: this.props.config.keyboardShortcutOffset + NUM_NOTES_IN_OCTAVE,
+      });
+    }
+  };
+
+  onChangeStartNote = (event) => {
+    this.props.setConfig({
       startNote: parseInt(event.target.value, 10),
     });
-  }
+  };
 
-  function onChangeEndNote(event) {
-    props.setConfig({
+  onChangeEndNote = (event) => {
+    this.props.setConfig({
       endNote: parseInt(event.target.value, 10),
     });
-  }
+  };
 
-  function onChangeInstrument(event) {
-    props.setConfig({
+  onChangeInstrument = (event) => {
+    this.props.setConfig({
       instrumentName: event.target.value,
     });
+  };
+
+  render() {
+    const noteRange = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
+      (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
+    );
+    const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
+      (midiNumber) => getMidiNumberAttributes(midiNumber).note,
+    );
+    const { startNote, endNote, instrumentName } = this.props.config;
+
+    return (
+      <div className="form-row">
+        <div className="col-3">
+          <Label>Start note</Label>
+          <AutoblurSelect
+            className="form-control"
+            onChange={this.onChangeStartNote}
+            value={startNote}
+          >
+            {noteRange.map((midiNumber) => (
+              <option value={midiNumber} key={midiNumber}>
+                {midiNumbersToNotes[midiNumber]}
+              </option>
+            ))}
+          </AutoblurSelect>
+        </div>
+        <div className="col-3">
+          <Label>End note</Label>
+          <AutoblurSelect className="form-control" onChange={this.onChangeEndNote} value={endNote}>
+            {noteRange.map((midiNumber) => (
+              <option value={midiNumber} key={midiNumber}>
+                {midiNumbersToNotes[midiNumber]}
+              </option>
+            ))}
+          </AutoblurSelect>
+        </div>
+        <div className="col-6">
+          <Label>Instrument</Label>
+          <AutoblurSelect
+            className="form-control"
+            value={instrumentName}
+            onChange={this.onChangeInstrument}
+          >
+            {this.props.instrumentList.map((value) => (
+              <option value={value} key={value}>
+                {value}
+              </option>
+            ))}
+          </AutoblurSelect>
+        </div>
+      </div>
+    );
   }
-
-  const noteRange = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
-    (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
-  );
-
-  const { startNote, endNote, instrumentName } = props.config;
-
-  return (
-    <div className="form-row">
-      <div className="col-3">
-        <Label>Start note</Label>
-        <AutoblurSelect className="form-control" onChange={onChangeStartNote} value={startNote}>
-          {noteRange.map((midiNumber) => (
-            <option value={midiNumber} key={midiNumber}>
-              {midiNumbersToNotes[midiNumber]}
-            </option>
-          ))}
-        </AutoblurSelect>
-      </div>
-      <div className="col-3">
-        <Label>End note</Label>
-        <AutoblurSelect className="form-control" onChange={onChangeEndNote} value={endNote}>
-          {noteRange.map((midiNumber) => (
-            <option value={midiNumber} key={midiNumber}>
-              {midiNumbersToNotes[midiNumber]}
-            </option>
-          ))}
-        </AutoblurSelect>
-      </div>
-      <div className="col-6">
-        <Label>Instrument</Label>
-        <AutoblurSelect
-          className="form-control"
-          value={instrumentName}
-          onChange={onChangeInstrument}
-        >
-          {props.instrumentList.map((value) => (
-            <option value={value} key={value}>
-              {value}
-            </option>
-          ))}
-        </AutoblurSelect>
-      </div>
-    </div>
-  );
 }
 
 export default PianoConfig;

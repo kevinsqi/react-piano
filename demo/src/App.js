@@ -36,14 +36,16 @@ class App extends React.Component {
       instrumentName: InstrumentProvider.defaultProps.instrumentName,
       startNote: 55,
       endNote: 79,
+      keyboardShortcutOffset: 0,
     },
   };
 
   render() {
     const keyboardShortcuts = buildKeyboardShortcuts(
-      this.state.config.startNote,
-      KEYBOARD_SHORTCUT_CONFIGS.MIDDLE,
+      this.state.config.startNote + this.state.config.keyboardShortcutOffset,
+      KEYBOARD_SHORTCUT_CONFIGS.homeRow,
     );
+
     return (
       <div>
         <Header />
@@ -61,7 +63,7 @@ class App extends React.Component {
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
               >
-                {({ isLoading, instrumentList, onNoteStart, onNoteStop }) => (
+                {({ isLoading, instrumentList, onNoteStart, onNoteStop, onStopAll }) => (
                   <div>
                     <div>
                       <InputPiano
@@ -81,6 +83,7 @@ class App extends React.Component {
                             this.setState({
                               config: Object.assign({}, this.state.config, config),
                             });
+                            onStopAll();
                           }}
                           instrumentList={instrumentList}
                         />

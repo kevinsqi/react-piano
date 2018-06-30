@@ -1,5 +1,5 @@
 const KEYBOARD_SHORTCUT_CONFIGS = {
-  BOTTOM: [
+  qwertyRow: [
     { natural: 'z', flat: 'a', sharp: 's' },
     { natural: 'x', flat: 's', sharp: 'd' },
     { natural: 'c', flat: 'd', sharp: 'f' },
@@ -11,7 +11,7 @@ const KEYBOARD_SHORTCUT_CONFIGS = {
     { natural: '.', flat: 'l', sharp: ';' },
     { natural: '/', flat: ';', sharp: "'" },
   ],
-  MIDDLE: [
+  homeRow: [
     { natural: 'a', flat: 'q', sharp: 'w' },
     { natural: 's', flat: 'w', sharp: 'e' },
     { natural: 'd', flat: 'e', sharp: 'r' },
@@ -24,7 +24,7 @@ const KEYBOARD_SHORTCUT_CONFIGS = {
     { natural: ';', flat: 'p', sharp: '[' },
     { natural: "'", flat: '[', sharp: ']' },
   ],
-  TOP: [
+  bottomRow: [
     { natural: 'q', flat: '1', sharp: '2' },
     { natural: 'w', flat: '2', sharp: '3' },
     { natural: 'e', flat: '3', sharp: '4' },

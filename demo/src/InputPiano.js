@@ -18,6 +18,16 @@ class InputPiano extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    // If keyboard shortcuts change, any activeNotes will not
+    // correctly fire keyUp events. First cancel all activeNotes.
+    if (prevProps.keyboardShortcuts !== this.props.keyboardShortcuts) {
+      this.setState({
+        activeNotes: [],
+      });
+    }
+  }
+
   getMidiNumberForKey = (key) => {
     const shortcut = _.find(this.props.keyboardShortcuts, { key: key });
     return shortcut && shortcut.midiNumber;
@@ -52,37 +62,29 @@ class InputPiano extends React.Component {
     if (this.props.isLoading) {
       return;
     }
-    if (this.state.isPlaying) {
-      this.props.onNoteStart(midiNumber);
-    } else {
-      // Prevent duplicate note firings
-      const alreadyFired = this.state.activeNotes.includes(midiNumber);
-      if (alreadyFired) {
-        return;
-      }
-      this.props.onNoteStart(midiNumber);
-      this.setState((prevState) => ({
-        activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
-      }));
+    // Prevent duplicate note firings
+    const isActive = this.state.activeNotes.includes(midiNumber);
+    if (isActive) {
+      return;
     }
+    this.props.onNoteStart(midiNumber);
+    this.setState((prevState) => ({
+      activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
+    }));
   };
 
   onNoteStop = (midiNumber) => {
     if (this.props.isLoading) {
       return;
     }
-    if (this.state.isPlaying) {
-      this.props.onNoteStop(midiNumber);
-    } else {
-      const alreadyFired = !this.state.activeNotes.includes(midiNumber);
-      if (alreadyFired) {
-        return;
-      }
-      this.props.onNoteStop(midiNumber);
-      this.setState((prevState) => ({
-        activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
-      }));
+    const isInactive = !this.state.activeNotes.includes(midiNumber);
+    if (isInactive) {
+      return;
     }
+    this.props.onNoteStop(midiNumber);
+    this.setState((prevState) => ({
+      activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
+    }));
   };
 
   onMouseDown = () => {
