@@ -26,7 +26,7 @@ class AutoblurSelect extends React.Component {
 }
 
 function Label(props) {
-  return <div className="mb-1 text-secondary">{props.children}</div>;
+  return <small className="mb-1 text-muted">{props.children}</small>;
 }
 
 class PianoConfig extends React.Component {
@@ -125,6 +125,12 @@ class PianoConfig extends React.Component {
               </option>
             ))}
           </AutoblurSelect>
+        </div>
+        <div className="col mt-2">
+          <small className="text-muted">
+            Use <strong>left arrow</strong> and <strong>right arrow</strong> to move the keyboard
+            shortcuts around.
+          </small>
         </div>
       </div>
     );

@@ -4,9 +4,12 @@ function Header() {
   return (
     <div style={{ background: '#333' }}>
       <div className="container">
-        <div className="text-center text-white p-5">
+        <div className="text-sm-center text-white py-5">
           <h1>react-piano</h1>
-          <p>A responsive, configurable, programmable piano keyboard for React</p>
+          <p>
+            A piano keyboard for React which supports custom sounds,<br className="d-none d-sm-block" />{' '}
+            touch/click/keyboard events, and programmatic playback.
+          </p>
           <div className="mt-4">
             <a
               className="btn btn-outline-light btn-lg"

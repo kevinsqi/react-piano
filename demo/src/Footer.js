@@ -7,7 +7,7 @@ function Footer(props) {
         <div className="text-center text-secondary">
           Made with{' '}
           <span role="img" aria-label="keyboard emoji">
-            🎹
+            🎵
           </span>
           by{' '}
           <a className="text-secondary" href="http://www.kevinqi.com/">

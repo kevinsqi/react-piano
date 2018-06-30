@@ -35,7 +35,7 @@ class App extends React.Component {
     config: {
       instrumentName: InstrumentProvider.defaultProps.instrumentName,
       startNote: 48,
-      endNote: 79,
+      endNote: 77,
       keyboardShortcutOffset: 0,
     },
   };
@@ -52,7 +52,7 @@ class App extends React.Component {
         <Header />
         <div className="container">
           <div className="text-center mt-5">
-            <p className="">Try it by clicking, tapping, or using your keyboard</p>
+            <p className="">Try it by clicking, tapping, or using your keyboard:</p>
             <div style={{ color: '#777' }}>
               <MdArrowDownward size={32} />
             </div>
