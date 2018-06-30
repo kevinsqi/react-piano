@@ -34,7 +34,7 @@ class App extends React.Component {
   state = {
     config: {
       instrumentName: InstrumentProvider.defaultProps.instrumentName,
-      startNote: 55,
+      startNote: 48,
       endNote: 79,
       keyboardShortcutOffset: 0,
     },
@@ -45,6 +45,7 @@ class App extends React.Component {
       this.state.config.startNote + this.state.config.keyboardShortcutOffset,
       KEYBOARD_SHORTCUT_CONFIGS.homeRow,
     );
+    const numKeyboardShortcuts = KEYBOARD_SHORTCUT_CONFIGS.homeRow.length;
 
     return (
       <div>
@@ -86,6 +87,8 @@ class App extends React.Component {
                             onStopAll();
                           }}
                           instrumentList={instrumentList}
+                          keyboardShortcuts={keyboardShortcuts}
+                          numKeyboardShortcuts={numKeyboardShortcuts}
                         />
                       </div>
                     </div>

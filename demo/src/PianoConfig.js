@@ -39,14 +39,23 @@ class PianoConfig extends React.Component {
   }
 
   handleKeyDown = (event) => {
+    const minOffset = 0;
+    const maxOffset =
+      this.props.config.endNote - this.props.config.startNote - this.props.numKeyboardShortcuts;
     if (event.key === 'ArrowLeft') {
-      this.props.setConfig({
-        keyboardShortcutOffset: this.props.config.keyboardShortcutOffset - NUM_NOTES_IN_OCTAVE,
-      });
+      const reducedOffset = this.props.config.keyboardShortcutOffset - NUM_NOTES_IN_OCTAVE;
+      if (reducedOffset >= minOffset) {
+        this.props.setConfig({
+          keyboardShortcutOffset: reducedOffset,
+        });
+      }
     } else if (event.key === 'ArrowRight') {
-      this.props.setConfig({
-        keyboardShortcutOffset: this.props.config.keyboardShortcutOffset + NUM_NOTES_IN_OCTAVE,
-      });
+      const increasedOffset = this.props.config.keyboardShortcutOffset + NUM_NOTES_IN_OCTAVE;
+      if (increasedOffset <= maxOffset) {
+        this.props.setConfig({
+          keyboardShortcutOffset: increasedOffset,
+        });
+      }
     }
   };
 
