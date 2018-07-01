@@ -1,3 +1,7 @@
+.ReactPiano__Keyboard {
+  position: relative;
+}
+
 .ReactPiano__Key {
   display: flex;
   position: absolute;

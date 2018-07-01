@@ -95,7 +95,10 @@ class Keyboard extends React.Component {
 
   render() {
     return (
-      <div style={{ position: 'relative', width: this.getWidth(), height: this.getHeight() }}>
+      <div
+        className="ReactPiano__Keyboard"
+        style={{ width: this.getWidth(), height: this.getHeight() }}
+      >
         {this.getMidiNumbers().map((num) => {
           const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
