@@ -8,18 +8,21 @@ import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
 class Piano extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.activeNotes !== prevProps.activeNotes) {
-      this.handleNoteChanges(prevProps.activeNotes || [], this.props.activeNotes || []);
+      this.handleNoteChanges({
+        prevActiveNotes: prevProps.activeNotes || [],
+        nextActiveNotes: this.props.activeNotes || [],
+      });
     }
   }
 
-  handleNoteChanges = (prevMidiNumbers, nextMidiNumbers) => {
-    const notesStarted = difference(prevMidiNumbers, nextMidiNumbers);
-    const notesStopped = difference(nextMidiNumbers, prevMidiNumbers);
-    notesStarted.forEach((number) => {
-      this.props.onNoteStop(number);
+  handleNoteChanges = ({ prevActiveNotes, nextActiveNotes }) => {
+    const notesStarted = difference(prevActiveNotes, nextActiveNotes);
+    const notesStopped = difference(nextActiveNotes, prevActiveNotes);
+    notesStarted.forEach((midiNumber) => {
+      this.props.onNoteStop(midiNumber);
     });
-    notesStopped.forEach((number) => {
-      this.props.onNoteStart(number);
+    notesStopped.forEach((midiNumber) => {
+      this.props.onNoteStart(midiNumber);
     });
   };
 
