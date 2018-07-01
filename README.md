@@ -4,11 +4,13 @@
 [![build status](https://travis-ci.com/iqnivek/react-piano.svg?branch=master)](https://travis-ci.com/iqnivek/react-piano)
 [![bundle size](https://img.shields.io/bundlephobia/min/react-piano.svg)](https://bundlephobia.com/result?p=react-piano)
 
-A super-customizable responsive piano keyboard for React 🎹
+A super-customizable piano keyboard for React 🎹
 
-**NOTE:** This component is a work in progress and not well-suited for production use yet! The API will be changing significantly. Feel free to play around with it, but a v1.0.0 release is recommended for production.
+![react-piano screenshot](/demo/public/images/react-piano-screenshot.png)
 
 ## Setup
+
+⚠️ **Warning:** This component is a work in progress and not well-suited for production use yet! The API will be changing significantly. Feel free to play around with it, but a v1.0.0 release is recommended for production use.
 
 ```
 yarn add react-piano
@@ -17,17 +19,21 @@ yarn add react-piano
 ## Usage
 
 ```jsx
-import Piano from 'react-piano';
+import { InputPiano, buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
+import 'react-piano/build/styles.css;
 
-<Piano
-  startNote="c4"
-  endNote="c5"
+const startNote = 48; // midi number C4
+const endNote = 77;   // midi number F6
+
+<InputPiano
+  startNote={startNote}
+  endNote={endNote}
+  onNoteStart={(midiNumber) => startPlaying(midiNumber)}
+  onNoteStop={(midiNumber) => stopPlaying(midiNumber)}
+  width={1000}
+  keyboardShortcuts={buildKeyboardShortcuts(startNote, KEYBOARD_SHORTCUT_CONFIGS.homeRow)}
 />
 ```
-
-## Contributing
-
-[Trello board](https://trello.com/b/m7xodJaN/tasks)
 
 ## License
 
