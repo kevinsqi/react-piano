@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import find from 'lodash.find';
 
@@ -43,19 +44,22 @@ class InputPiano extends React.Component {
   }
 
   getMidiNumberForKey = (key) => {
+    if (!this.props.keyboardShortcuts) {
+      return null;
+    }
     const shortcut = find(this.props.keyboardShortcuts, { key: key });
     return shortcut && shortcut.midiNumber;
   };
 
   getKeyForMidiNumber = (midiNumber) => {
+    if (!this.props.keyboardShortcuts) {
+      return null;
+    }
     const shortcut = find(this.props.keyboardShortcuts, { midiNumber: midiNumber });
     return shortcut && shortcut.key;
   };
 
   onKeyDown = (event) => {
-    if (!this.props.keyboardShortcuts) {
-      return;
-    }
     // Don't conflict with existing combinations like ctrl + t
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
@@ -67,9 +71,6 @@ class InputPiano extends React.Component {
   };
 
   onKeyUp = (event) => {
-    if (!this.props.keyboardShortcuts) {
-      return;
-    }
     // Don't conflict with existing combinations like ctrl + t
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
@@ -164,5 +165,20 @@ class InputPiano extends React.Component {
     );
   }
 }
+
+InputPiano.propTypes = {
+  startNote: PropTypes.number.isRequired,
+  endNote: PropTypes.number.isRequired,
+  onNoteStart: PropTypes.func.isRequired,
+  onNoteStop: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  width: PropTypes.number,
+  keyboardShortcuts: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      midiNumber: PropTypes.number.isRequired,
+    }),
+  ),
+};
 
 export default InputPiano;

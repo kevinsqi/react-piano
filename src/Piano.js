@@ -47,10 +47,10 @@ class Piano extends React.Component {
 Piano.propTypes = {
   startNote: PropTypes.number.isRequired,
   endNote: PropTypes.number.isRequired,
+  activeNotes: PropTypes.arrayOf(PropTypes.number),
   onNoteStart: PropTypes.func.isRequired,
   onNoteStop: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
-  activeNotes: PropTypes.array,
   gliss: PropTypes.bool,
   touchEvents: PropTypes.bool,
   renderNoteLabel: PropTypes.func,
