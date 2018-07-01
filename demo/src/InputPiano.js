@@ -4,8 +4,6 @@ import classNames from 'classnames';
 // TODO: lodash.find
 import _ from 'lodash';
 
-import InputManager from './InputManager';
-
 class InputPiano extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +13,22 @@ class InputPiano extends React.Component {
       isMouseDown: false,
       touchEvents: false,
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeyDown);
+    window.addEventListener('keyup', this.onKeyUp);
+    window.addEventListener('mousedown', this.onMouseDown);
+    window.addEventListener('mouseup', this.onMouseUp);
+    window.addEventListener('touchstart', this.onTouchStart);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKeyDown);
+    window.removeEventListener('keyup', this.onKeyUp);
+    window.removeEventListener('mousedown', this.onMouseDown);
+    window.removeEventListener('mouseup', this.onMouseUp);
+    window.removeEventListener('touchstart', this.onTouchStart);
   }
 
   componentDidUpdate(prevProps) {
@@ -134,27 +148,18 @@ class InputPiano extends React.Component {
 
   render() {
     return (
-      <div>
-        <InputManager
-          onKeyDown={this.onKeyDown}
-          onKeyUp={this.onKeyUp}
-          onMouseDown={this.onMouseDown}
-          onMouseUp={this.onMouseUp}
-          onTouchStart={this.onTouchStart}
-        />
-        <Piano
-          startNote={this.props.startNote}
-          endNote={this.props.endNote}
-          activeNotes={this.state.activeNotes}
-          disabled={this.props.isLoading}
-          width={this.props.width}
-          gliss={this.state.isMouseDown}
-          touchEvents={this.state.touchEvents}
-          renderNoteLabel={this.renderNoteLabel}
-          onNoteStart={this.onNoteStart}
-          onNoteStop={this.onNoteStop}
-        />
-      </div>
+      <Piano
+        startNote={this.props.startNote}
+        endNote={this.props.endNote}
+        activeNotes={this.state.activeNotes}
+        disabled={this.props.isLoading}
+        width={this.props.width}
+        gliss={this.state.isMouseDown}
+        touchEvents={this.state.touchEvents}
+        renderNoteLabel={this.renderNoteLabel}
+        onNoteStart={this.onNoteStart}
+        onNoteStop={this.onNoteStop}
+      />
     );
   }
 }
