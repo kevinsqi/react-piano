@@ -1,8 +1,9 @@
 import React from 'react';
-import { Piano, getMidiNumberAttributes } from 'react-piano';
 import classNames from 'classnames';
-// TODO: lodash.find
-import _ from 'lodash';
+import find from 'lodash.find';
+
+import Piano from './Piano';
+import { getMidiNumberAttributes } from './midiHelpers';
 
 class InputPiano extends React.Component {
   constructor(props) {
@@ -42,12 +43,12 @@ class InputPiano extends React.Component {
   }
 
   getMidiNumberForKey = (key) => {
-    const shortcut = _.find(this.props.keyboardShortcuts, { key: key });
+    const shortcut = find(this.props.keyboardShortcuts, { key: key });
     return shortcut && shortcut.midiNumber;
   };
 
   getKeyForMidiNumber = (midiNumber) => {
-    const shortcut = _.find(this.props.keyboardShortcuts, { midiNumber: midiNumber });
+    const shortcut = find(this.props.keyboardShortcuts, { midiNumber: midiNumber });
     return shortcut && shortcut.key;
   };
 

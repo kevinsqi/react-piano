@@ -1,13 +1,12 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
-import { KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
+import { InputPiano, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import DimensionsProvider from './DimensionsProvider';
 import Header from './Header';
 import Footer from './Footer';
-import InputPiano from './InputPiano';
 import InstrumentProvider from './InstrumentProvider';
 import PianoConfig from './PianoConfig';
 import './App.css';
