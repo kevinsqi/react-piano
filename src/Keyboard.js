@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import range from 'lodash.range';
 import classNames from 'classnames';
+
 import Key from './Key';
 import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
 
@@ -132,5 +134,18 @@ class Keyboard extends React.Component {
     );
   }
 }
+
+Keyboard.propTypes = {
+  startNote: PropTypes.number.isRequired,
+  endNote: PropTypes.number.isRequired,
+  activeNotes: PropTypes.arrayOf(PropTypes.number),
+  onNoteStart: PropTypes.func.isRequired,
+  onNoteStop: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  gliss: PropTypes.bool,
+  touchEvents: PropTypes.bool,
+  renderNoteLabel: PropTypes.func,
+  width: PropTypes.number,
+};
 
 export default Keyboard;

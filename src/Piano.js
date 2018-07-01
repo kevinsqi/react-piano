@@ -31,13 +31,13 @@ class Piano extends React.Component {
       <Keyboard
         startNote={this.props.startNote}
         endNote={this.props.endNote}
-        disabled={this.props.disabled}
         activeNotes={this.props.activeNotes}
-        width={this.props.width}
-        gliss={this.props.gliss}
-        touchEvents={this.props.touchEvents}
         onNoteStart={this.props.onNoteStart}
         onNoteStop={this.props.onNoteStop}
+        disabled={this.props.disabled}
+        gliss={this.props.gliss}
+        width={this.props.width}
+        touchEvents={this.props.touchEvents}
         renderNoteLabel={this.props.renderNoteLabel}
       />
     );
