@@ -64,7 +64,7 @@ class App extends React.Component {
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
               >
-                {({ isLoading, instrumentList, onNoteStart, onNoteStop, onStopAll }) => (
+                {({ isLoading, instrumentList, startNote, stopNote, stopAllNotes }) => (
                   <div>
                     <div>
                       <DimensionsProvider>
@@ -73,8 +73,8 @@ class App extends React.Component {
                             startNote={this.state.config.startNote}
                             endNote={this.state.config.endNote}
                             keyboardShortcuts={keyboardShortcuts}
-                            onNoteStart={onNoteStart}
-                            onNoteStop={onNoteStop}
+                            onNoteStart={startNote}
+                            onNoteStop={stopNote}
                             isLoading={isLoading}
                             width={containerWidth}
                           />
@@ -89,7 +89,7 @@ class App extends React.Component {
                             this.setState({
                               config: Object.assign({}, this.state.config, config),
                             });
-                            onStopAll();
+                            stopAllNotes();
                           }}
                           instrumentList={instrumentList}
                           keyboardShortcuts={keyboardShortcuts}
