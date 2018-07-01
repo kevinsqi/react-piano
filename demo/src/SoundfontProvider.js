@@ -24,15 +24,15 @@ class SoundfontProvider extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.instrumentName !== this.props.instrumentName) {
-      // Re-trigger loading state
-      this.setState({
-        instrument: null,
-      });
       this.loadInstrument(this.props.instrumentName);
     }
   }
 
   loadInstrument = (instrumentName) => {
+    // Re-trigger loading state
+    this.setState({
+      instrument: null,
+    });
     Soundfont.instrument(this.props.audioContext, instrumentName, {
       format: this.props.format,
       soundfont: this.props.soundfont,
