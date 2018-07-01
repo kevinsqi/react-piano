@@ -4,6 +4,7 @@ import { KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import buildKeyboardShortcuts from './buildKeyboardShortcuts';
+import DimensionsProvider from './DimensionsProvider';
 import Header from './Header';
 import Footer from './Footer';
 import InputPiano from './InputPiano';
@@ -67,14 +68,19 @@ class App extends React.Component {
                 {({ isLoading, instrumentList, onNoteStart, onNoteStop, onStopAll }) => (
                   <div>
                     <div>
-                      <InputPiano
-                        startNote={this.state.config.startNote}
-                        endNote={this.state.config.endNote}
-                        keyboardShortcuts={keyboardShortcuts}
-                        onNoteStart={onNoteStart}
-                        onNoteStop={onNoteStop}
-                        isLoading={isLoading}
-                      />
+                      <DimensionsProvider>
+                        {({ containerWidth }) => (
+                          <InputPiano
+                            startNote={this.state.config.startNote}
+                            endNote={this.state.config.endNote}
+                            keyboardShortcuts={keyboardShortcuts}
+                            onNoteStart={onNoteStart}
+                            onNoteStop={onNoteStop}
+                            isLoading={isLoading}
+                            width={containerWidth}
+                          />
+                        )}
+                      </DimensionsProvider>
                     </div>
                     <div className="row mt-5">
                       <div className="col-lg-8 offset-lg-2">

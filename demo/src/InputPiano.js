@@ -4,7 +4,6 @@ import classNames from 'classnames';
 // TODO: lodash.find
 import _ from 'lodash';
 
-import DimensionsProvider from './DimensionsProvider';
 import InputManager from './InputManager';
 
 class InputPiano extends React.Component {
@@ -135,24 +134,18 @@ class InputPiano extends React.Component {
           onMouseUp={this.onMouseUp}
           onTouchStart={this.onTouchStart}
         />
-        <div>
-          <DimensionsProvider>
-            {(width) => (
-              <Piano
-                startNote={this.props.startNote}
-                endNote={this.props.endNote}
-                activeNotes={this.state.activeNotes}
-                disabled={this.props.isLoading}
-                width={width}
-                gliss={this.state.isMouseDown}
-                touchEvents={this.state.touchEvents}
-                renderNoteLabel={this.renderNoteLabel}
-                onNoteStart={this.onNoteStart}
-                onNoteStop={this.onNoteStop}
-              />
-            )}
-          </DimensionsProvider>
-        </div>
+        <Piano
+          startNote={this.props.startNote}
+          endNote={this.props.endNote}
+          activeNotes={this.state.activeNotes}
+          disabled={this.props.isLoading}
+          width={this.props.width}
+          gliss={this.state.isMouseDown}
+          touchEvents={this.state.touchEvents}
+          renderNoteLabel={this.renderNoteLabel}
+          onNoteStart={this.onNoteStart}
+          onNoteStop={this.onNoteStop}
+        />
       </div>
     );
   }
