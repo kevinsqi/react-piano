@@ -6,7 +6,7 @@
 
 A super-customizable piano keyboard for React 🎹
 
-![react-piano screenshot](/demo/public/images/react-piano-screenshot.png)
+<img width="500" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" />
 
 ## Setup
 
