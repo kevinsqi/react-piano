@@ -28,7 +28,7 @@ class Key extends React.Component {
         onMouseDown={touchEvents ? null : onNoteStart}
         onMouseUp={touchEvents ? null : onNoteStop}
         onMouseEnter={gliss ? onNoteStart : null}
-        onMouseLeave={gliss ? onNoteStop : null}
+        onMouseLeave={onNoteStop}
         onTouchStart={touchEvents ? onNoteStart : null}
         onTouchCancel={touchEvents ? onNoteStop : null}
         onTouchEnd={touchEvents ? onNoteStop : null}
