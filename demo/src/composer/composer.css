@@ -1,0 +1,31 @@
+.Composer {
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+/* TODO: rename these classes */
+.Notes {
+  text-align: center;
+  background: #f8e8d5;
+  padding: 2px 5px;
+  color: #888;
+  min-width: 2rem;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.Notes--active {
+  background: #63b0cd;
+  color: #fff;
+}
+
+.Note--subscript {
+  font-size: 0.5em;
+}
+
+.KeyboardShortcutLabel {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.7em;
+}

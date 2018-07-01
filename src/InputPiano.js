@@ -138,8 +138,8 @@ class InputPiano extends React.Component {
       <div className="text-center">
         <div
           className={classNames({
-            'NoteLabel--black': isAccidental,
-            'NoteLabel--white': !isAccidental,
+            'ReactPiano__NoteLabel--black': isAccidental,
+            'ReactPiano__NoteLabel--white': !isAccidental,
           })}
         >
           {keyboardShortcut}

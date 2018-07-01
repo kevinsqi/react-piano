@@ -31,7 +31,7 @@ class Key extends React.Component {
         onTouchCancel={touchEvents ? onNoteStop : null}
         onTouchEnd={touchEvents ? onNoteStop : null}
       >
-        <div className="ReactPiano__NoteLabel">{children}</div>
+        <div className="ReactPiano__NoteLabelContainer">{children}</div>
       </div>
     );
   }
