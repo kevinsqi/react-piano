@@ -18,12 +18,10 @@ class Key extends React.Component {
       <div
         className={className}
         style={{
-          position: 'absolute',
           top: 0,
           left: left,
           width: width,
           height: height,
-          display: 'flex',
         }}
         onMouseDown={touchEvents ? null : onNoteStart}
         onMouseUp={touchEvents ? null : onNoteStop}
@@ -33,7 +31,7 @@ class Key extends React.Component {
         onTouchCancel={touchEvents ? onNoteStop : null}
         onTouchEnd={touchEvents ? onNoteStop : null}
       >
-        <div style={{ alignSelf: 'flex-end', flex: 1 }}>{children}</div>
+        <div className="ReactPiano__NoteLabel">{children}</div>
       </div>
     );
   }

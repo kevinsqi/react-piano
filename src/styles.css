@@ -1,4 +1,6 @@
 .ReactPiano__Key {
+  display: flex;
+  position: absolute;
   user-select: none;
 }
 
@@ -44,4 +46,9 @@
 .ReactPiano__Key--white.ReactPiano__Key--disabled {
   background: #eee;
   border: 1px solid #aaa;
+}
+
+.ReactPiano__NoteLabel {
+  flex: 1;
+  align-self: flex-end;
 }
