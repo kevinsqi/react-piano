@@ -4,9 +4,9 @@
 [![build status](https://travis-ci.com/iqnivek/react-piano.svg?branch=master)](https://travis-ci.com/iqnivek/react-piano)
 [![bundle size](https://img.shields.io/bundlephobia/min/react-piano.svg)](https://bundlephobia.com/result?p=react-piano)
 
-A super-customizable piano keyboard for React 🎹
+A super-customizable piano keyboard for React.
 
-<img width="500" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" />
+<a href="http://www.kevinqi.com/react-piano/"><img width="500" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" /></a>
 
 ## Setup
 
@@ -20,7 +20,7 @@ yarn add react-piano
 
 ```jsx
 import { InputPiano, buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
-import 'react-piano/build/styles.css;
+import 'react-piano/build/styles.css';
 
 const startNote = 48; // midi number C4
 const endNote = 77;   // midi number F6
