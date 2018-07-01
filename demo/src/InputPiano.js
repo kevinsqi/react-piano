@@ -38,6 +38,10 @@ class InputPiano extends React.Component {
   };
 
   onKeyDown = (event) => {
+    if (!this.props.keyboardShortcuts) {
+      return;
+    }
+    // Don't conflict with existing combinations like ctrl + t
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
     }
@@ -48,6 +52,10 @@ class InputPiano extends React.Component {
   };
 
   onKeyUp = (event) => {
+    if (!this.props.keyboardShortcuts) {
+      return;
+    }
+    // Don't conflict with existing combinations like ctrl + t
     if (event.ctrlKey || event.metaKey || event.shiftKey) {
       return;
     }

@@ -54,6 +54,7 @@ Piano.propTypes = {
   gliss: PropTypes.bool,
   touchEvents: PropTypes.bool,
   renderNoteLabel: PropTypes.func,
+  // If width is not provided, must have fixed width and height in parent container
   width: PropTypes.number,
 };
 
