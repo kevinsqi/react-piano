@@ -1,7 +1,7 @@
 import React from 'react';
 import Soundfont from 'soundfont-player';
 
-class InstrumentProvider extends React.Component {
+class SoundfontProvider extends React.Component {
   static defaultProps = {
     format: 'mp3',
     soundfont: 'MusyngKite',
@@ -106,4 +106,4 @@ class InstrumentProvider extends React.Component {
   }
 }
 
-export default InstrumentProvider;
+export default SoundfontProvider;

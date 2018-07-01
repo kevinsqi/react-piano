@@ -6,7 +6,7 @@ import 'react-piano/build/styles.css';
 import DimensionsProvider from './DimensionsProvider';
 import Header from './Header';
 import Footer from './Footer';
-import InstrumentProvider from './InstrumentProvider';
+import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
 import './App.css';
 
@@ -32,7 +32,7 @@ const audioContext = new window.AudioContext();
 class App extends React.Component {
   state = {
     config: {
-      instrumentName: InstrumentProvider.defaultProps.instrumentName,
+      instrumentName: SoundfontProvider.defaultProps.instrumentName,
       startNote: 48,
       endNote: 77,
       keyboardShortcutOffset: 0,
@@ -58,7 +58,7 @@ class App extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <InstrumentProvider
+              <SoundfontProvider
                 audioContext={audioContext}
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
@@ -98,7 +98,7 @@ class App extends React.Component {
                     </div>
                   </div>
                 )}
-              </InstrumentProvider>
+              </SoundfontProvider>
             </div>
           </div>
           <hr className="mt-5" />
