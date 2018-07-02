@@ -153,7 +153,7 @@ class InputPiano extends React.Component {
       <Piano
         startNote={this.props.startNote}
         endNote={this.props.endNote}
-        activeNotes={this.state.activeNotes}
+        activeNotes={this.props.playbackNotes || this.state.activeNotes}
         disabled={this.props.isLoading}
         width={this.props.width}
         gliss={this.state.isMouseDown}

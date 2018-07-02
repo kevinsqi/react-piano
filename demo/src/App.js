@@ -72,6 +72,7 @@ class App extends React.Component {
                             startNote={this.state.config.startNote}
                             endNote={this.state.config.endNote}
                             keyboardShortcuts={keyboardShortcuts}
+                            /* TODO: rename startNote, stopNote */
                             onNoteStart={startNote}
                             onNoteStop={stopNote}
                             isLoading={isLoading}
