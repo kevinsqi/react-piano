@@ -2,10 +2,10 @@ import React from 'react';
 import { InputPiano } from 'react-piano';
 
 class RecordingPiano extends React.Component {
+  // noreintegrate add playbackNotes
   render() {
     return (
       <InputPiano
-        playbackNotes={[66, 67, 68]}
         startNote={this.props.startNote}
         endNote={this.props.endNote}
         keyboardShortcuts={this.props.keyboardShortcuts}
