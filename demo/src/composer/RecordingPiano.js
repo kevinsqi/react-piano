@@ -1,30 +1,29 @@
 import React from 'react';
 import { InputPiano } from 'react-piano';
-import _ from 'lodash';
 
 class RecordingPiano extends React.Component {
   state = {
-    playbackNotes: null,
+    notesArray: [[66], [67], [68]],
+    playbackIndex: 0,
   };
 
   // TODO: WIP
   componentDidMount() {
-    let i = 0;
-    const notes = _.range(this.props.startNote, this.props.endNote);
     setInterval(() => {
       this.setState({
-        playbackNotes: [notes[i]],
+        playbackIndex: (this.state.playbackIndex + 1) % this.state.notesArray.length,
       });
-      i += 1;
     }, 1000);
   }
+
+  onNoteStart(midiNumber) {}
 
   render() {
     return (
       <InputPiano
         startNote={this.props.startNote}
         endNote={this.props.endNote}
-        playbackNotes={this.state.playbackNotes}
+        playbackNotes={this.state.notesArray[this.state.playbackIndex]}
         keyboardShortcuts={this.props.keyboardShortcuts}
         onNoteStart={this.props.onNoteStart}
         onNoteStop={this.props.onNoteStop}
