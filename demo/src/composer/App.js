@@ -1,8 +1,8 @@
 import React from 'react';
 import 'react-piano/build/styles.css';
 
-import DimensionsProvider from '../DimensionsProvider';
-import Oscillator from '../Oscillator';
+import DimensionsProvider from './DimensionsProvider';
+import Oscillator from './Oscillator';
 import RecordingPiano from './RecordingPiano';
 
 const audioContext = new window.AudioContext();
