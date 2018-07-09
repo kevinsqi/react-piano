@@ -1,7 +1,7 @@
 import React from 'react';
 import Soundfont from 'soundfont-player';
 
-class InstrumentProvider extends React.Component {
+class SoundfontProvider extends React.Component {
   static defaultProps = {
     format: 'mp3',
     soundfont: 'MusyngKite',
@@ -24,16 +24,15 @@ class InstrumentProvider extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.instrumentName !== this.props.instrumentName) {
-      // Re-trigger loading state
-      this.setState({
-        instrument: null,
-      });
       this.loadInstrument(this.props.instrumentName);
     }
   }
 
-  // TODO: change this to load instrumentURL instead
   loadInstrument = (instrumentName) => {
+    // Re-trigger loading state
+    this.setState({
+      instrument: null,
+    });
     Soundfont.instrument(this.props.audioContext, instrumentName, {
       format: this.props.format,
       soundfont: this.props.soundfont,
@@ -48,7 +47,7 @@ class InstrumentProvider extends React.Component {
   };
 
   loadInstrumentList = () => {
-    fetch('http://d1pzp51pvbm36p.cloudfront.net/MusyngKite/names.json')
+    fetch(`${this.props.hostname}/${this.props.soundfont}/names.json`)
       .then((response) => response.json())
       .then((data) => {
         this.setState({
@@ -107,4 +106,4 @@ class InstrumentProvider extends React.Component {
   }
 }
 
-export default InstrumentProvider;
+export default SoundfontProvider;

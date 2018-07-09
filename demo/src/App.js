@@ -6,9 +6,11 @@ import 'react-piano/build/styles.css';
 import DimensionsProvider from './DimensionsProvider';
 import Header from './Header';
 import Footer from './Footer';
-import InstrumentProvider from './InstrumentProvider';
+import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
 import './App.css';
+
+import ComposerApp from './composer/App';
 
 function Installation() {
   return (
@@ -32,7 +34,7 @@ const audioContext = new window.AudioContext();
 class App extends React.Component {
   state = {
     config: {
-      instrumentName: InstrumentProvider.defaultProps.instrumentName,
+      instrumentName: SoundfontProvider.defaultProps.instrumentName,
       startNote: 48,
       endNote: 77,
       keyboardShortcutOffset: 0,
@@ -40,6 +42,10 @@ class App extends React.Component {
   };
 
   render() {
+    // TODO: remove
+    if (window.location.pathname === '/composer') {
+      return <ComposerApp />;
+    }
     const keyboardShortcuts = buildKeyboardShortcuts(
       this.state.config.startNote + this.state.config.keyboardShortcutOffset,
       KEYBOARD_SHORTCUT_CONFIGS.homeRow,
@@ -58,7 +64,7 @@ class App extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <InstrumentProvider
+              <SoundfontProvider
                 audioContext={audioContext}
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
@@ -72,6 +78,7 @@ class App extends React.Component {
                             startNote={this.state.config.startNote}
                             endNote={this.state.config.endNote}
                             keyboardShortcuts={keyboardShortcuts}
+                            /* TODO: rename startNote, stopNote */
                             onNoteStart={startNote}
                             onNoteStop={stopNote}
                             isLoading={isLoading}
@@ -98,7 +105,7 @@ class App extends React.Component {
                     </div>
                   </div>
                 )}
-              </InstrumentProvider>
+              </SoundfontProvider>
             </div>
           </div>
           <hr className="mt-5" />
