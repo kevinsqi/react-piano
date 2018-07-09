@@ -179,6 +179,7 @@ InputPiano.propTypes = {
       midiNumber: PropTypes.number.isRequired,
     }),
   ),
+  playbackNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
 };
 
 export default InputPiano;
