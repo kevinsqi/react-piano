@@ -10,8 +10,6 @@ import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
 import './App.css';
 
-import ComposerApp from './composer/App';
-
 function Installation() {
   return (
     <div className="text-center">
@@ -42,10 +40,6 @@ class App extends React.Component {
   };
 
   render() {
-    // TODO: remove
-    if (window.location.pathname === '/composer') {
-      return <ComposerApp />;
-    }
     const keyboardShortcuts = buildKeyboardShortcuts(
       this.state.config.startNote + this.state.config.keyboardShortcutOffset,
       KEYBOARD_SHORTCUT_CONFIGS.homeRow,
