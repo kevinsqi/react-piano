@@ -4,6 +4,7 @@ import { InputPiano } from 'react-piano';
 class RecordingPiano extends React.Component {
   state = {
     mode: 'recording',
+    notesRecorded: false,
     notesArray: [],
     index: 0,
   };
@@ -19,11 +20,24 @@ class RecordingPiano extends React.Component {
 
   onNoteStart = (midiNumber) => {
     this.props.onNoteStart(midiNumber);
+
+    // When adding notes to a chord, flag later recording
+    this.setState({
+      notesRecorded: false,
+    });
   };
 
   onNoteStop = (midiNumber, prevActiveNotes) => {
     this.props.onNoteStop(midiNumber);
-    this.onRecordNotes(prevActiveNotes);
+
+    // Record a chord when the first note is released, and
+    // stop recording subsequent note releases
+    if (this.state.notesRecorded === false) {
+      this.onRecordNotes(prevActiveNotes);
+      this.setState({
+        notesRecorded: true,
+      });
+    }
   };
 
   onRecordNotes = (midiNumbers) => {
