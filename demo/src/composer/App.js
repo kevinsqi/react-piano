@@ -1,4 +1,5 @@
 import React from 'react';
+import { buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import DimensionsProvider from './DimensionsProvider';
@@ -39,6 +40,10 @@ class App extends React.Component {
       startNote: 48,
       endNote: 77,
     };
+    const keyboardShortcuts = buildKeyboardShortcuts(
+      range.startNote,
+      KEYBOARD_SHORTCUT_CONFIGS.homeRow,
+    );
     return (
       <OscillatorProvider audioContext={audioContext}>
         {({ startNote, stopNote }) => (
@@ -50,6 +55,7 @@ class App extends React.Component {
                 onNoteStart={startNote}
                 onNoteStop={stopNote}
                 width={containerWidth}
+                keyboardShortcuts={keyboardShortcuts}
               />
             )}
           </DimensionsProvider>

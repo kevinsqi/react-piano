@@ -90,7 +90,8 @@ class InputPiano extends React.Component {
     if (isActive) {
       return;
     }
-    this.props.onNoteStart(midiNumber);
+    // Pass in previous activeNotes for recording functionality
+    this.props.onNoteStart(midiNumber, this.state.activeNotes);
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
     }));
@@ -104,7 +105,8 @@ class InputPiano extends React.Component {
     if (isInactive) {
       return;
     }
-    this.props.onNoteStop(midiNumber);
+    // Pass in previous activeNotes for recording functionality
+    this.props.onNoteStop(midiNumber, this.state.activeNotes);
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
     }));
