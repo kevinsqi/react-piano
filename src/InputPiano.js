@@ -137,16 +137,14 @@ class InputPiano extends React.Component {
     }
     const { isAccidental } = getMidiNumberAttributes(midiNumber);
     return (
-      <div className="text-center">
         <div
-          className={classNames({
+          className={classNames('ReactPiano__NoteLabel', {
             'ReactPiano__NoteLabel--black': isAccidental,
             'ReactPiano__NoteLabel--white': !isAccidental,
           })}
         >
           {keyboardShortcut}
         </div>
-      </div>
     );
   };
 

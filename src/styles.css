@@ -57,6 +57,10 @@
   align-self: flex-end;
 }
 
+.ReactPiano__NoteLabel {
+  text-align: center;
+}
+
 .ReactPiano__NoteLabel--black {
   color: #f8e8d5;
   font-size: 12px;
