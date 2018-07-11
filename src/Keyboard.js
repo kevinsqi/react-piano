@@ -4,16 +4,30 @@ import range from 'lodash.range';
 import classNames from 'classnames';
 
 import Key from './Key';
-import { noteToMidiNumber, getMidiNumberAttributes } from './midiHelpers';
+import { getMidiNumberAttributes, NATURAL_MIDI_NUMBERS } from './midiHelpers';
 
 function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
 }
 
+function midiNumberPropType(props, propName, componentName) {
+  const value = props[propName];
+  if (typeof value !== 'number') {
+    return new Error(
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be a number.`,
+    );
+  }
+  if (!NATURAL_MIDI_NUMBERS.includes(props[propName])) {
+    return new Error(
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be a valid MIDI number which is not an accidental.`,
+    );
+  }
+}
+
 class Keyboard extends React.Component {
   static propTypes = {
-    startNote: PropTypes.number.isRequired,
-    endNote: PropTypes.number.isRequired,
+    startNote: midiNumberPropType,
+    endNote: midiNumberPropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
     onNoteStart: PropTypes.func.isRequired,
     onNoteStop: PropTypes.func.isRequired,

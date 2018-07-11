@@ -33,7 +33,7 @@ const midiNumberAttributesCache = buildMidiNumberAttributesCache();
 // Notes are strings in the format "[basenote][octave]", e.g. "a4", "cb7"
 // Converts note to midi number, as specified in:
 // https://www.midikits.net/midi_analyser/midi_note_numbers_for_octaves.htm
-export function noteToMidiNumber(note) {
+function noteToMidiNumber(note) {
   const [, basenote, octave] = NOTE_REGEX.exec(note);
   const offset = BASENOTES.indexOf(basenote);
   return MIDI_NUMBER_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
@@ -46,3 +46,7 @@ export function getMidiNumberAttributes(number) {
   }
   return attrs;
 }
+
+export const NATURAL_MIDI_NUMBERS = range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
+  (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
+);

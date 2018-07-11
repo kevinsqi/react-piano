@@ -1,6 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
-import { getMidiNumberAttributes, MIN_MIDI_NUMBER, MAX_MIDI_NUMBER } from 'react-piano';
+import { getMidiNumberAttributes, NATURAL_MIDI_NUMBERS } from 'react-piano';
 
 const NUM_NOTES_IN_OCTAVE = 12;
 
@@ -78,12 +77,10 @@ class PianoConfig extends React.Component {
   };
 
   render() {
-    const noteRange = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
-      (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
-    );
-    const midiNumbersToNotes = _.range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).map(
-      (midiNumber) => getMidiNumberAttributes(midiNumber).note,
-    );
+    const midiNumbersToNotes = NATURAL_MIDI_NUMBERS.reduce((obj, midiNumber) => {
+      obj[midiNumber] = getMidiNumberAttributes(midiNumber).note;
+      return obj;
+    }, {});
     const { startNote, endNote, instrumentName } = this.props.config;
 
     return (
@@ -95,7 +92,7 @@ class PianoConfig extends React.Component {
             onChange={this.onChangeStartNote}
             value={startNote}
           >
-            {noteRange.map((midiNumber) => (
+            {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}
               </option>
@@ -105,7 +102,7 @@ class PianoConfig extends React.Component {
         <div className="col-3">
           <Label>End note</Label>
           <AutoblurSelect className="form-control" onChange={this.onChangeEndNote} value={endNote}>
-            {noteRange.map((midiNumber) => (
+            {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}
               </option>
