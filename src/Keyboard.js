@@ -13,7 +13,7 @@ function ratioToPercentage(ratio) {
 class Keyboard extends React.Component {
   static defaultProps = {
     config: {
-      keyWidthToHeightRatio: 0.15, // TODO: use props.height instead?
+      keyWidthToHeightRatio: 0.2, // TODO: use props.height instead?
       whiteKeyGutterRatio: 0.02,
       whiteKey: {
         widthRatio: 1,
