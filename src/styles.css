@@ -26,7 +26,7 @@
   border: 1px solid #888;
   border-radius: 0 0 6px 6px;
   cursor: pointer;
-  z-index: 0,
+  z-index: 0;
 }
 
 .ReactPiano__Key--white.ReactPiano__Key--down {
