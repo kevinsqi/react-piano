@@ -21,6 +21,7 @@
 
 .ReactPiano__Key--black.ReactPiano__Key--active {
   border: 1px solid #fff;
+  border-top: 1px solid #63b0cd;
 }
 
 .ReactPiano__Key--white {
