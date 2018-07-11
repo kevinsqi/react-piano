@@ -11,7 +11,26 @@ function ratioToPercentage(ratio) {
 }
 
 class Keyboard extends React.Component {
+  static propTypes = {
+    startNote: PropTypes.number.isRequired,
+    endNote: PropTypes.number.isRequired,
+    activeNotes: PropTypes.arrayOf(PropTypes.number),
+    onNoteStart: PropTypes.func.isRequired,
+    onNoteStop: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    gliss: PropTypes.bool,
+    touchEvents: PropTypes.bool,
+    renderNoteLabel: PropTypes.func,
+    // If width is not provided, must have fixed width and height in parent container
+    width: PropTypes.number,
+    config: PropTypes.object,
+  };
+
   static defaultProps = {
+    disabled: false,
+    gliss: false,
+    touchEvents: false,
+    renderNoteLabel: () => {},
     config: {
       keyWidthToHeightRatio: 0.2, // TODO: use props.height instead?
       whiteKeyGutterRatio: 0.02,
@@ -40,7 +59,6 @@ class Keyboard extends React.Component {
         B: 6,
       },
     },
-    renderNoteLabel: () => {},
   };
 
   // Range of midi numbers from startNote to endNote
@@ -136,18 +154,5 @@ class Keyboard extends React.Component {
     );
   }
 }
-
-Keyboard.propTypes = {
-  startNote: PropTypes.number.isRequired,
-  endNote: PropTypes.number.isRequired,
-  activeNotes: PropTypes.arrayOf(PropTypes.number),
-  onNoteStart: PropTypes.func.isRequired,
-  onNoteStop: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  gliss: PropTypes.bool,
-  touchEvents: PropTypes.bool,
-  renderNoteLabel: PropTypes.func,
-  width: PropTypes.number,
-};
 
 export default Keyboard;

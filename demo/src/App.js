@@ -1,6 +1,6 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
-import { buildKeyboardShortcuts, InputPiano, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
+import { buildKeyboardShortcuts, Piano, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import DimensionsProvider from './DimensionsProvider';
@@ -68,7 +68,7 @@ class App extends React.Component {
                     <div>
                       <DimensionsProvider>
                         {({ containerWidth }) => (
-                          <InputPiano
+                          <Piano
                             startNote={this.state.config.startNote}
                             endNote={this.state.config.endNote}
                             keyboardShortcuts={keyboardShortcuts}
