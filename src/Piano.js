@@ -7,6 +7,22 @@ import find from 'lodash.find';
 import Keyboard from './Keyboard';
 
 class Piano extends React.Component {
+  static propTypes = {
+    startNote: PropTypes.number.isRequired,
+    endNote: PropTypes.number.isRequired,
+    onNoteStart: PropTypes.func.isRequired,
+    onNoteStop: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+    width: PropTypes.number,
+    keyboardShortcuts: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        midiNumber: PropTypes.number.isRequired,
+      }),
+    ),
+    playbackNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
+  };
+
   constructor(props) {
     super(props);
 
@@ -183,21 +199,5 @@ class Piano extends React.Component {
     );
   }
 }
-
-Piano.propTypes = {
-  startNote: PropTypes.number.isRequired,
-  endNote: PropTypes.number.isRequired,
-  onNoteStart: PropTypes.func.isRequired,
-  onNoteStop: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
-  width: PropTypes.number,
-  keyboardShortcuts: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      midiNumber: PropTypes.number.isRequired,
-    }),
-  ),
-  playbackNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
-};
 
 export default Piano;

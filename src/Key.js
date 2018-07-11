@@ -1,6 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Key extends React.Component {
+  static propTypes = {
+    left: PropTypes.string.isRequired,
+    width: PropTypes.string.isRequired,
+    height: PropTypes.string.isRequired,
+    onNoteStart: PropTypes.func.isRequired,
+    onNoteStop: PropTypes.func.isRequired,
+    gliss: PropTypes.bool.isRequired,
+    touchEvents: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+    children: PropTypes.node,
+  };
+
   render() {
     const {
       className,
