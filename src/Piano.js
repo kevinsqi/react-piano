@@ -6,7 +6,7 @@ import find from 'lodash.find';
 
 import Keyboard from './Keyboard';
 
-class InputPiano extends React.Component {
+class Piano extends React.Component {
   constructor(props) {
     super(props);
 
@@ -184,7 +184,7 @@ class InputPiano extends React.Component {
   }
 }
 
-InputPiano.propTypes = {
+Piano.propTypes = {
   startNote: PropTypes.number.isRequired,
   endNote: PropTypes.number.isRequired,
   onNoteStart: PropTypes.func.isRequired,
@@ -200,4 +200,4 @@ InputPiano.propTypes = {
   playbackNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
 };
 
-export default InputPiano;
+export default Piano;

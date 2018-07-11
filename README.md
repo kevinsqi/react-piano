@@ -19,13 +19,13 @@ yarn add react-piano
 ## Usage
 
 ```jsx
-import { InputPiano, buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
+import { Piano, buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 const startNote = 48; // midi number C4
 const endNote = 77;   // midi number F6
 
-<InputPiano
+<Piano
   startNote={startNote}
   endNote={endNote}
   onNoteStart={(midiNumber) => startPlaying(midiNumber)}
