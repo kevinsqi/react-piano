@@ -12,6 +12,7 @@ class Piano extends React.Component {
     endNote: PropTypes.number.isRequired,
     onNoteStart: PropTypes.func.isRequired,
     onNoteStop: PropTypes.func.isRequired,
+    renderNoteLabel: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     width: PropTypes.number,
     keyboardShortcuts: PropTypes.arrayOf(
@@ -21,6 +22,20 @@ class Piano extends React.Component {
       }),
     ),
     playbackNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
+  };
+
+  static defaultProps = {
+    renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) => (
+      <div
+        className={classNames('ReactPiano__NoteLabel', {
+          'ReactPiano__NoteLabel--active': isActive,
+          'ReactPiano__NoteLabel--black': isAccidental,
+          'ReactPiano__NoteLabel--white': !isAccidental,
+        })}
+      >
+        {keyboardShortcut}
+      </div>
+    ),
   };
 
   constructor(props) {
@@ -169,17 +184,7 @@ class Piano extends React.Component {
     if (!keyboardShortcut) {
       return null;
     }
-    return (
-      <div
-        className={classNames('ReactPiano__NoteLabel', {
-          'ReactPiano__NoteLabel--active': isActive,
-          'ReactPiano__NoteLabel--black': isAccidental,
-          'ReactPiano__NoteLabel--white': !isAccidental,
-        })}
-      >
-        {keyboardShortcut}
-      </div>
-    );
+    return this.props.renderNoteLabel({ keyboardShortcut, midiNumber, isActive, isAccidental });
   };
 
   render() {
