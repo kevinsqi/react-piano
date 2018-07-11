@@ -130,21 +130,22 @@ class InputPiano extends React.Component {
     });
   };
 
-  renderNoteLabel = (midiNumber) => {
+  renderNoteLabel = ({ midiNumber, isActive }) => {
     const keyboardShortcut = this.getKeyForMidiNumber(midiNumber);
     if (!keyboardShortcut) {
       return null;
     }
     const { isAccidental } = getMidiNumberAttributes(midiNumber);
     return (
-        <div
-          className={classNames('ReactPiano__NoteLabel', {
-            'ReactPiano__NoteLabel--black': isAccidental,
-            'ReactPiano__NoteLabel--white': !isAccidental,
-          })}
-        >
-          {keyboardShortcut}
-        </div>
+      <div
+        className={classNames('ReactPiano__NoteLabel', {
+          'ReactPiano__NoteLabel--active': isActive,
+          'ReactPiano__NoteLabel--black': isAccidental,
+          'ReactPiano__NoteLabel--white': !isAccidental,
+        })}
+      >
+        {keyboardShortcut}
+      </div>
     );
   };
 

@@ -67,23 +67,21 @@
 }
 
 .ReactPiano__NoteLabel {
+  font-size: 12px;
   text-align: center;
+  text-transform: capitalize;
 }
 
 .ReactPiano__NoteLabel--black {
   color: #f8e8d5;
-  font-size: 12px;
-  text-transform: capitalize;
   margin-bottom: 3px;
 }
 
 .ReactPiano__NoteLabel--white {
-  background: #ddd;
   color: #888;
-  padding: 4px 0;
-  margin: 3px;
-  border: 1px solid #fff;
-  border-radius: 4px;
-  font-size: 12px;
-  text-transform: capitalize;
+  margin-bottom: 3px;
+}
+
+.ReactPiano__NoteLabel--white.ReactPiano__NoteLabel--active {
+  color: #f8e8d5;
 }

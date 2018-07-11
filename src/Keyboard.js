@@ -104,21 +104,21 @@ class Keyboard extends React.Component {
         {this.getMidiNumbers().map((num) => {
           const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
           const keyConfig = this.getKeyConfig(num);
-          const isKeyDown = this.props.activeNotes.includes(num);
+          const isActive = this.props.activeNotes.includes(num);
           return (
             <Key
               className={classNames('ReactPiano__Key', {
                 'ReactPiano__Key--black': isAccidental,
                 'ReactPiano__Key--white': !isAccidental,
                 'ReactPiano__Key--disabled': this.props.disabled,
-                'ReactPiano__Key--down': isKeyDown,
+                'ReactPiano__Key--down': isActive,
               })}
               left={ratioToPercentage(
                 this.getKeyPosition(num) * this.getWhiteKeyWidthIncludingGutter(),
               )}
               width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
               height={ratioToPercentage(
-                isKeyDown ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
+                isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
               onNoteStart={this.props.onNoteStart.bind(this, num)}
               onNoteStop={this.props.onNoteStop.bind(this, num)}
@@ -126,7 +126,9 @@ class Keyboard extends React.Component {
               touchEvents={this.props.touchEvents}
               key={num}
             >
-              {this.props.disabled ? null : this.props.renderNoteLabel(num)}
+              {this.props.disabled
+                ? null
+                : this.props.renderNoteLabel({ midiNumber: num, isActive })}
             </Key>
           );
         })}
