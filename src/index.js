@@ -1,4 +1,5 @@
 import Piano from './Piano';
+import Keyboard from './Keyboard';
 import buildKeyboardShortcuts from './buildKeyboardShortcuts';
 import KEYBOARD_SHORTCUT_CONFIGS from './keyboardShortcutConfigs';
 import {
@@ -10,6 +11,7 @@ import {
 
 export {
   Piano,
+  Keyboard,
   buildKeyboardShortcuts,
   KEYBOARD_SHORTCUT_CONFIGS,
   getMidiNumberAttributes,
