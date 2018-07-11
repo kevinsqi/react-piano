@@ -19,7 +19,7 @@
   z-index: 1;
 }
 
-.ReactPiano__Key--black.ReactPiano__Key--down {
+.ReactPiano__Key--black.ReactPiano__Key--active {
   border: 1px solid #fff;
 }
 
@@ -38,12 +38,12 @@
   margin-right: 0;
 }
 
-.ReactPiano__Key--white.ReactPiano__Key--down {
+.ReactPiano__Key--white.ReactPiano__Key--active {
   border: 1px solid #63b0cd;
 }
 
 /* Declare after to override default backgrounds */
-.ReactPiano__Key--down {
+.ReactPiano__Key--active {
   background: #63b0cd;
 }
 

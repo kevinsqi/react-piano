@@ -111,7 +111,7 @@ class Keyboard extends React.Component {
                 'ReactPiano__Key--black': isAccidental,
                 'ReactPiano__Key--white': !isAccidental,
                 'ReactPiano__Key--disabled': this.props.disabled,
-                'ReactPiano__Key--down': isActive,
+                'ReactPiano__Key--active': isActive,
               })}
               left={ratioToPercentage(
                 this.getKeyPosition(midiNumber) * this.getWhiteKeyWidthIncludingGutter(),
