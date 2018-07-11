@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import find from 'lodash.find';
 
 import Piano from './Piano';
-import { getMidiNumberAttributes } from './midiHelpers';
 
 class InputPiano extends React.Component {
   constructor(props) {
@@ -130,12 +129,11 @@ class InputPiano extends React.Component {
     });
   };
 
-  renderNoteLabel = ({ midiNumber, isActive }) => {
+  renderNoteLabel = ({ midiNumber, isActive, isAccidental }) => {
     const keyboardShortcut = this.getKeyForMidiNumber(midiNumber);
     if (!keyboardShortcut) {
       return null;
     }
-    const { isAccidental } = getMidiNumberAttributes(midiNumber);
     return (
       <div
         className={classNames('ReactPiano__NoteLabel', {

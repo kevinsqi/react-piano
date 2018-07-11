@@ -101,10 +101,10 @@ class Keyboard extends React.Component {
         className="ReactPiano__Keyboard"
         style={{ width: this.getWidth(), height: this.getHeight() }}
       >
-        {this.getMidiNumbers().map((num) => {
-          const { note, basenote, isAccidental } = getMidiNumberAttributes(num);
-          const keyConfig = this.getKeyConfig(num);
-          const isActive = this.props.activeNotes.includes(num);
+        {this.getMidiNumbers().map((midiNumber) => {
+          const { note, basenote, isAccidental } = getMidiNumberAttributes(midiNumber);
+          const keyConfig = this.getKeyConfig(midiNumber);
+          const isActive = this.props.activeNotes.includes(midiNumber);
           return (
             <Key
               className={classNames('ReactPiano__Key', {
@@ -114,21 +114,21 @@ class Keyboard extends React.Component {
                 'ReactPiano__Key--down': isActive,
               })}
               left={ratioToPercentage(
-                this.getKeyPosition(num) * this.getWhiteKeyWidthIncludingGutter(),
+                this.getKeyPosition(midiNumber) * this.getWhiteKeyWidthIncludingGutter(),
               )}
               width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
               height={ratioToPercentage(
                 isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              onNoteStart={this.props.onNoteStart.bind(this, num)}
-              onNoteStop={this.props.onNoteStop.bind(this, num)}
+              onNoteStart={this.props.onNoteStart.bind(this, midiNumber)}
+              onNoteStop={this.props.onNoteStop.bind(this, midiNumber)}
               gliss={this.props.gliss}
               touchEvents={this.props.touchEvents}
-              key={num}
+              key={midiNumber}
             >
               {this.props.disabled
                 ? null
-                : this.props.renderNoteLabel({ midiNumber: num, isActive })}
+                : this.props.renderNoteLabel({ midiNumber: midiNumber, isActive, isAccidental })}
             </Key>
           );
         })}
