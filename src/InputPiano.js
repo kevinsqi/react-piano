@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import difference from 'lodash.difference';
 import find from 'lodash.find';
 
-import Piano from './Piano';
+import Keyboard from './Keyboard';
 
 class InputPiano extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class InputPiano extends React.Component {
     window.removeEventListener('touchstart', this.onTouchStart);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     // If keyboard shortcuts change, any activeNotes will not
     // correctly fire keyUp events. First cancel all activeNotes.
     if (prevProps.keyboardShortcuts !== this.props.keyboardShortcuts) {
@@ -40,7 +41,25 @@ class InputPiano extends React.Component {
         activeNotes: [],
       });
     }
+
+    if (this.state.activeNotes !== prevState.activeNotes) {
+      this.handleNoteChanges({
+        prevActiveNotes: prevState.activeNotes || [],
+        nextActiveNotes: this.state.activeNotes || [],
+      });
+    }
   }
+
+  handleNoteChanges = ({ prevActiveNotes, nextActiveNotes }) => {
+    const notesStarted = difference(prevActiveNotes, nextActiveNotes);
+    const notesStopped = difference(nextActiveNotes, prevActiveNotes);
+    notesStarted.forEach((midiNumber) => {
+      this.onNoteStop(midiNumber);
+    });
+    notesStopped.forEach((midiNumber) => {
+      this.onNoteStart(midiNumber);
+    });
+  };
 
   getMidiNumberForKey = (key) => {
     if (!this.props.keyboardShortcuts) {
@@ -149,7 +168,7 @@ class InputPiano extends React.Component {
 
   render() {
     return (
-      <Piano
+      <Keyboard
         startNote={this.props.startNote}
         endNote={this.props.endNote}
         activeNotes={this.props.playbackNotes || this.state.activeNotes}

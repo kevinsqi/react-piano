@@ -143,11 +143,18 @@ Keyboard.propTypes = {
   activeNotes: PropTypes.arrayOf(PropTypes.number),
   onNoteStart: PropTypes.func.isRequired,
   onNoteStop: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
   gliss: PropTypes.bool,
   touchEvents: PropTypes.bool,
   renderNoteLabel: PropTypes.func,
+  // If width is not provided, must have fixed width and height in parent container
   width: PropTypes.number,
+};
+
+Keyboard.defaultProps = {
+  disabled: false,
+  gliss: false,
+  touchEvents: false,
 };
 
 export default Keyboard;
