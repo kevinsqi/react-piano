@@ -8,7 +8,7 @@ import Keyboard from './Keyboard';
 
 class Piano extends React.Component {
   static propTypes = {
-    startNote: PropTypes.number.isRequired,
+    firstNote: PropTypes.number.isRequired,
     endNote: PropTypes.number.isRequired,
     onNoteStart: PropTypes.func.isRequired,
     onNoteStop: PropTypes.func.isRequired,
@@ -191,7 +191,7 @@ class Piano extends React.Component {
   render() {
     return (
       <Keyboard
-        startNote={this.props.startNote}
+        firstNote={this.props.firstNote}
         endNote={this.props.endNote}
         activeNotes={this.props.playbackNotes || this.state.activeNotes}
         disabled={this.props.isLoading}

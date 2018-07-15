@@ -40,7 +40,7 @@ class PianoConfig extends React.Component {
   handleKeyDown = (event) => {
     const minOffset = 0;
     const maxOffset =
-      this.props.config.endNote - this.props.config.startNote - this.props.numKeyboardShortcuts;
+      this.props.config.endNote - this.props.config.firstNote - this.props.numKeyboardShortcuts;
     if (event.key === 'ArrowLeft') {
       const reducedOffset = this.props.config.keyboardShortcutOffset - NUM_NOTES_IN_OCTAVE;
       if (reducedOffset >= minOffset) {
@@ -58,9 +58,9 @@ class PianoConfig extends React.Component {
     }
   };
 
-  onChangeStartNote = (event) => {
+  onChangeFirstNote = (event) => {
     this.props.setConfig({
-      startNote: parseInt(event.target.value, 10),
+      firstNote: parseInt(event.target.value, 10),
     });
   };
 
@@ -81,7 +81,7 @@ class PianoConfig extends React.Component {
       obj[midiNumber] = getMidiNumberAttributes(midiNumber).note;
       return obj;
     }, {});
-    const { startNote, endNote, instrumentName } = this.props.config;
+    const { firstNote, endNote, instrumentName } = this.props.config;
 
     return (
       <div className="form-row">
@@ -89,8 +89,8 @@ class PianoConfig extends React.Component {
           <Label>Start note</Label>
           <AutoblurSelect
             className="form-control"
-            onChange={this.onChangeStartNote}
-            value={startNote}
+            onChange={this.onChangeFirstNote}
+            value={firstNote}
           >
             {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
