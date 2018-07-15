@@ -37,7 +37,7 @@ class Keyboard extends React.Component {
     renderNoteLabel: PropTypes.func,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
-    config: PropTypes.object,
+    layoutConfig: PropTypes.object,
   };
 
   static defaultProps = {
@@ -45,7 +45,7 @@ class Keyboard extends React.Component {
     gliss: false,
     touchEvents: false,
     renderNoteLabel: () => {},
-    config: {
+    layoutConfig: {
       keyWidthToHeightRatio: 0.2, // TODO: use props.height instead?
       whiteKeyGutterRatio: 0.02,
       whiteKey: {
@@ -94,18 +94,20 @@ class Keyboard extends React.Component {
 
   // Width of the white key as a ratio from 0 to 1
   getWhiteKeyWidth() {
-    return this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.config.whiteKeyGutterRatio);
+    return (
+      this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.layoutConfig.whiteKeyGutterRatio)
+    );
   }
 
   // Key position is represented by the number of white key widths from the left
   getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
     const { octave, basenote } = getMidiNumberAttributes(midiNumber);
-    const offsetFromC = this.props.config.noteOffsetsFromC[basenote];
+    const offsetFromC = this.props.layoutConfig.noteOffsetsFromC[basenote];
     const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(
       this.props.startNote,
     );
-    const startOffsetFromC = this.props.config.noteOffsetsFromC[startBasenote];
+    const startOffsetFromC = this.props.layoutConfig.noteOffsetsFromC[startBasenote];
     const offsetFromStartNote = offsetFromC - startOffsetFromC;
     const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
     return offsetFromStartNote + octaveOffset;
@@ -113,8 +115,8 @@ class Keyboard extends React.Component {
 
   getKeyConfig(midiNumber) {
     return getMidiNumberAttributes(midiNumber).isAccidental
-      ? this.props.config.blackKey
-      : this.props.config.whiteKey;
+      ? this.props.layoutConfig.blackKey
+      : this.props.layoutConfig.whiteKey;
   }
 
   getWidth() {
@@ -123,7 +125,8 @@ class Keyboard extends React.Component {
 
   getHeight() {
     return this.props.width
-      ? `${this.props.width * this.getWhiteKeyWidth() / this.props.config.keyWidthToHeightRatio}px`
+      ? `${(this.props.width * this.getWhiteKeyWidth()) /
+          this.props.layoutConfig.keyWidthToHeightRatio}px`
       : '100%';
   }
 

@@ -15,6 +15,7 @@ class Piano extends React.Component {
     renderNoteLabel: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     width: PropTypes.number,
+    layoutConfig: PropTypes.object,
     keyboardShortcuts: PropTypes.arrayOf(
       PropTypes.shape({
         key: PropTypes.string.isRequired,
@@ -197,6 +198,7 @@ class Piano extends React.Component {
         width={this.props.width}
         gliss={this.state.isMouseDown}
         touchEvents={this.state.touchEvents}
+        layoutConfig={this.props.layoutConfig}
         renderNoteLabel={this.renderNoteLabel}
         onNoteStart={this.onNoteStart}
         onNoteStop={this.onNoteStop}
