@@ -44,7 +44,6 @@ class App extends React.Component {
       this.state.config.firstNote + this.state.config.keyboardShortcutOffset,
       KEYBOARD_SHORTCUT_CONFIGS.homeRow,
     );
-    const numKeyboardShortcuts = KEYBOARD_SHORTCUT_CONFIGS.homeRow.length;
 
     return (
       <div>
@@ -92,7 +91,6 @@ class App extends React.Component {
                           }}
                           instrumentList={instrumentList}
                           keyboardShortcuts={keyboardShortcuts}
-                          numKeyboardShortcuts={numKeyboardShortcuts}
                         />
                       </div>
                     </div>

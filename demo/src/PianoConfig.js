@@ -1,8 +1,6 @@
 import React from 'react';
 import { getMidiNumberAttributes, NATURAL_MIDI_NUMBERS } from 'react-piano';
 
-const NUM_NOTES_IN_OCTAVE = 12;
-
 class AutoblurSelect extends React.Component {
   constructor(props) {
     super(props);
@@ -38,18 +36,18 @@ class PianoConfig extends React.Component {
   }
 
   handleKeyDown = (event) => {
+    const numNotes = this.props.config.lastNote - this.props.config.firstNote + 1;
     const minOffset = 0;
-    const maxOffset =
-      this.props.config.lastNote - this.props.config.firstNote - this.props.numKeyboardShortcuts;
+    const maxOffset = numNotes - this.props.keyboardShortcuts.length;
     if (event.key === 'ArrowLeft') {
-      const reducedOffset = this.props.config.keyboardShortcutOffset - NUM_NOTES_IN_OCTAVE;
+      const reducedOffset = this.props.config.keyboardShortcutOffset - 1;
       if (reducedOffset >= minOffset) {
         this.props.setConfig({
           keyboardShortcutOffset: reducedOffset,
         });
       }
     } else if (event.key === 'ArrowRight') {
-      const increasedOffset = this.props.config.keyboardShortcutOffset + NUM_NOTES_IN_OCTAVE;
+      const increasedOffset = this.props.config.keyboardShortcutOffset + 1;
       if (increasedOffset <= maxOffset) {
         this.props.setConfig({
           keyboardShortcutOffset: increasedOffset,

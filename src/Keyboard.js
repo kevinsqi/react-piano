@@ -19,7 +19,7 @@ function midiNumberPropType(props, propName, componentName) {
   }
   if (!NATURAL_MIDI_NUMBERS.includes(props[propName])) {
     return new Error(
-      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be a valid MIDI number which is not an accidental.`,
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be a valid MIDI number which is not an accidental (sharp or flat note).`,
     );
   }
 }
