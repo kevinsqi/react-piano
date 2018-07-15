@@ -45,7 +45,7 @@ class Piano extends React.Component {
     this.state = {
       activeNotes: [],
       isMouseDown: false,
-      touchEvents: false,
+      useTouchEvents: false,
     };
   }
 
@@ -176,7 +176,7 @@ class Piano extends React.Component {
 
   onTouchStart = () => {
     this.setState({
-      touchEvents: true,
+      useTouchEvents: true,
     });
   };
 
@@ -197,7 +197,7 @@ class Piano extends React.Component {
         disabled={this.props.isLoading}
         width={this.props.width}
         gliss={this.state.isMouseDown}
-        touchEvents={this.state.touchEvents}
+        useTouchEvents={this.state.useTouchEvents}
         layoutConfig={this.props.layoutConfig}
         renderNoteLabel={this.renderNoteLabel}
         onPlayNote={this.onPlayNote}

@@ -33,7 +33,7 @@ class Keyboard extends React.Component {
     onStopNote: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
-    touchEvents: PropTypes.bool,
+    useTouchEvents: PropTypes.bool,
     renderNoteLabel: PropTypes.func,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
@@ -43,7 +43,7 @@ class Keyboard extends React.Component {
   static defaultProps = {
     disabled: false,
     gliss: false,
-    touchEvents: false,
+    useTouchEvents: false,
     renderNoteLabel: () => {},
     layoutConfig: {
       keyWidthToHeightRatio: 0.2, // TODO: use props.height instead?
@@ -158,7 +158,7 @@ class Keyboard extends React.Component {
               playNote={this.props.onPlayNote.bind(this, midiNumber)}
               stopNote={this.props.onStopNote.bind(this, midiNumber)}
               gliss={this.props.gliss}
-              touchEvents={this.props.touchEvents}
+              useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
             >
               {this.props.disabled
