@@ -46,7 +46,7 @@ class Keyboard extends React.Component {
     useTouchEvents: false,
     renderNoteLabel: () => {},
     layoutConfig: {
-      keyWidthToHeightRatio: 0.2, // TODO: use props.height instead?
+      keyWidthToHeightRatio: 0.22,
       whiteKeyGutterRatio: 0.02,
       whiteKey: {
         widthRatio: 1,
