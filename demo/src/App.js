@@ -72,8 +72,8 @@ class App extends React.Component {
                             firstNote={this.state.config.firstNote}
                             lastNote={this.state.config.lastNote}
                             keyboardShortcuts={keyboardShortcuts}
-                            onNoteStart={playNote}
-                            onNoteStop={stopNote}
+                            onPlayNote={playNote}
+                            onStopNote={stopNote}
                             isLoading={isLoading}
                             width={containerWidth}
                           />

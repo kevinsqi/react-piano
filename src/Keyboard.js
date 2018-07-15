@@ -29,8 +29,8 @@ class Keyboard extends React.Component {
     firstNote: midiNumberPropType,
     lastNote: midiNumberPropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
-    onNoteStart: PropTypes.func.isRequired,
-    onNoteStop: PropTypes.func.isRequired,
+    onPlayNote: PropTypes.func.isRequired,
+    onStopNote: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
     touchEvents: PropTypes.bool,
@@ -155,8 +155,8 @@ class Keyboard extends React.Component {
               height={ratioToPercentage(
                 isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              onNoteStart={this.props.onNoteStart.bind(this, midiNumber)}
-              onNoteStop={this.props.onNoteStop.bind(this, midiNumber)}
+              playNote={this.props.onPlayNote.bind(this, midiNumber)}
+              stopNote={this.props.onStopNote.bind(this, midiNumber)}
               gliss={this.props.gliss}
               touchEvents={this.props.touchEvents}
               key={midiNumber}

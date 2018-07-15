@@ -6,8 +6,8 @@ class Key extends React.Component {
     left: PropTypes.string.isRequired,
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
-    onNoteStart: PropTypes.func.isRequired,
-    onNoteStop: PropTypes.func.isRequired,
+    playNote: PropTypes.func.isRequired,
+    stopNote: PropTypes.func.isRequired,
     gliss: PropTypes.bool.isRequired,
     touchEvents: PropTypes.bool.isRequired,
     className: PropTypes.string,
@@ -20,8 +20,8 @@ class Key extends React.Component {
       left,
       width,
       height,
-      onNoteStart,
-      onNoteStop,
+      playNote,
+      stopNote,
       gliss,
       children,
       touchEvents,
@@ -38,13 +38,13 @@ class Key extends React.Component {
           width: width,
           height: height,
         }}
-        onMouseDown={touchEvents ? null : onNoteStart}
-        onMouseUp={touchEvents ? null : onNoteStop}
-        onMouseEnter={gliss ? onNoteStart : null}
-        onMouseLeave={onNoteStop}
-        onTouchStart={touchEvents ? onNoteStart : null}
-        onTouchCancel={touchEvents ? onNoteStop : null}
-        onTouchEnd={touchEvents ? onNoteStop : null}
+        onMouseDown={touchEvents ? null : playNote}
+        onMouseUp={touchEvents ? null : stopNote}
+        onMouseEnter={gliss ? playNote : null}
+        onMouseLeave={stopNote}
+        onTouchStart={touchEvents ? playNote : null}
+        onTouchCancel={touchEvents ? stopNote : null}
+        onTouchEnd={touchEvents ? stopNote : null}
       >
         <div className="ReactPiano__NoteLabelContainer">{children}</div>
       </div>
