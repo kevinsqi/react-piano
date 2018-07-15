@@ -63,7 +63,7 @@ class App extends React.Component {
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
               >
-                {({ isLoading, instrumentList, startNote, stopNote, stopAllNotes }) => (
+                {({ isLoading, instrumentList, playNote, stopNote, stopAllNotes }) => (
                   <div>
                     <div>
                       <DimensionsProvider>
@@ -72,7 +72,7 @@ class App extends React.Component {
                             firstNote={this.state.config.firstNote}
                             lastNote={this.state.config.lastNote}
                             keyboardShortcuts={keyboardShortcuts}
-                            onNoteStart={startNote}
+                            onNoteStart={playNote}
                             onNoteStop={stopNote}
                             isLoading={isLoading}
                             width={containerWidth}
