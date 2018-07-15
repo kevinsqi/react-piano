@@ -34,7 +34,7 @@ class App extends React.Component {
     config: {
       instrumentName: SoundfontProvider.defaultProps.instrumentName,
       firstNote: 48,
-      endNote: 77,
+      lastNote: 77,
       keyboardShortcutOffset: 0,
     },
   };
@@ -70,7 +70,7 @@ class App extends React.Component {
                         {({ containerWidth }) => (
                           <Piano
                             firstNote={this.state.config.firstNote}
-                            endNote={this.state.config.endNote}
+                            lastNote={this.state.config.lastNote}
                             keyboardShortcuts={keyboardShortcuts}
                             onNoteStart={startNote}
                             onNoteStop={stopNote}

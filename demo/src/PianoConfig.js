@@ -40,7 +40,7 @@ class PianoConfig extends React.Component {
   handleKeyDown = (event) => {
     const minOffset = 0;
     const maxOffset =
-      this.props.config.endNote - this.props.config.firstNote - this.props.numKeyboardShortcuts;
+      this.props.config.lastNote - this.props.config.firstNote - this.props.numKeyboardShortcuts;
     if (event.key === 'ArrowLeft') {
       const reducedOffset = this.props.config.keyboardShortcutOffset - NUM_NOTES_IN_OCTAVE;
       if (reducedOffset >= minOffset) {
@@ -64,9 +64,9 @@ class PianoConfig extends React.Component {
     });
   };
 
-  onChangeEndNote = (event) => {
+  onChangeLastNote = (event) => {
     this.props.setConfig({
-      endNote: parseInt(event.target.value, 10),
+      lastNote: parseInt(event.target.value, 10),
     });
   };
 
@@ -81,12 +81,12 @@ class PianoConfig extends React.Component {
       obj[midiNumber] = getMidiNumberAttributes(midiNumber).note;
       return obj;
     }, {});
-    const { firstNote, endNote, instrumentName } = this.props.config;
+    const { firstNote, lastNote, instrumentName } = this.props.config;
 
     return (
       <div className="form-row">
         <div className="col-3">
-          <Label>Start note</Label>
+          <Label>First note</Label>
           <AutoblurSelect
             className="form-control"
             onChange={this.onChangeFirstNote}
@@ -100,8 +100,12 @@ class PianoConfig extends React.Component {
           </AutoblurSelect>
         </div>
         <div className="col-3">
-          <Label>End note</Label>
-          <AutoblurSelect className="form-control" onChange={this.onChangeEndNote} value={endNote}>
+          <Label>Last note</Label>
+          <AutoblurSelect
+            className="form-control"
+            onChange={this.onChangeLastNote}
+            value={lastNote}
+          >
             {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}

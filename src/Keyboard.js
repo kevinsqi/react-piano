@@ -27,7 +27,7 @@ function midiNumberPropType(props, propName, componentName) {
 class Keyboard extends React.Component {
   static propTypes = {
     firstNote: midiNumberPropType,
-    endNote: midiNumberPropType,
+    lastNote: midiNumberPropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
     onNoteStart: PropTypes.func.isRequired,
     onNoteStop: PropTypes.func.isRequired,
@@ -75,9 +75,9 @@ class Keyboard extends React.Component {
     },
   };
 
-  // Range of midi numbers from firstNote to endNote
+  // Range of midi numbers from firstNote to lastNote
   getMidiNumbers() {
-    return range(this.props.firstNote, this.props.endNote + 1);
+    return range(this.props.firstNote, this.props.lastNote + 1);
   }
 
   getWhiteKeyCount() {
