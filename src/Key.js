@@ -27,6 +27,8 @@ class Key extends React.Component {
       touchEvents,
     } = this.props;
 
+    // Need to conditionally include/exclude handlers based on touchEvents,
+    // because otherwise mobile taps double fire events.
     return (
       <div
         className={className}
