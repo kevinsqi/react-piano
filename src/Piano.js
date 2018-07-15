@@ -8,10 +8,10 @@ import Keyboard from './Keyboard';
 
 class Piano extends React.Component {
   static propTypes = {
-    startNote: PropTypes.number.isRequired,
-    endNote: PropTypes.number.isRequired,
-    onNoteStart: PropTypes.func.isRequired,
-    onNoteStop: PropTypes.func.isRequired,
+    firstNote: PropTypes.number.isRequired,
+    lastNote: PropTypes.number.isRequired,
+    onPlayNote: PropTypes.func.isRequired,
+    onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
     width: PropTypes.number,
@@ -45,7 +45,7 @@ class Piano extends React.Component {
     this.state = {
       activeNotes: [],
       isMouseDown: false,
-      touchEvents: false,
+      useTouchEvents: false,
     };
   }
 
@@ -86,10 +86,10 @@ class Piano extends React.Component {
     const notesStarted = difference(prevActiveNotes, nextActiveNotes);
     const notesStopped = difference(nextActiveNotes, prevActiveNotes);
     notesStarted.forEach((midiNumber) => {
-      this.onNoteStop(midiNumber);
+      this.onStopNote(midiNumber);
     });
     notesStopped.forEach((midiNumber) => {
-      this.onNoteStart(midiNumber);
+      this.onPlayNote(midiNumber);
     });
   };
 
@@ -116,7 +116,7 @@ class Piano extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onNoteStart(midiNumber);
+      this.onPlayNote(midiNumber);
     }
   };
 
@@ -127,11 +127,11 @@ class Piano extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onNoteStop(midiNumber);
+      this.onStopNote(midiNumber);
     }
   };
 
-  onNoteStart = (midiNumber) => {
+  onPlayNote = (midiNumber) => {
     if (this.props.isLoading) {
       return;
     }
@@ -141,13 +141,13 @@ class Piano extends React.Component {
       return;
     }
     // Pass in previous activeNotes for recording functionality
-    this.props.onNoteStart(midiNumber, this.state.activeNotes);
+    this.props.onPlayNote(midiNumber, this.state.activeNotes);
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
     }));
   };
 
-  onNoteStop = (midiNumber) => {
+  onStopNote = (midiNumber) => {
     if (this.props.isLoading) {
       return;
     }
@@ -156,7 +156,7 @@ class Piano extends React.Component {
       return;
     }
     // Pass in previous activeNotes for recording functionality
-    this.props.onNoteStop(midiNumber, this.state.activeNotes);
+    this.props.onStopNote(midiNumber, this.state.activeNotes);
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
     }));
@@ -176,7 +176,7 @@ class Piano extends React.Component {
 
   onTouchStart = () => {
     this.setState({
-      touchEvents: true,
+      useTouchEvents: true,
     });
   };
 
@@ -191,17 +191,17 @@ class Piano extends React.Component {
   render() {
     return (
       <Keyboard
-        startNote={this.props.startNote}
-        endNote={this.props.endNote}
+        firstNote={this.props.firstNote}
+        lastNote={this.props.lastNote}
         activeNotes={this.props.playbackNotes || this.state.activeNotes}
         disabled={this.props.isLoading}
         width={this.props.width}
         gliss={this.state.isMouseDown}
-        touchEvents={this.state.touchEvents}
+        useTouchEvents={this.state.useTouchEvents}
         layoutConfig={this.props.layoutConfig}
         renderNoteLabel={this.renderNoteLabel}
-        onNoteStart={this.onNoteStart}
-        onNoteStop={this.onNoteStop}
+        onPlayNote={this.onPlayNote}
+        onStopNote={this.onStopNote}
       />
     );
   }

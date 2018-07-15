@@ -58,7 +58,7 @@ class SoundfontProvider extends React.Component {
       });
   };
 
-  startNote = (midiNumber) => {
+  playNote = (midiNumber) => {
     this.props.audioContext.resume().then(() => {
       const audioNode = this.state.instrument.play(midiNumber);
       this.setState({
@@ -100,7 +100,7 @@ class SoundfontProvider extends React.Component {
   render() {
     return this.props.children({
       isLoading: !(this.state.instrument && this.state.instrumentList),
-      startNote: this.startNote,
+      playNote: this.playNote,
       stopNote: this.stopNote,
       stopAllNotes: this.stopAllNotes,
       instrumentList: this.state.instrumentList,

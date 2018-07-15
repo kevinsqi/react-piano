@@ -1,7 +1,7 @@
 import { getMidiNumberAttributes, MAX_MIDI_NUMBER } from './midiHelpers';
 
-function buildKeyboardShortcuts(startNote, keyboardConfig) {
-  let currentMidiNumber = startNote;
+function buildKeyboardShortcuts(firstNote, keyboardConfig) {
+  let currentMidiNumber = firstNote;
   let naturalKeyIndex = 0;
   let keyboardShortcuts = [];
   while (naturalKeyIndex < keyboardConfig.length && currentMidiNumber <= MAX_MIDI_NUMBER) {

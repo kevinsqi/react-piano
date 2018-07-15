@@ -21,16 +21,21 @@ yarn add react-piano
 import { Piano, buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
 import 'react-piano/build/styles.css';
 
-const startNote = 48; // midi number C4
-const endNote = 77;   // midi number F6
+// react-piano does not implement note audio playback, but you can
+// see demos on setting it up with high quality soundfonts.
+function playNote(midiNumber) { ... }
+function stopNote(midiNumber) { ... }
+
+const firstNote = 48;
+const lastNote = 77;
 
 <Piano
-  startNote={startNote}
-  endNote={endNote}
-  onNoteStart={(midiNumber) => startPlaying(midiNumber)}
-  onNoteStop={(midiNumber) => stopPlaying(midiNumber)}
+  firstNote={firstNote}
+  lastNote={lastNote}
+  onPlayNote={playNote}
+  onStopNote={stopNote}
   width={1000}
-  keyboardShortcuts={buildKeyboardShortcuts(startNote, KEYBOARD_SHORTCUT_CONFIGS.homeRow)}
+  keyboardShortcuts={buildKeyboardShortcuts(firstNote, KEYBOARD_SHORTCUT_CONFIGS.homeRow)}
 />
 ```
 

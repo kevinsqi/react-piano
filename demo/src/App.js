@@ -33,15 +33,15 @@ class App extends React.Component {
   state = {
     config: {
       instrumentName: SoundfontProvider.defaultProps.instrumentName,
-      startNote: 48,
-      endNote: 77,
+      firstNote: 48,
+      lastNote: 77,
       keyboardShortcutOffset: 0,
     },
   };
 
   render() {
     const keyboardShortcuts = buildKeyboardShortcuts(
-      this.state.config.startNote + this.state.config.keyboardShortcutOffset,
+      this.state.config.firstNote + this.state.config.keyboardShortcutOffset,
       KEYBOARD_SHORTCUT_CONFIGS.homeRow,
     );
     const numKeyboardShortcuts = KEYBOARD_SHORTCUT_CONFIGS.homeRow.length;
@@ -63,18 +63,17 @@ class App extends React.Component {
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
               >
-                {({ isLoading, instrumentList, startNote, stopNote, stopAllNotes }) => (
+                {({ isLoading, instrumentList, playNote, stopNote, stopAllNotes }) => (
                   <div>
                     <div>
                       <DimensionsProvider>
                         {({ containerWidth }) => (
                           <Piano
-                            startNote={this.state.config.startNote}
-                            endNote={this.state.config.endNote}
+                            firstNote={this.state.config.firstNote}
+                            lastNote={this.state.config.lastNote}
                             keyboardShortcuts={keyboardShortcuts}
-                            /* TODO: rename startNote, stopNote */
-                            onNoteStart={startNote}
-                            onNoteStop={stopNote}
+                            onPlayNote={playNote}
+                            onStopNote={stopNote}
                             isLoading={isLoading}
                             width={containerWidth}
                           />

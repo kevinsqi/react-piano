@@ -6,10 +6,10 @@ class Key extends React.Component {
     left: PropTypes.string.isRequired,
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
-    onNoteStart: PropTypes.func.isRequired,
-    onNoteStop: PropTypes.func.isRequired,
+    playNote: PropTypes.func.isRequired,
+    stopNote: PropTypes.func.isRequired,
     gliss: PropTypes.bool.isRequired,
-    touchEvents: PropTypes.bool.isRequired,
+    useTouchEvents: PropTypes.bool.isRequired,
     className: PropTypes.string,
     children: PropTypes.node,
   };
@@ -20,14 +20,14 @@ class Key extends React.Component {
       left,
       width,
       height,
-      onNoteStart,
-      onNoteStop,
+      playNote,
+      stopNote,
       gliss,
       children,
-      touchEvents,
+      useTouchEvents,
     } = this.props;
 
-    // Need to conditionally include/exclude handlers based on touchEvents,
+    // Need to conditionally include/exclude handlers based on useTouchEvents,
     // because otherwise mobile taps double fire events.
     return (
       <div
@@ -38,13 +38,13 @@ class Key extends React.Component {
           width: width,
           height: height,
         }}
-        onMouseDown={touchEvents ? null : onNoteStart}
-        onMouseUp={touchEvents ? null : onNoteStop}
-        onMouseEnter={gliss ? onNoteStart : null}
-        onMouseLeave={onNoteStop}
-        onTouchStart={touchEvents ? onNoteStart : null}
-        onTouchCancel={touchEvents ? onNoteStop : null}
-        onTouchEnd={touchEvents ? onNoteStop : null}
+        onMouseDown={useTouchEvents ? null : playNote}
+        onMouseUp={useTouchEvents ? null : stopNote}
+        onMouseEnter={gliss ? playNote : null}
+        onMouseLeave={stopNote}
+        onTouchStart={useTouchEvents ? playNote : null}
+        onTouchCancel={useTouchEvents ? stopNote : null}
+        onTouchEnd={useTouchEvents ? stopNote : null}
       >
         <div className="ReactPiano__NoteLabelContainer">{children}</div>
       </div>
