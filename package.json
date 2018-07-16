@@ -1,6 +1,6 @@
 {
   "name": "react-piano",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A responsive, customizable react piano keyboard component",
   "main": "build/index.js",
   "style": "build/styles.css",
