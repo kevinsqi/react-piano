@@ -1,9 +1,19 @@
 // See https://github.com/danigb/soundfont-player
 // for more documentation on prop options.
 import React from 'react';
+import PropTypes from 'prop-types';
 import Soundfont from 'soundfont-player';
 
 class SoundfontProvider extends React.Component {
+  static propTypes = {
+    instrumentName: PropTypes.string.isRequired,
+    hostname: PropTypes.string.isRequired,
+    format: PropTypes.oneOf(['mp3', 'ogg']),
+    soundfont: PropTypes.oneOf(['MusyngKite', 'FluidR3_GM']),
+    audioContext: PropTypes.instanceOf(window.AudioContext),
+    render: PropTypes.func,
+  };
+
   static defaultProps = {
     format: 'mp3',
     soundfont: 'MusyngKite',
@@ -15,13 +25,11 @@ class SoundfontProvider extends React.Component {
     this.state = {
       activeAudioNodes: {},
       instrument: null,
-      instrumentList: [props.instrumentName],
     };
   }
 
   componentDidMount() {
     this.loadInstrument(this.props.instrumentName);
-    this.loadInstrumentList();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -46,16 +54,6 @@ class SoundfontProvider extends React.Component {
         instrument,
       });
     });
-  };
-
-  loadInstrumentList = () => {
-    fetch(`${this.props.hostname}/${this.props.soundfont}/names.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          instrumentList: data,
-        });
-      });
   };
 
   playNote = (midiNumber) => {
@@ -98,12 +96,11 @@ class SoundfontProvider extends React.Component {
   };
 
   render() {
-    return this.props.children({
-      isLoading: !(this.state.instrument && this.state.instrumentList),
+    return this.props.render({
+      isLoading: !this.state.instrument,
       playNote: this.playNote,
       stopNote: this.stopNote,
       stopAllNotes: this.stopAllNotes,
-      instrumentList: this.state.instrumentList,
     });
   }
 }
