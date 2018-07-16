@@ -42,10 +42,11 @@ class App extends React.Component {
   };
 
   render() {
-    const keyboardShortcuts = buildKeyboardShortcuts(
-      this.state.config.noteRange.first + this.state.config.keyboardShortcutOffset,
-      KEYBOARD_SHORTCUT_CONFIGS.homeRow,
-    );
+    const keyboardShortcuts = buildKeyboardShortcuts({
+      firstNote: this.state.config.noteRange.first + this.state.config.keyboardShortcutOffset,
+      lastNote: this.state.config.noteRange.last + this.state.config.keyboardShortcutOffset,
+      keyboardConfig: KEYBOARD_SHORTCUT_CONFIGS.homeRow,
+    });
 
     return (
       <div>
