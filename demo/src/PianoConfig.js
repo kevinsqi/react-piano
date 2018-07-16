@@ -97,7 +97,7 @@ class PianoConfig extends React.Component {
             value={noteRange.first}
           >
             {MidiNumbers.NATURAL_MIDI_NUMBERS.map((midiNumber) => (
-              <option value={midiNumber} key={midiNumber}>
+              <option value={midiNumber} disabled={midiNumber >= noteRange.last} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}
               </option>
             ))}
@@ -111,7 +111,7 @@ class PianoConfig extends React.Component {
             value={noteRange.last}
           >
             {MidiNumbers.NATURAL_MIDI_NUMBERS.map((midiNumber) => (
-              <option value={midiNumber} key={midiNumber}>
+              <option value={midiNumber} disabled={midiNumber <= noteRange.first} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}
               </option>
             ))}
