@@ -1,5 +1,5 @@
 import React from 'react';
-import { getMidiNumberAttributes, NATURAL_MIDI_NUMBERS } from 'react-piano';
+import { MidiNumbers } from 'react-piano';
 
 class AutoblurSelect extends React.Component {
   constructor(props) {
@@ -81,8 +81,8 @@ class PianoConfig extends React.Component {
   };
 
   render() {
-    const midiNumbersToNotes = NATURAL_MIDI_NUMBERS.reduce((obj, midiNumber) => {
-      obj[midiNumber] = getMidiNumberAttributes(midiNumber).note;
+    const midiNumbersToNotes = MidiNumbers.NATURAL_MIDI_NUMBERS.reduce((obj, midiNumber) => {
+      obj[midiNumber] = MidiNumbers.getAttributes(midiNumber).note;
       return obj;
     }, {});
     const { noteRange, instrumentName } = this.props.config;
@@ -96,7 +96,7 @@ class PianoConfig extends React.Component {
             onChange={this.onChangeFirstNote}
             value={noteRange.first}
           >
-            {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
+            {MidiNumbers.NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}
               </option>
@@ -110,7 +110,7 @@ class PianoConfig extends React.Component {
             onChange={this.onChangeLastNote}
             value={noteRange.last}
           >
-            {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
+            {MidiNumbers.NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
                 {midiNumbersToNotes[midiNumber]}
               </option>

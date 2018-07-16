@@ -1,4 +1,4 @@
-import { getMidiNumberAttributes, MAX_MIDI_NUMBER } from './midiHelpers';
+import MidiNumbers from './MidiNumbers';
 
 function createKeyboardShortcuts({ firstNote, lastNote, keyboardConfig }) {
   let currentMidiNumber = firstNote;
@@ -12,7 +12,7 @@ function createKeyboardShortcuts({ firstNote, lastNote, keyboardConfig }) {
     currentMidiNumber <= lastNote
   ) {
     const key = keyboardConfig[naturalKeyIndex];
-    const { isAccidental } = getMidiNumberAttributes(currentMidiNumber);
+    const { isAccidental } = MidiNumbers.getAttributes(currentMidiNumber);
     if (isAccidental) {
       keyboardShortcuts.push({
         key: key.flat,

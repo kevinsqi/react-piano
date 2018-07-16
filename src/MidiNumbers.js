@@ -3,8 +3,8 @@ import range from 'lodash.range';
 const BASENOTES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 const ACCIDENTALS = ['Db', 'Eb', 'Gb', 'Ab', 'Bb'];
 const MIDI_NUMBER_C0 = 12;
-export const MIN_MIDI_NUMBER = MIDI_NUMBER_C0;
-export const MAX_MIDI_NUMBER = 127;
+const MIN_MIDI_NUMBER = MIDI_NUMBER_C0;
+const MAX_MIDI_NUMBER = 127;
 const NOTE_REGEX = /(\w+)(\d)/;
 const NOTES_IN_OCTAVE = 12;
 
@@ -39,7 +39,7 @@ function noteToMidiNumber(note) {
   return MIDI_NUMBER_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
 }
 
-export function getMidiNumberAttributes(number) {
+function getAttributes(number) {
   const attrs = midiNumberAttributesCache[number];
   if (!attrs) {
     throw Error('MIDI number out of range');
@@ -47,6 +47,13 @@ export function getMidiNumberAttributes(number) {
   return attrs;
 }
 
-export const NATURAL_MIDI_NUMBERS = range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
-  (midiNumber) => !getMidiNumberAttributes(midiNumber).isAccidental,
+const NATURAL_MIDI_NUMBERS = range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
+  (midiNumber) => !getAttributes(midiNumber).isAccidental,
 );
+
+export default {
+  getAttributes,
+  MIN_MIDI_NUMBER,
+  MAX_MIDI_NUMBER,
+  NATURAL_MIDI_NUMBERS,
+};

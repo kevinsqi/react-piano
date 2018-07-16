@@ -4,7 +4,7 @@ import range from 'lodash.range';
 import classNames from 'classnames';
 
 import Key from './Key';
-import { getMidiNumberAttributes, NATURAL_MIDI_NUMBERS } from './midiHelpers';
+import MidiNumbers from './MidiNumbers';
 
 function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
@@ -14,7 +14,7 @@ function isNaturalMidiNumber(value) {
   if (typeof value !== 'number') {
     return false;
   }
-  return NATURAL_MIDI_NUMBERS.includes(value);
+  return MidiNumbers.NATURAL_MIDI_NUMBERS.includes(value);
 }
 
 function noteRangePropType(props, propName, componentName) {
@@ -93,7 +93,7 @@ class Keyboard extends React.Component {
 
   getWhiteKeyCount() {
     return this.getMidiNumbers().filter((number) => {
-      const { isAccidental } = getMidiNumberAttributes(number);
+      const { isAccidental } = MidiNumbers.getAttributes(number);
       return !isAccidental;
     }).length;
   }
@@ -113,9 +113,9 @@ class Keyboard extends React.Component {
   // Key position is represented by the number of white key widths from the left
   getKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
-    const { octave, basenote } = getMidiNumberAttributes(midiNumber);
+    const { octave, basenote } = MidiNumbers.getAttributes(midiNumber);
     const offsetFromC = this.props.layoutConfig.noteOffsetsFromC[basenote];
-    const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(
+    const { basenote: startBasenote, octave: startOctave } = MidiNumbers.getAttributes(
       this.props.noteRange.first,
     );
     const startOffsetFromC = this.props.layoutConfig.noteOffsetsFromC[startBasenote];
@@ -125,7 +125,7 @@ class Keyboard extends React.Component {
   }
 
   getKeyConfig(midiNumber) {
-    return getMidiNumberAttributes(midiNumber).isAccidental
+    return MidiNumbers.getAttributes(midiNumber).isAccidental
       ? this.props.layoutConfig.blackKey
       : this.props.layoutConfig.whiteKey;
   }
@@ -148,7 +148,7 @@ class Keyboard extends React.Component {
         style={{ width: this.getWidth(), height: this.getHeight() }}
       >
         {this.getMidiNumbers().map((midiNumber) => {
-          const { note, basenote, isAccidental } = getMidiNumberAttributes(midiNumber);
+          const { note, basenote, isAccidental } = MidiNumbers.getAttributes(midiNumber);
           const keyConfig = this.getKeyConfig(midiNumber);
           const isActive = this.props.activeNotes.includes(midiNumber);
           return (
