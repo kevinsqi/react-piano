@@ -36,7 +36,7 @@ class PianoConfig extends React.Component {
   }
 
   handleKeyDown = (event) => {
-    const numNotes = this.props.config.lastNote - this.props.config.firstNote + 1;
+    const numNotes = this.props.config.noteRange.last - this.props.config.noteRange.first + 1;
     const minOffset = 0;
     const maxOffset = numNotes - this.props.keyboardShortcuts.length;
     if (event.key === 'ArrowLeft') {
@@ -58,13 +58,19 @@ class PianoConfig extends React.Component {
 
   onChangeFirstNote = (event) => {
     this.props.setConfig({
-      firstNote: parseInt(event.target.value, 10),
+      noteRange: {
+        first: parseInt(event.target.value, 10),
+        last: this.props.config.noteRange.last,
+      },
     });
   };
 
   onChangeLastNote = (event) => {
     this.props.setConfig({
-      lastNote: parseInt(event.target.value, 10),
+      noteRange: {
+        first: this.props.config.noteRange.first,
+        last: parseInt(event.target.value, 10),
+      },
     });
   };
 
@@ -79,7 +85,7 @@ class PianoConfig extends React.Component {
       obj[midiNumber] = getMidiNumberAttributes(midiNumber).note;
       return obj;
     }, {});
-    const { firstNote, lastNote, instrumentName } = this.props.config;
+    const { noteRange, instrumentName } = this.props.config;
 
     return (
       <div className="form-row">
@@ -88,7 +94,7 @@ class PianoConfig extends React.Component {
           <AutoblurSelect
             className="form-control"
             onChange={this.onChangeFirstNote}
-            value={firstNote}
+            value={noteRange.first}
           >
             {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>
@@ -102,7 +108,7 @@ class PianoConfig extends React.Component {
           <AutoblurSelect
             className="form-control"
             onChange={this.onChangeLastNote}
-            value={lastNote}
+            value={noteRange.last}
           >
             {NATURAL_MIDI_NUMBERS.map((midiNumber) => (
               <option value={midiNumber} key={midiNumber}>

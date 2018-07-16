@@ -33,15 +33,17 @@ class App extends React.Component {
   state = {
     config: {
       instrumentName: SoundfontProvider.defaultProps.instrumentName,
-      firstNote: 48,
-      lastNote: 77,
+      noteRange: {
+        first: 48,
+        last: 77,
+      },
       keyboardShortcutOffset: 0,
     },
   };
 
   render() {
     const keyboardShortcuts = buildKeyboardShortcuts(
-      this.state.config.firstNote + this.state.config.keyboardShortcutOffset,
+      this.state.config.noteRange.first + this.state.config.keyboardShortcutOffset,
       KEYBOARD_SHORTCUT_CONFIGS.homeRow,
     );
 
@@ -68,10 +70,7 @@ class App extends React.Component {
                       <DimensionsProvider>
                         {({ containerWidth }) => (
                           <Piano
-                            noteRange={{
-                              first: this.state.config.firstNote,
-                              last: this.state.config.lastNote,
-                            }}
+                            noteRange={this.state.config.noteRange}
                             keyboardShortcuts={keyboardShortcuts}
                             onPlayNote={playNote}
                             onStopNote={stopNote}
