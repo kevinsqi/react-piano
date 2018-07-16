@@ -68,8 +68,10 @@ class App extends React.Component {
                       <DimensionsProvider>
                         {({ containerWidth }) => (
                           <Piano
-                            firstNote={this.state.config.firstNote}
-                            lastNote={this.state.config.lastNote}
+                            noteRange={{
+                              first: this.state.config.firstNote,
+                              last: this.state.config.lastNote,
+                            }}
                             keyboardShortcuts={keyboardShortcuts}
                             onPlayNote={playNote}
                             onStopNote={stopNote}
