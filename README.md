@@ -18,7 +18,7 @@ yarn add react-piano
 ## Usage
 
 ```jsx
-import { Piano, buildKeyboardShortcuts, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
+import { Piano, KeyboardShortcuts } from 'react-piano';
 
 // CSS styles are required in order to render piano correctly.
 // Importing CSS requires a CSS loader. You can also copy the CSS file directly from src/styles.css.
@@ -36,7 +36,13 @@ const lastNote = 77;
   onPlayNote={playNote}
   onStopNote={stopNote}
   width={1000}
-  keyboardShortcuts={buildKeyboardShortcuts(firstNote, KEYBOARD_SHORTCUT_CONFIGS.homeRow)}
+  keyboardShortcuts={
+    KeyboardShortcuts.create({
+      firstNote: firstNote,
+      lastNote: lastNote,
+      keyboardConfig: KeyboardShortcuts.HOME_ROW,
+    })
+  }
 />
 ```
 

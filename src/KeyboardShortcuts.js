@@ -1,5 +1,39 @@
-const KEYBOARD_SHORTCUT_CONFIGS = {
-  qwertyRow: [
+import { getMidiNumberAttributes, MAX_MIDI_NUMBER } from './midiHelpers';
+
+function createKeyboardShortcuts({ firstNote, lastNote, keyboardConfig }) {
+  let currentMidiNumber = firstNote;
+  let naturalKeyIndex = 0;
+  let keyboardShortcuts = [];
+
+  while (
+    // There are still keys to be assigned
+    naturalKeyIndex < keyboardConfig.length &&
+    // Note to be assigned does not surpass range
+    currentMidiNumber <= lastNote
+  ) {
+    const key = keyboardConfig[naturalKeyIndex];
+    const { isAccidental } = getMidiNumberAttributes(currentMidiNumber);
+    if (isAccidental) {
+      keyboardShortcuts.push({
+        key: key.flat,
+        midiNumber: currentMidiNumber,
+      });
+    } else {
+      keyboardShortcuts.push({
+        key: key.natural,
+        midiNumber: currentMidiNumber,
+      });
+      naturalKeyIndex += 1;
+    }
+    currentMidiNumber += 1;
+  }
+  return keyboardShortcuts;
+}
+
+export default {
+  create: createKeyboardShortcuts,
+  // Preset configurations
+  BOTTOM_ROW: [
     { natural: 'z', flat: 'a', sharp: 's' },
     { natural: 'x', flat: 's', sharp: 'd' },
     { natural: 'c', flat: 'd', sharp: 'f' },
@@ -11,7 +45,7 @@ const KEYBOARD_SHORTCUT_CONFIGS = {
     { natural: '.', flat: 'l', sharp: ';' },
     { natural: '/', flat: ';', sharp: "'" },
   ],
-  homeRow: [
+  HOME_ROW: [
     { natural: 'a', flat: 'q', sharp: 'w' },
     { natural: 's', flat: 'w', sharp: 'e' },
     { natural: 'd', flat: 'e', sharp: 'r' },
@@ -24,7 +58,7 @@ const KEYBOARD_SHORTCUT_CONFIGS = {
     { natural: ';', flat: 'p', sharp: '[' },
     { natural: "'", flat: '[', sharp: ']' },
   ],
-  bottomRow: [
+  QWERTY_ROW: [
     { natural: 'q', flat: '1', sharp: '2' },
     { natural: 'w', flat: '2', sharp: '3' },
     { natural: 'e', flat: '3', sharp: '4' },
@@ -38,5 +72,3 @@ const KEYBOARD_SHORTCUT_CONFIGS = {
     { natural: '[', flat: '-', sharp: '=' },
   ],
 };
-
-export default KEYBOARD_SHORTCUT_CONFIGS;

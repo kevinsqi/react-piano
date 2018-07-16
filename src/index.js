@@ -1,7 +1,6 @@
 import Piano from './Piano';
 import Keyboard from './Keyboard';
-import buildKeyboardShortcuts from './buildKeyboardShortcuts';
-import KEYBOARD_SHORTCUT_CONFIGS from './keyboardShortcutConfigs';
+import KeyboardShortcuts from './KeyboardShortcuts';
 import {
   getMidiNumberAttributes,
   MIN_MIDI_NUMBER,
@@ -12,8 +11,7 @@ import {
 export {
   Piano,
   Keyboard,
-  buildKeyboardShortcuts,
-  KEYBOARD_SHORTCUT_CONFIGS,
+  KeyboardShortcuts,
   getMidiNumberAttributes,
   MIN_MIDI_NUMBER,
   MAX_MIDI_NUMBER,

@@ -1,6 +1,6 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
-import { buildKeyboardShortcuts, Piano, KEYBOARD_SHORTCUT_CONFIGS } from 'react-piano';
+import { Piano, KeyboardShortcuts } from 'react-piano';
 import 'react-piano/build/styles.css';
 
 import DimensionsProvider from './DimensionsProvider';
@@ -42,10 +42,10 @@ class App extends React.Component {
   };
 
   render() {
-    const keyboardShortcuts = buildKeyboardShortcuts({
+    const keyboardShortcuts = KeyboardShortcuts.create({
       firstNote: this.state.config.noteRange.first + this.state.config.keyboardShortcutOffset,
       lastNote: this.state.config.noteRange.last + this.state.config.keyboardShortcutOffset,
-      keyboardConfig: KEYBOARD_SHORTCUT_CONFIGS.homeRow,
+      keyboardConfig: KeyboardShortcuts.HOME_ROW,
     });
 
     return (
