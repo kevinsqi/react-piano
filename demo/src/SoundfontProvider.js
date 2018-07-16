@@ -1,9 +1,19 @@
 // See https://github.com/danigb/soundfont-player
 // for more documentation on prop options.
 import React from 'react';
+import PropTypes from 'prop-types';
 import Soundfont from 'soundfont-player';
 
 class SoundfontProvider extends React.Component {
+  static propTypes = {
+    instrumentName: PropTypes.string.isRequired,
+    hostname: PropTypes.string.isRequired,
+    format: PropTypes.oneOf(['mp3', 'ogg']),
+    soundfont: PropTypes.oneOf(['MusyngKite', 'FluidR3_GM']),
+    audioContext: PropTypes.instanceOf(window.AudioContext),
+    children: PropTypes.func,
+  };
+
   static defaultProps = {
     format: 'mp3',
     soundfont: 'MusyngKite',
