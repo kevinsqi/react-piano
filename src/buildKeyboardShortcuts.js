@@ -1,10 +1,16 @@
 import { getMidiNumberAttributes, MAX_MIDI_NUMBER } from './midiHelpers';
 
-function buildKeyboardShortcuts(firstNote, keyboardConfig) {
+function buildKeyboardShortcuts({ firstNote, lastNote, keyboardConfig }) {
   let currentMidiNumber = firstNote;
   let naturalKeyIndex = 0;
   let keyboardShortcuts = [];
-  while (naturalKeyIndex < keyboardConfig.length && currentMidiNumber <= MAX_MIDI_NUMBER) {
+
+  while (
+    // There are still keys to be assigned
+    naturalKeyIndex < keyboardConfig.length &&
+    // Note to be assigned does not surpass range
+    currentMidiNumber <= lastNote
+  ) {
     const key = keyboardConfig[naturalKeyIndex];
     const { isAccidental } = getMidiNumberAttributes(currentMidiNumber);
     if (isAccidental) {

@@ -10,24 +10,35 @@ function ratioToPercentage(ratio) {
   return `${ratio * 100}%`;
 }
 
-function midiNumberPropType(props, propName, componentName) {
-  const value = props[propName];
+function isNaturalMidiNumber(value) {
   if (typeof value !== 'number') {
+    return false;
+  }
+  return NATURAL_MIDI_NUMBERS.includes(value);
+}
+
+function noteRangePropType(props, propName, componentName) {
+  const { first, last } = props[propName];
+  if (!first || !last) {
     return new Error(
-      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be a number.`,
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be an object with .first and .last values.`,
     );
   }
-  if (!NATURAL_MIDI_NUMBERS.includes(props[propName])) {
+  if (!isNaturalMidiNumber(first) || !isNaturalMidiNumber(last)) {
     return new Error(
-      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be a valid MIDI number which is not an accidental (sharp or flat note).`,
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} values must be valid MIDI numbers, and should not be accidentals (sharp or flat notes).`,
+    );
+  }
+  if (first >= last) {
+    return new Error(
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName}.first must be smaller than ${propName}.last.`,
     );
   }
 }
 
 class Keyboard extends React.Component {
   static propTypes = {
-    firstNote: midiNumberPropType,
-    lastNote: midiNumberPropType,
+    noteRange: noteRangePropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
@@ -75,9 +86,9 @@ class Keyboard extends React.Component {
     },
   };
 
-  // Range of midi numbers from firstNote to lastNote
+  // Range of midi numbers on keyboard
   getMidiNumbers() {
-    return range(this.props.firstNote, this.props.lastNote + 1);
+    return range(this.props.noteRange.first, this.props.noteRange.last + 1);
   }
 
   getWhiteKeyCount() {
@@ -105,7 +116,7 @@ class Keyboard extends React.Component {
     const { octave, basenote } = getMidiNumberAttributes(midiNumber);
     const offsetFromC = this.props.layoutConfig.noteOffsetsFromC[basenote];
     const { basenote: startBasenote, octave: startOctave } = getMidiNumberAttributes(
-      this.props.firstNote,
+      this.props.noteRange.first,
     );
     const startOffsetFromC = this.props.layoutConfig.noteOffsetsFromC[startBasenote];
     const offsetFromFirstNote = offsetFromC - startOffsetFromC;

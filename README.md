@@ -32,8 +32,7 @@ const firstNote = 48;
 const lastNote = 77;
 
 <Piano
-  firstNote={firstNote}
-  lastNote={lastNote}
+  noteRange={{ first: firstNote, last: lastNote }}
   onPlayNote={playNote}
   onStopNote={stopNote}
   width={1000}
