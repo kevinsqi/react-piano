@@ -11,7 +11,7 @@ class SoundfontProvider extends React.Component {
     format: PropTypes.oneOf(['mp3', 'ogg']),
     soundfont: PropTypes.oneOf(['MusyngKite', 'FluidR3_GM']),
     audioContext: PropTypes.instanceOf(window.AudioContext),
-    children: PropTypes.func,
+    render: PropTypes.func,
   };
 
   static defaultProps = {
@@ -108,7 +108,7 @@ class SoundfontProvider extends React.Component {
   };
 
   render() {
-    return this.props.children({
+    return this.props.render({
       isLoading: !(this.state.instrument && this.state.instrumentList),
       playNote: this.playNote,
       stopNote: this.stopNote,

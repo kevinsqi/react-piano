@@ -64,8 +64,7 @@ class App extends React.Component {
                 audioContext={audioContext}
                 instrumentName={this.state.config.instrumentName}
                 hostname="http://d1pzp51pvbm36p.cloudfront.net"
-              >
-                {({ isLoading, instrumentList, playNote, stopNote, stopAllNotes }) => (
+                render={({ isLoading, instrumentList, playNote, stopNote, stopAllNotes }) => (
                   <div>
                     <div>
                       <DimensionsProvider>
@@ -98,7 +97,7 @@ class App extends React.Component {
                     </div>
                   </div>
                 )}
-              </SoundfontProvider>
+              />
             </div>
           </div>
           <hr className="mt-5" />
