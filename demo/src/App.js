@@ -6,9 +6,13 @@ import 'react-piano/build/styles.css';
 import DimensionsProvider from './DimensionsProvider';
 import Header from './Header';
 import Footer from './Footer';
+import InstrumentListProvider from './InstrumentListProvider';
 import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
 import './App.css';
+
+const audioContext = new window.AudioContext();
+const soundfontHostname = 'http://d1pzp51pvbm36p.cloudfront.net';
 
 function Installation() {
   return (
@@ -26,8 +30,6 @@ function Installation() {
     </div>
   );
 }
-
-const audioContext = new window.AudioContext();
 
 class App extends React.Component {
   state = {
@@ -63,8 +65,8 @@ class App extends React.Component {
               <SoundfontProvider
                 audioContext={audioContext}
                 instrumentName={this.state.config.instrumentName}
-                hostname="http://d1pzp51pvbm36p.cloudfront.net"
-                render={({ isLoading, instrumentList, playNote, stopNote, stopAllNotes }) => (
+                hostname={soundfontHostname}
+                render={({ isLoading, playNote, stopNote, stopAllNotes }) => (
                   <div>
                     <div>
                       <DimensionsProvider>
@@ -82,16 +84,21 @@ class App extends React.Component {
                     </div>
                     <div className="row mt-5">
                       <div className="col-lg-8 offset-lg-2">
-                        <PianoConfig
-                          config={this.state.config}
-                          setConfig={(config) => {
-                            this.setState({
-                              config: Object.assign({}, this.state.config, config),
-                            });
-                            stopAllNotes();
-                          }}
-                          instrumentList={instrumentList}
-                          keyboardShortcuts={keyboardShortcuts}
+                        <InstrumentListProvider
+                          hostname={soundfontHostname}
+                          render={(instrumentList) => (
+                            <PianoConfig
+                              config={this.state.config}
+                              setConfig={(config) => {
+                                this.setState({
+                                  config: Object.assign({}, this.state.config, config),
+                                });
+                                stopAllNotes();
+                              }}
+                              instrumentList={instrumentList || [this.state.config.instrumentName]}
+                              keyboardShortcuts={keyboardShortcuts}
+                            />
+                          )}
                         />
                       </div>
                     </div>

@@ -25,13 +25,11 @@ class SoundfontProvider extends React.Component {
     this.state = {
       activeAudioNodes: {},
       instrument: null,
-      instrumentList: [props.instrumentName],
     };
   }
 
   componentDidMount() {
     this.loadInstrument(this.props.instrumentName);
-    this.loadInstrumentList();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -56,16 +54,6 @@ class SoundfontProvider extends React.Component {
         instrument,
       });
     });
-  };
-
-  loadInstrumentList = () => {
-    fetch(`${this.props.hostname}/${this.props.soundfont}/names.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({
-          instrumentList: data,
-        });
-      });
   };
 
   playNote = (midiNumber) => {
@@ -109,11 +97,10 @@ class SoundfontProvider extends React.Component {
 
   render() {
     return this.props.render({
-      isLoading: !(this.state.instrument && this.state.instrumentList),
+      isLoading: !this.state.instrument,
       playNote: this.playNote,
       stopNote: this.stopNote,
       stopAllNotes: this.stopAllNotes,
-      instrumentList: this.state.instrumentList,
     });
   }
 }
