@@ -7,7 +7,7 @@ import Header from './Header';
 import Footer from './Footer';
 import './App.css';
 
-const audioContext = new window.AudioContext();
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 function Installation() {
   return (
