@@ -120,10 +120,11 @@ class Piano extends React.Component {
   };
 
   onKeyUp = (event) => {
-    // Don't conflict with existing combinations like ctrl + t
-    if (event.ctrlKey || event.metaKey || event.shiftKey) {
-      return;
-    }
+    // This *should* also check for event.ctrlKey || event.metaKey || event.ShiftKey like onKeyDown does,
+    // but at least on Mac Chrome, when mashing down many alphanumeric keystrokes at once,
+    // ctrlKey is fired unexpectedly, which would cause onStopNote to NOT be fired, which causes problematic
+    // lingering notes. Since it's fairly safe to call onStopNote even when not necessary,
+    // the ctrl/meta/shift check is removed to fix that issue.
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
       this.onStopNote(midiNumber);
