@@ -41,10 +41,10 @@ class Keyboard extends React.PureComponent {
     activeNotes: PropTypes.arrayOf(PropTypes.number),
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
+    renderNoteLabel: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
     useTouchEvents: PropTypes.bool,
-    renderNoteLabel: PropTypes.func,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
     layoutConfig: PropTypes.object,

@@ -4,14 +4,18 @@ import classNames from 'classnames';
 
 class Key extends React.PureComponent {
   static propTypes = {
-    // noreintegrate update proptypes
+    midiNumber: PropTypes.number.isRequired,
     left: PropTypes.string.isRequired,
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
-    onPlayNote: PropTypes.func.isRequired,
-    onStopNote: PropTypes.func.isRequired,
     gliss: PropTypes.bool.isRequired,
     useTouchEvents: PropTypes.bool.isRequired,
+    isAccidental: PropTypes.bool.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    onPlayNote: PropTypes.func.isRequired,
+    onStopNote: PropTypes.func.isRequired,
+    renderNoteLabel: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
 
@@ -25,17 +29,17 @@ class Key extends React.PureComponent {
 
   render() {
     const {
-      className,
       midiNumber,
-      isAccidental,
-      isActive,
-      disabled,
       left,
       width,
       height,
       gliss,
       useTouchEvents,
+      isAccidental,
+      isActive,
+      disabled,
       renderNoteLabel,
+      className,
     } = this.props;
 
     // Need to conditionally include/exclude handlers based on useTouchEvents,
