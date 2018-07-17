@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 class Key extends React.PureComponent {
   static propTypes = {
+    // noreintegrate update proptypes
     left: PropTypes.string.isRequired,
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
@@ -22,13 +24,30 @@ class Key extends React.PureComponent {
   };
 
   render() {
-    const { className, left, width, height, gliss, useTouchEvents } = this.props;
+    const {
+      className,
+      midiNumber,
+      isAccidental,
+      isActive,
+      disabled,
+      left,
+      width,
+      height,
+      gliss,
+      useTouchEvents,
+      renderNoteLabel,
+    } = this.props;
 
     // Need to conditionally include/exclude handlers based on useTouchEvents,
     // because otherwise mobile taps double fire events.
     return (
       <div
-        className={className}
+        className={classNames('ReactPiano__Key', {
+          'ReactPiano__Key--black': isAccidental,
+          'ReactPiano__Key--white': !isAccidental,
+          'ReactPiano__Key--disabled': disabled,
+          'ReactPiano__Key--active': isActive,
+        })}
         style={{
           top: 0,
           left: left,
@@ -44,12 +63,12 @@ class Key extends React.PureComponent {
         onTouchEnd={useTouchEvents ? this.stopNote : null}
       >
         <div className="ReactPiano__NoteLabelContainer">
-          {this.props.disabled
+          {disabled
             ? null
-            : this.props.renderNoteLabel({
-                isActive: this.props.isActive,
-                isAccidental: this.props.isAccidental,
-                midiNumber: this.props.midiNumber,
+            : renderNoteLabel({
+                isActive,
+                isAccidental,
+                midiNumber,
               })}
         </div>
       </div>

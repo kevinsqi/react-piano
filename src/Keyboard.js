@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import range from 'lodash.range';
-import classNames from 'classnames';
 
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
@@ -153,12 +152,6 @@ class Keyboard extends React.PureComponent {
           const isActive = this.props.activeNotes.includes(midiNumber);
           return (
             <Key
-              className={classNames('ReactPiano__Key', {
-                'ReactPiano__Key--black': isAccidental,
-                'ReactPiano__Key--white': !isAccidental,
-                'ReactPiano__Key--disabled': this.props.disabled,
-                'ReactPiano__Key--active': isActive,
-              })}
               left={ratioToPercentage(
                 this.getKeyPosition(midiNumber) * this.getWhiteKeyWidthIncludingGutter(),
               )}
