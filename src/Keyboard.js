@@ -36,7 +36,7 @@ function noteRangePropType(props, propName, componentName) {
   }
 }
 
-class Keyboard extends React.Component {
+class Keyboard extends React.PureComponent {
   static propTypes = {
     noteRange: noteRangePropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
@@ -166,16 +166,17 @@ class Keyboard extends React.Component {
               height={ratioToPercentage(
                 isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
-              playNote={this.props.onPlayNote.bind(this, midiNumber)}
-              stopNote={this.props.onStopNote.bind(this, midiNumber)}
+              midiNumber={midiNumber}
+              isActive={isActive}
+              isAccidental={isAccidental}
+              disabled={this.props.disabled}
+              renderNoteLabel={this.props.renderNoteLabel}
+              onPlayNote={this.props.onPlayNote}
+              onStopNote={this.props.onStopNote}
               gliss={this.props.gliss}
               useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
-            >
-              {this.props.disabled
-                ? null
-                : this.props.renderNoteLabel({ midiNumber: midiNumber, isActive, isAccidental })}
-            </Key>
+            />
           );
         })}
       </div>
