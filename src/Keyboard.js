@@ -163,13 +163,20 @@ class Keyboard extends React.PureComponent {
               isActive={isActive}
               isAccidental={isAccidental}
               disabled={this.props.disabled}
-              renderNoteLabel={this.props.renderNoteLabel}
               onPlayNote={this.props.onPlayNote}
               onStopNote={this.props.onStopNote}
               gliss={this.props.gliss}
               useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
-            />
+            >
+              {this.props.disabled
+                ? null
+                : this.props.renderNoteLabel({
+                    isActive,
+                    isAccidental,
+                    midiNumber,
+                  })}
+            </Key>
           );
         })}
       </div>

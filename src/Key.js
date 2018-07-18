@@ -15,8 +15,7 @@ class Key extends React.PureComponent {
     disabled: PropTypes.bool.isRequired,
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
-    renderNoteLabel: PropTypes.func.isRequired,
-    className: PropTypes.string,
+    children: PropTypes.node,
   };
 
   playNote = () => {
@@ -38,8 +37,7 @@ class Key extends React.PureComponent {
       isAccidental,
       isActive,
       disabled,
-      renderNoteLabel,
-      className,
+      children,
     } = this.props;
 
     // Need to conditionally include/exclude handlers based on useTouchEvents,
@@ -66,15 +64,7 @@ class Key extends React.PureComponent {
         onTouchCancel={useTouchEvents ? this.stopNote : null}
         onTouchEnd={useTouchEvents ? this.stopNote : null}
       >
-        <div className="ReactPiano__NoteLabelContainer">
-          {disabled
-            ? null
-            : renderNoteLabel({
-                isActive,
-                isAccidental,
-                midiNumber,
-              })}
-        </div>
+        <div className="ReactPiano__NoteLabelContainer">{children}</div>
       </div>
     );
   }
