@@ -5,7 +5,7 @@ import range from 'lodash.range';
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
 
-class Keyboard extends React.PureComponent {
+class Keyboard extends React.Component {
   static propTypes = {
     noteRange: noteRangePropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
