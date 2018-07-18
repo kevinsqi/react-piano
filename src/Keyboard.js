@@ -12,7 +12,7 @@ class Keyboard extends React.Component {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
-    keyHeightRatio: PropTypes.number.isRequired,
+    keyWidthToHeight: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
     useTouchEvents: PropTypes.bool,
@@ -24,7 +24,7 @@ class Keyboard extends React.Component {
     disabled: false,
     gliss: false,
     useTouchEvents: false,
-    keyHeightRatio: 4.4,
+    keyWidthToHeight: 0.25,
     renderNoteLabel: () => {},
   };
 
@@ -54,7 +54,7 @@ class Keyboard extends React.Component {
       return '100%';
     }
     const keyWidth = this.props.width * this.getNaturalKeyWidth();
-    return `${keyWidth * this.props.keyHeightRatio}px`;
+    return `${keyWidth / this.props.keyWidthToHeight}px`;
   }
 
   render() {

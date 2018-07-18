@@ -42,7 +42,7 @@ class DemoPiano extends React.Component {
                     keyboardShortcuts={keyboardShortcuts}
                     onPlayNote={playNote}
                     onStopNote={stopNote}
-                    isLoading={isLoading}
+                    disabled={isLoading}
                     width={containerWidth}
                   />
                 )}

@@ -12,9 +12,9 @@ class Piano extends React.Component {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool,
+    disabled: PropTypes.bool,
     width: PropTypes.number,
-    keyHeightRatio: PropTypes.number,
+    keyWidthToHeight: PropTypes.number,
     keyboardShortcuts: PropTypes.arrayOf(
       PropTypes.shape({
         key: PropTypes.string.isRequired,
@@ -132,7 +132,7 @@ class Piano extends React.Component {
   };
 
   onPlayNote = (midiNumber) => {
-    if (this.props.isLoading) {
+    if (this.props.disabled) {
       return;
     }
     // Prevent duplicate note firings
@@ -148,7 +148,7 @@ class Piano extends React.Component {
   };
 
   onStopNote = (midiNumber) => {
-    if (this.props.isLoading) {
+    if (this.props.disabled) {
       return;
     }
     const isInactive = !this.state.activeNotes.includes(midiNumber);
@@ -193,9 +193,9 @@ class Piano extends React.Component {
       <Keyboard
         noteRange={this.props.noteRange}
         activeNotes={this.props.playbackNotes || this.state.activeNotes}
-        disabled={this.props.isLoading}
+        disabled={this.props.disabled}
         width={this.props.width}
-        keyHeightRatio={this.props.keyHeightRatio}
+        keyWidthToHeight={this.props.keyWidthToHeight}
         gliss={this.state.isMouseDown}
         useTouchEvents={this.state.useTouchEvents}
         renderNoteLabel={this.renderNoteLabel}

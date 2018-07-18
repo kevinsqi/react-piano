@@ -24,31 +24,51 @@ import { Piano, KeyboardShortcuts } from 'react-piano';
 // Importing CSS requires a CSS loader. You can also copy the CSS file directly from src/styles.css.
 import 'react-piano/build/styles.css';
 
-// Implement audio playback
+// Implement audio playback - see section below
 function playNote(midiNumber) { ... }
 function stopNote(midiNumber) { ... }
 
 const firstNote = 48;
 const lastNote = 77;
 
-<Piano
-  noteRange={{ first: firstNote, last: lastNote }}
-  onPlayNote={playNote}
-  onStopNote={stopNote}
-  width={1000}
-  keyboardShortcuts={
-    KeyboardShortcuts.create({
-      firstNote: firstNote,
-      lastNote: lastNote,
-      keyboardConfig: KeyboardShortcuts.HOME_ROW,
-    })
-  }
-/>
+const keyboardShortcuts = KeyboardShortcuts.create({
+  firstNote: firstNote,
+  lastNote: lastNote,
+  keyboardConfig: KeyboardShortcuts.HOME_ROW,
+})
+
+function App() {
+  return (
+    <Piano
+      noteRange={{ first: firstNote, last: lastNote }}
+      onPlayNote={playNote}
+      onStopNote={stopNote}
+      width={1000}
+      keyboardShortcuts={keyboardShortcuts}
+    />
+  );
+}
 ```
+
+You can view or fork the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to get a sense of how to use the component.
 
 ## Implementing audio playback
 
 react-piano does not implement audio playback of each note, so you have to implement it with `onPlayNote` and `onStopNote` props. This allows you to customize any sounds you'd like to the piano.
+
+## Props
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `noteRange` | **Required** object | An object with format `{ first: 48, last: 77 }` where first and last are MIDI numbers that correspond to natural notes. You can use `MidiNumbers.NATURAL_MIDI_NUMBERS` to identify whether a number is a natural note or not. |
+| `onPlayNote` | **Required** function | `(midiNumber) => void` function to play a note specified by MIDI number. |
+| `onStopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
+| `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
+| `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
+| `disabled` | Boolean | Whether to show disabled state. Useful when audio sounds need to be asynchronously loaded. |
+| `keyWidthToHeight` | Number | Ratio of key width to height. |
+| `keyboardShortcuts:` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. |
+| `playbackNotes` | Array of numbers | An array of form `[44, 47, 54]` which contains MIDI numbers to play back programmatically. |
 
 ## License
 
