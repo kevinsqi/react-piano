@@ -10,8 +10,8 @@ class Key extends React.PureComponent {
     height: PropTypes.string.isRequired,
     gliss: PropTypes.bool.isRequired,
     useTouchEvents: PropTypes.bool.isRequired,
-    isAccidental: PropTypes.bool.isRequired,
-    isActive: PropTypes.bool.isRequired,
+    accidental: PropTypes.bool.isRequired,
+    active: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
@@ -34,8 +34,8 @@ class Key extends React.PureComponent {
       height,
       gliss,
       useTouchEvents,
-      isAccidental,
-      isActive,
+      accidental,
+      active,
       disabled,
       children,
     } = this.props;
@@ -45,10 +45,10 @@ class Key extends React.PureComponent {
     return (
       <div
         className={classNames('ReactPiano__Key', {
-          'ReactPiano__Key--black': isAccidental,
-          'ReactPiano__Key--white': !isAccidental,
+          'ReactPiano__Key--black': accidental,
+          'ReactPiano__Key--white': !accidental,
           'ReactPiano__Key--disabled': disabled,
-          'ReactPiano__Key--active': isActive,
+          'ReactPiano__Key--active': active,
         })}
         style={{
           top: 0,

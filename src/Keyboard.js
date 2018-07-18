@@ -160,8 +160,8 @@ class Keyboard extends React.PureComponent {
                 isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
               )}
               midiNumber={midiNumber}
-              isActive={isActive}
-              isAccidental={isAccidental}
+              active={isActive}
+              accidental={isAccidental}
               disabled={this.props.disabled}
               onPlayNote={this.props.onPlayNote}
               onStopNote={this.props.onStopNote}
