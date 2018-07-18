@@ -16,13 +16,13 @@ class Key extends React.PureComponent {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     accidentalWidthRatio: PropTypes.number.isRequired,
-    notePositionsFromC: PropTypes.object.isRequired,
+    basenotePositions: PropTypes.object.isRequired,
     children: PropTypes.node,
   };
 
   static defaultProps = {
-    accidentalWidthRatio: 0.66,
-    notePositionsFromC: {
+    accidentalWidthRatio: 0.65,
+    basenotePositions: {
       C: 0,
       Db: 0.55,
       D: 1,
@@ -50,9 +50,9 @@ class Key extends React.PureComponent {
   getAbsoluteKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
     const { octave, basenote } = MidiNumbers.getAttributes(midiNumber);
-    const positionFromC = this.props.notePositionsFromC[basenote];
-    const positionFromOctave = OCTAVE_WIDTH * octave;
-    return positionFromC + positionFromOctave;
+    const basenotePosition = this.props.basenotePositions[basenote];
+    const octavePosition = OCTAVE_WIDTH * octave;
+    return basenotePosition + octavePosition;
   }
 
   getRelativeKeyPosition(midiNumber) {

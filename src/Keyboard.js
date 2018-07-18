@@ -5,32 +5,6 @@ import range from 'lodash.range';
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
 
-function isNaturalMidiNumber(value) {
-  if (typeof value !== 'number') {
-    return false;
-  }
-  return MidiNumbers.NATURAL_MIDI_NUMBERS.includes(value);
-}
-
-function noteRangePropType(props, propName, componentName) {
-  const { first, last } = props[propName];
-  if (!first || !last) {
-    return new Error(
-      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be an object with .first and .last values.`,
-    );
-  }
-  if (!isNaturalMidiNumber(first) || !isNaturalMidiNumber(last)) {
-    return new Error(
-      `Invalid prop ${propName} supplied to ${componentName}. ${propName} values must be valid MIDI numbers, and should not be accidentals (sharp or flat notes).`,
-    );
-  }
-  if (first >= last) {
-    return new Error(
-      `Invalid prop ${propName} supplied to ${componentName}. ${propName}.first must be smaller than ${propName}.last.`,
-    );
-  }
-}
-
 class Keyboard extends React.PureComponent {
   static propTypes = {
     noteRange: noteRangePropType,
@@ -38,7 +12,6 @@ class Keyboard extends React.PureComponent {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
-    // noreintegrate expose to Piano
     keyHeightRatio: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
@@ -51,7 +24,7 @@ class Keyboard extends React.PureComponent {
     disabled: false,
     gliss: false,
     useTouchEvents: false,
-    keyHeightRatio: 4.55,
+    keyHeightRatio: 4.4,
     renderNoteLabel: () => {},
   };
 
@@ -119,6 +92,32 @@ class Keyboard extends React.PureComponent {
           );
         })}
       </div>
+    );
+  }
+}
+
+function isNaturalMidiNumber(value) {
+  if (typeof value !== 'number') {
+    return false;
+  }
+  return MidiNumbers.NATURAL_MIDI_NUMBERS.includes(value);
+}
+
+function noteRangePropType(props, propName, componentName) {
+  const { first, last } = props[propName];
+  if (!first || !last) {
+    return new Error(
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} must be an object with .first and .last values.`,
+    );
+  }
+  if (!isNaturalMidiNumber(first) || !isNaturalMidiNumber(last)) {
+    return new Error(
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName} values must be valid MIDI numbers, and should not be accidentals (sharp or flat notes).`,
+    );
+  }
+  if (first >= last) {
+    return new Error(
+      `Invalid prop ${propName} supplied to ${componentName}. ${propName}.first must be smaller than ${propName}.last.`,
     );
   }
 }
