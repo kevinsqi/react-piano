@@ -4,15 +4,11 @@ import classNames from 'classnames';
 
 import MidiNumbers from './MidiNumbers';
 
-function ratioToPercentage(ratio) {
-  return `${ratio * 100}%`;
-}
-
 class Key extends React.PureComponent {
   static propTypes = {
     midiNumber: PropTypes.number.isRequired,
-    left: PropTypes.string.isRequired,
-    width: PropTypes.string.isRequired,
+    naturalKeyWidth: PropTypes.number.isRequired, // Width as a ratio between 0 and 1
+    accidentalWidthRatio: PropTypes.number.isRequired,
     gliss: PropTypes.bool.isRequired,
     useTouchEvents: PropTypes.bool.isRequired,
     accidental: PropTypes.bool.isRequired,
@@ -25,13 +21,8 @@ class Key extends React.PureComponent {
   };
 
   static defaultProps = {
+    accidentalWidthRatio: 0.66,
     layoutConfig: {
-      whiteKey: {
-        widthRatio: 0.8,
-      },
-      blackKey: {
-        widthRatio: 0.66,
-      },
       noteOffsetsFromC: {
         C: 0,
         Db: 0.55,
@@ -71,15 +62,10 @@ class Key extends React.PureComponent {
     return offsetFromFirstNote + octaveOffset;
   }
 
-  getKeyConfig(midiNumber) {
-    return MidiNumbers.getAttributes(midiNumber).isAccidental
-      ? this.props.layoutConfig.blackKey
-      : this.props.layoutConfig.whiteKey;
-  }
-
   render() {
     const {
-      widthRatio,
+      naturalKeyWidth,
+      accidentalWidthRatio,
       midiNumber,
       gliss,
       useTouchEvents,
@@ -100,8 +86,10 @@ class Key extends React.PureComponent {
           'ReactPiano__Key--active': active,
         })}
         style={{
-          left: ratioToPercentage(this.getKeyPosition(midiNumber) * widthRatio),
-          width: ratioToPercentage(this.getKeyConfig(midiNumber).widthRatio * widthRatio),
+          left: ratioToPercentage(this.getKeyPosition(midiNumber) * naturalKeyWidth),
+          width: ratioToPercentage(
+            accidental ? accidentalWidthRatio * naturalKeyWidth : naturalKeyWidth,
+          ),
         }}
         onMouseDown={useTouchEvents ? null : this.playNote}
         onMouseUp={useTouchEvents ? null : this.stopNote}
@@ -115,6 +103,10 @@ class Key extends React.PureComponent {
       </div>
     );
   }
+}
+
+function ratioToPercentage(ratio) {
+  return `${ratio * 100}%`;
 }
 
 export default Key;

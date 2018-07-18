@@ -38,6 +38,7 @@ class Keyboard extends React.PureComponent {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
+    // noreintegrate expose to Piano
     keyHeightRatio: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
@@ -67,8 +68,8 @@ class Keyboard extends React.PureComponent {
     }).length;
   }
 
-  // Width of the white key as a ratio from 0 to 1, including the small space between keys
-  getWhiteKeyWidth() {
+  // Returns a ratio between 0 and 1
+  getNaturalKeyWidth() {
     return 1 / this.getWhiteKeyCount();
   }
 
@@ -80,11 +81,12 @@ class Keyboard extends React.PureComponent {
     if (!this.props.width) {
       return '100%';
     }
-    const keyWidth = this.props.width * this.getWhiteKeyWidth();
+    const keyWidth = this.props.width * this.getNaturalKeyWidth();
     return `${keyWidth * this.props.keyHeightRatio}px`;
   }
 
   render() {
+    const naturalKeyWidth = this.getNaturalKeyWidth();
     return (
       <div
         className="ReactPiano__Keyboard"
@@ -95,7 +97,7 @@ class Keyboard extends React.PureComponent {
           const isActive = this.props.activeNotes.includes(midiNumber);
           return (
             <Key
-              widthRatio={this.getWhiteKeyWidth()}
+              naturalKeyWidth={naturalKeyWidth}
               midiNumber={midiNumber}
               noteRange={this.props.noteRange}
               active={isActive}
