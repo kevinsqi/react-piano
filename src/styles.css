@@ -36,16 +36,16 @@
 
 .ReactPiano__Key--black.ReactPiano__Key--active {
   border: 1px solid #fff;
-  border-top: 1px solid #63b0cd;
+  border-top: 1px solid #3ac8da;
 }
 
 .ReactPiano__Key--white.ReactPiano__Key--active {
-  border: 1px solid #63b0cd;
+  border: 1px solid #3ac8da;
 }
 
 /* Declare after --black and --white to override default backgrounds */
 .ReactPiano__Key--active {
-  background: #63b0cd;
+  background: #3ac8da;
 }
 
 .ReactPiano__Key.ReactPiano__Key--disabled {
