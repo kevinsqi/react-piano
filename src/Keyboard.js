@@ -45,7 +45,6 @@ class Keyboard extends React.PureComponent {
     useTouchEvents: PropTypes.bool,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
-    layoutConfig: PropTypes.object,
   };
 
   static defaultProps = {
@@ -107,7 +106,6 @@ class Keyboard extends React.PureComponent {
               onStopNote={this.props.onStopNote}
               gliss={this.props.gliss}
               useTouchEvents={this.props.useTouchEvents}
-              layoutConfig={this.props.layoutConfig}
               key={midiNumber}
             >
               {this.props.disabled

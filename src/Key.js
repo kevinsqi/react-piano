@@ -8,7 +8,6 @@ class Key extends React.PureComponent {
   static propTypes = {
     midiNumber: PropTypes.number.isRequired,
     naturalKeyWidth: PropTypes.number.isRequired, // Width as a ratio between 0 and 1
-    accidentalWidthRatio: PropTypes.number.isRequired,
     gliss: PropTypes.bool.isRequired,
     useTouchEvents: PropTypes.bool.isRequired,
     accidental: PropTypes.bool.isRequired,
@@ -16,27 +15,26 @@ class Key extends React.PureComponent {
     disabled: PropTypes.bool.isRequired,
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
-    layoutConfig: PropTypes.object.isRequired,
+    accidentalWidthRatio: PropTypes.number.isRequired,
+    notePositionsFromC: PropTypes.object.isRequired,
     children: PropTypes.node,
   };
 
   static defaultProps = {
     accidentalWidthRatio: 0.66,
-    layoutConfig: {
-      noteOffsetsFromC: {
-        C: 0,
-        Db: 0.55,
-        D: 1,
-        Eb: 1.8,
-        E: 2,
-        F: 3,
-        Gb: 3.5,
-        G: 4,
-        Ab: 4.7,
-        A: 5,
-        Bb: 5.85,
-        B: 6,
-      },
+    notePositionsFromC: {
+      C: 0,
+      Db: 0.55,
+      D: 1,
+      Eb: 1.8,
+      E: 2,
+      F: 3,
+      Gb: 3.5,
+      G: 4,
+      Ab: 4.7,
+      A: 5,
+      Bb: 5.85,
+      B: 6,
     },
   };
 
@@ -48,18 +46,20 @@ class Key extends React.PureComponent {
     this.props.onStopNote(this.props.midiNumber);
   };
 
-  // Key position is represented by the number of white key widths from the left
-  getKeyPosition(midiNumber) {
+  // Key position is represented by the number of natural key widths from the left
+  getAbsoluteKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
     const { octave, basenote } = MidiNumbers.getAttributes(midiNumber);
-    const offsetFromC = this.props.layoutConfig.noteOffsetsFromC[basenote];
-    const { basenote: startBasenote, octave: startOctave } = MidiNumbers.getAttributes(
-      this.props.noteRange.first,
+    const positionFromC = this.props.notePositionsFromC[basenote];
+    const positionFromOctave = OCTAVE_WIDTH * octave;
+    return positionFromC + positionFromOctave;
+  }
+
+  getRelativeKeyPosition(midiNumber) {
+    return (
+      this.getAbsoluteKeyPosition(midiNumber) -
+      this.getAbsoluteKeyPosition(this.props.noteRange.first)
     );
-    const startOffsetFromC = this.props.layoutConfig.noteOffsetsFromC[startBasenote];
-    const offsetFromFirstNote = offsetFromC - startOffsetFromC;
-    const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
-    return offsetFromFirstNote + octaveOffset;
   }
 
   render() {
@@ -86,7 +86,7 @@ class Key extends React.PureComponent {
           'ReactPiano__Key--active': active,
         })}
         style={{
-          left: ratioToPercentage(this.getKeyPosition(midiNumber) * naturalKeyWidth),
+          left: ratioToPercentage(this.getRelativeKeyPosition(midiNumber) * naturalKeyWidth),
           width: ratioToPercentage(
             accidental ? accidentalWidthRatio * naturalKeyWidth : naturalKeyWidth,
           ),
