@@ -15,7 +15,10 @@
   border-top: 1px solid transparent;
   border-radius: 0 0 4px 4px;
   cursor: pointer;
+  width: 66%;
+  height: 66%;
   position: absolute;
+  top: 0;
   z-index: 1;
 }
 
@@ -36,16 +39,18 @@
 
 .ReactPiano__Key--black.ReactPiano__Key--active {
   border: 1px solid #fff;
-  border-top: 1px solid #63b0cd;
+  border-top: 1px solid #3ac8da;
+  height: 65%;
 }
 
 .ReactPiano__Key--white.ReactPiano__Key--active {
-  border: 1px solid #63b0cd;
+  border: 1px solid #3ac8da;
+  height: 98%;
 }
 
 /* Declare after --black and --white to override default backgrounds */
 .ReactPiano__Key--active {
-  background: #63b0cd;
+  background: #3ac8da;
 }
 
 .ReactPiano__Key.ReactPiano__Key--disabled {

@@ -1,13 +1,99 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import range from 'lodash.range';
-import classNames from 'classnames';
 
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
 
-function ratioToPercentage(ratio) {
-  return `${ratio * 100}%`;
+class Keyboard extends React.Component {
+  static propTypes = {
+    noteRange: noteRangePropType,
+    activeNotes: PropTypes.arrayOf(PropTypes.number),
+    onPlayNote: PropTypes.func.isRequired,
+    onStopNote: PropTypes.func.isRequired,
+    renderNoteLabel: PropTypes.func.isRequired,
+    keyHeightRatio: PropTypes.number.isRequired,
+    disabled: PropTypes.bool,
+    gliss: PropTypes.bool,
+    useTouchEvents: PropTypes.bool,
+    // If width is not provided, must have fixed width and height in parent container
+    width: PropTypes.number,
+  };
+
+  static defaultProps = {
+    disabled: false,
+    gliss: false,
+    useTouchEvents: false,
+    keyHeightRatio: 4.4,
+    renderNoteLabel: () => {},
+  };
+
+  // Range of midi numbers on keyboard
+  getMidiNumbers() {
+    return range(this.props.noteRange.first, this.props.noteRange.last + 1);
+  }
+
+  getWhiteKeyCount() {
+    return this.getMidiNumbers().filter((number) => {
+      const { isAccidental } = MidiNumbers.getAttributes(number);
+      return !isAccidental;
+    }).length;
+  }
+
+  // Returns a ratio between 0 and 1
+  getNaturalKeyWidth() {
+    return 1 / this.getWhiteKeyCount();
+  }
+
+  getWidth() {
+    return this.props.width ? this.props.width : '100%';
+  }
+
+  getHeight() {
+    if (!this.props.width) {
+      return '100%';
+    }
+    const keyWidth = this.props.width * this.getNaturalKeyWidth();
+    return `${keyWidth * this.props.keyHeightRatio}px`;
+  }
+
+  render() {
+    const naturalKeyWidth = this.getNaturalKeyWidth();
+    return (
+      <div
+        className="ReactPiano__Keyboard"
+        style={{ width: this.getWidth(), height: this.getHeight() }}
+      >
+        {this.getMidiNumbers().map((midiNumber) => {
+          const { note, basenote, isAccidental } = MidiNumbers.getAttributes(midiNumber);
+          const isActive = this.props.activeNotes.includes(midiNumber);
+          return (
+            <Key
+              naturalKeyWidth={naturalKeyWidth}
+              midiNumber={midiNumber}
+              noteRange={this.props.noteRange}
+              active={isActive}
+              accidental={isAccidental}
+              disabled={this.props.disabled}
+              onPlayNote={this.props.onPlayNote}
+              onStopNote={this.props.onStopNote}
+              gliss={this.props.gliss}
+              useTouchEvents={this.props.useTouchEvents}
+              key={midiNumber}
+            >
+              {this.props.disabled
+                ? null
+                : this.props.renderNoteLabel({
+                    isActive,
+                    isAccidental,
+                    midiNumber,
+                  })}
+            </Key>
+          );
+        })}
+      </div>
+    );
+  }
 }
 
 function isNaturalMidiNumber(value) {
@@ -32,153 +118,6 @@ function noteRangePropType(props, propName, componentName) {
   if (first >= last) {
     return new Error(
       `Invalid prop ${propName} supplied to ${componentName}. ${propName}.first must be smaller than ${propName}.last.`,
-    );
-  }
-}
-
-class Keyboard extends React.Component {
-  static propTypes = {
-    noteRange: noteRangePropType,
-    activeNotes: PropTypes.arrayOf(PropTypes.number),
-    onPlayNote: PropTypes.func.isRequired,
-    onStopNote: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
-    gliss: PropTypes.bool,
-    useTouchEvents: PropTypes.bool,
-    renderNoteLabel: PropTypes.func,
-    // If width is not provided, must have fixed width and height in parent container
-    width: PropTypes.number,
-    layoutConfig: PropTypes.object,
-  };
-
-  static defaultProps = {
-    disabled: false,
-    gliss: false,
-    useTouchEvents: false,
-    renderNoteLabel: () => {},
-    layoutConfig: {
-      keyWidthToHeightRatio: 0.22,
-      whiteKeyGutterRatio: 0.02,
-      whiteKey: {
-        widthRatio: 1,
-        heightRatio: 1,
-        heightKeyDownRatio: 0.98,
-      },
-      blackKey: {
-        widthRatio: 0.66,
-        heightRatio: 0.66,
-        heightKeyDownRatio: 0.65,
-      },
-      noteOffsetsFromC: {
-        C: 0,
-        Db: 0.55,
-        D: 1,
-        Eb: 1.8,
-        E: 2,
-        F: 3,
-        Gb: 3.5,
-        G: 4,
-        Ab: 4.7,
-        A: 5,
-        Bb: 5.85,
-        B: 6,
-      },
-    },
-  };
-
-  // Range of midi numbers on keyboard
-  getMidiNumbers() {
-    return range(this.props.noteRange.first, this.props.noteRange.last + 1);
-  }
-
-  getWhiteKeyCount() {
-    return this.getMidiNumbers().filter((number) => {
-      const { isAccidental } = MidiNumbers.getAttributes(number);
-      return !isAccidental;
-    }).length;
-  }
-
-  // Width of the white key as a ratio from 0 to 1, including the small space between keys
-  getWhiteKeyWidthIncludingGutter() {
-    return 1 / this.getWhiteKeyCount();
-  }
-
-  // Width of the white key as a ratio from 0 to 1
-  getWhiteKeyWidth() {
-    return (
-      this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.layoutConfig.whiteKeyGutterRatio)
-    );
-  }
-
-  // Key position is represented by the number of white key widths from the left
-  getKeyPosition(midiNumber) {
-    const OCTAVE_WIDTH = 7;
-    const { octave, basenote } = MidiNumbers.getAttributes(midiNumber);
-    const offsetFromC = this.props.layoutConfig.noteOffsetsFromC[basenote];
-    const { basenote: startBasenote, octave: startOctave } = MidiNumbers.getAttributes(
-      this.props.noteRange.first,
-    );
-    const startOffsetFromC = this.props.layoutConfig.noteOffsetsFromC[startBasenote];
-    const offsetFromFirstNote = offsetFromC - startOffsetFromC;
-    const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
-    return offsetFromFirstNote + octaveOffset;
-  }
-
-  getKeyConfig(midiNumber) {
-    return MidiNumbers.getAttributes(midiNumber).isAccidental
-      ? this.props.layoutConfig.blackKey
-      : this.props.layoutConfig.whiteKey;
-  }
-
-  getWidth() {
-    return this.props.width ? this.props.width : '100%';
-  }
-
-  getHeight() {
-    return this.props.width
-      ? `${(this.props.width * this.getWhiteKeyWidth()) /
-          this.props.layoutConfig.keyWidthToHeightRatio}px`
-      : '100%';
-  }
-
-  render() {
-    return (
-      <div
-        className="ReactPiano__Keyboard"
-        style={{ width: this.getWidth(), height: this.getHeight() }}
-      >
-        {this.getMidiNumbers().map((midiNumber) => {
-          const { note, basenote, isAccidental } = MidiNumbers.getAttributes(midiNumber);
-          const keyConfig = this.getKeyConfig(midiNumber);
-          const isActive = this.props.activeNotes.includes(midiNumber);
-          return (
-            <Key
-              className={classNames('ReactPiano__Key', {
-                'ReactPiano__Key--black': isAccidental,
-                'ReactPiano__Key--white': !isAccidental,
-                'ReactPiano__Key--disabled': this.props.disabled,
-                'ReactPiano__Key--active': isActive,
-              })}
-              left={ratioToPercentage(
-                this.getKeyPosition(midiNumber) * this.getWhiteKeyWidthIncludingGutter(),
-              )}
-              width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
-              height={ratioToPercentage(
-                isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
-              )}
-              playNote={this.props.onPlayNote.bind(this, midiNumber)}
-              stopNote={this.props.onStopNote.bind(this, midiNumber)}
-              gliss={this.props.gliss}
-              useTouchEvents={this.props.useTouchEvents}
-              key={midiNumber}
-            >
-              {this.props.disabled
-                ? null
-                : this.props.renderNoteLabel({ midiNumber: midiNumber, isActive, isAccidental })}
-            </Key>
-          );
-        })}
-      </div>
     );
   }
 }

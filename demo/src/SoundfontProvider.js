@@ -57,7 +57,7 @@ class SoundfontProvider extends React.Component {
   };
 
   playNote = (midiNumber) => {
-    this.props.audioContext.resume().then(() => {
+    this.resumeAudio().then(() => {
       const audioNode = this.state.instrument.play(midiNumber);
       this.setState({
         activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, {
@@ -68,7 +68,7 @@ class SoundfontProvider extends React.Component {
   };
 
   stopNote = (midiNumber) => {
-    this.props.audioContext.resume().then(() => {
+    this.resumeAudio().then(() => {
       if (!this.state.activeAudioNodes[midiNumber]) {
         return;
       }
@@ -78,6 +78,14 @@ class SoundfontProvider extends React.Component {
         activeAudioNodes: Object.assign({}, this.state.activeAudioNodes, { [midiNumber]: null }),
       });
     });
+  };
+
+  resumeAudio = () => {
+    if (this.props.audioContext.state === 'suspended') {
+      return this.props.audioContext.resume();
+    } else {
+      return Promise.resolve();
+    }
   };
 
   // Clear any residual notes that don't get called with stopNote
