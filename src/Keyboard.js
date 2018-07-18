@@ -5,10 +5,6 @@ import range from 'lodash.range';
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
 
-function ratioToPercentage(ratio) {
-  return `${ratio * 100}%`;
-}
-
 function isNaturalMidiNumber(value) {
   if (typeof value !== 'number') {
     return false;
@@ -42,6 +38,7 @@ class Keyboard extends React.PureComponent {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
+    keyHeightRatio: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
     useTouchEvents: PropTypes.bool,
@@ -54,30 +51,8 @@ class Keyboard extends React.PureComponent {
     disabled: false,
     gliss: false,
     useTouchEvents: false,
+    keyHeightRatio: 4.55,
     renderNoteLabel: () => {},
-    layoutConfig: {
-      keyWidthToHeightRatio: 0.22,
-      whiteKey: {
-        widthRatio: 1,
-      },
-      blackKey: {
-        widthRatio: 0.66,
-      },
-      noteOffsetsFromC: {
-        C: 0,
-        Db: 0.55,
-        D: 1,
-        Eb: 1.8,
-        E: 2,
-        F: 3,
-        Gb: 3.5,
-        G: 4,
-        Ab: 4.7,
-        A: 5,
-        Bb: 5.85,
-        B: 6,
-      },
-    },
   };
 
   // Range of midi numbers on keyboard
@@ -97,35 +72,16 @@ class Keyboard extends React.PureComponent {
     return 1 / this.getWhiteKeyCount();
   }
 
-  // Key position is represented by the number of white key widths from the left
-  getKeyPosition(midiNumber) {
-    const OCTAVE_WIDTH = 7;
-    const { octave, basenote } = MidiNumbers.getAttributes(midiNumber);
-    const offsetFromC = this.props.layoutConfig.noteOffsetsFromC[basenote];
-    const { basenote: startBasenote, octave: startOctave } = MidiNumbers.getAttributes(
-      this.props.noteRange.first,
-    );
-    const startOffsetFromC = this.props.layoutConfig.noteOffsetsFromC[startBasenote];
-    const offsetFromFirstNote = offsetFromC - startOffsetFromC;
-    const octaveOffset = OCTAVE_WIDTH * (octave - startOctave);
-    return offsetFromFirstNote + octaveOffset;
-  }
-
-  getKeyConfig(midiNumber) {
-    return MidiNumbers.getAttributes(midiNumber).isAccidental
-      ? this.props.layoutConfig.blackKey
-      : this.props.layoutConfig.whiteKey;
-  }
-
   getWidth() {
     return this.props.width ? this.props.width : '100%';
   }
 
   getHeight() {
-    return this.props.width
-      ? `${(this.props.width * this.getWhiteKeyWidth()) /
-          this.props.layoutConfig.keyWidthToHeightRatio}px`
-      : '100%';
+    if (!this.props.width) {
+      return '100%';
+    }
+    const keyWidth = this.props.width * this.getWhiteKeyWidth();
+    return `${keyWidth * this.props.keyHeightRatio}px`;
   }
 
   render() {
@@ -136,13 +92,12 @@ class Keyboard extends React.PureComponent {
       >
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, basenote, isAccidental } = MidiNumbers.getAttributes(midiNumber);
-          const keyConfig = this.getKeyConfig(midiNumber);
           const isActive = this.props.activeNotes.includes(midiNumber);
           return (
             <Key
-              left={ratioToPercentage(this.getKeyPosition(midiNumber) * this.getWhiteKeyWidth())}
-              width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
+              widthRatio={this.getWhiteKeyWidth()}
               midiNumber={midiNumber}
+              noteRange={this.props.noteRange}
               active={isActive}
               accidental={isAccidental}
               disabled={this.props.disabled}
@@ -150,6 +105,7 @@ class Keyboard extends React.PureComponent {
               onStopNote={this.props.onStopNote}
               gliss={this.props.gliss}
               useTouchEvents={this.props.useTouchEvents}
+              layoutConfig={this.props.layoutConfig}
               key={midiNumber}
             >
               {this.props.disabled
