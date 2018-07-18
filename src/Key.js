@@ -7,7 +7,6 @@ class Key extends React.PureComponent {
     midiNumber: PropTypes.number.isRequired,
     left: PropTypes.string.isRequired,
     width: PropTypes.string.isRequired,
-    height: PropTypes.string.isRequired,
     gliss: PropTypes.bool.isRequired,
     useTouchEvents: PropTypes.bool.isRequired,
     accidental: PropTypes.bool.isRequired,
@@ -31,7 +30,6 @@ class Key extends React.PureComponent {
       midiNumber,
       left,
       width,
-      height,
       gliss,
       useTouchEvents,
       accidental,
@@ -51,10 +49,8 @@ class Key extends React.PureComponent {
           'ReactPiano__Key--active': active,
         })}
         style={{
-          top: 0,
           left: left,
           width: width,
-          height: height,
         }}
         onMouseDown={useTouchEvents ? null : this.playNote}
         onMouseUp={useTouchEvents ? null : this.stopNote}

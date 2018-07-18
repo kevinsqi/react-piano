@@ -57,16 +57,11 @@ class Keyboard extends React.PureComponent {
     renderNoteLabel: () => {},
     layoutConfig: {
       keyWidthToHeightRatio: 0.22,
-      whiteKeyGutterRatio: 0.02,
       whiteKey: {
         widthRatio: 1,
-        heightRatio: 1,
-        heightKeyDownRatio: 0.98,
       },
       blackKey: {
         widthRatio: 0.66,
-        heightRatio: 0.66,
-        heightKeyDownRatio: 0.65,
       },
       noteOffsetsFromC: {
         C: 0,
@@ -98,15 +93,8 @@ class Keyboard extends React.PureComponent {
   }
 
   // Width of the white key as a ratio from 0 to 1, including the small space between keys
-  getWhiteKeyWidthIncludingGutter() {
-    return 1 / this.getWhiteKeyCount();
-  }
-
-  // Width of the white key as a ratio from 0 to 1
   getWhiteKeyWidth() {
-    return (
-      this.getWhiteKeyWidthIncludingGutter() * (1 - this.props.layoutConfig.whiteKeyGutterRatio)
-    );
+    return 1 / this.getWhiteKeyCount();
   }
 
   // Key position is represented by the number of white key widths from the left
@@ -152,13 +140,8 @@ class Keyboard extends React.PureComponent {
           const isActive = this.props.activeNotes.includes(midiNumber);
           return (
             <Key
-              left={ratioToPercentage(
-                this.getKeyPosition(midiNumber) * this.getWhiteKeyWidthIncludingGutter(),
-              )}
+              left={ratioToPercentage(this.getKeyPosition(midiNumber) * this.getWhiteKeyWidth())}
               width={ratioToPercentage(keyConfig.widthRatio * this.getWhiteKeyWidth())}
-              height={ratioToPercentage(
-                isActive ? keyConfig.heightKeyDownRatio : keyConfig.heightRatio,
-              )}
               midiNumber={midiNumber}
               active={isActive}
               accidental={isAccidental}
