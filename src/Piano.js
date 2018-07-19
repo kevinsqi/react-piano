@@ -29,8 +29,8 @@ class Piano extends React.Component {
       <div
         className={classNames('ReactPiano__NoteLabel', {
           'ReactPiano__NoteLabel--active': isActive,
-          'ReactPiano__NoteLabel--black': isAccidental,
-          'ReactPiano__NoteLabel--white': !isAccidental,
+          'ReactPiano__NoteLabel--accidental': isAccidental,
+          'ReactPiano__NoteLabel--natural': !isAccidental,
         })}
       >
         {keyboardShortcut}

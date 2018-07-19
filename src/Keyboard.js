@@ -33,7 +33,7 @@ class Keyboard extends React.Component {
     return range(this.props.noteRange.first, this.props.noteRange.last + 1);
   }
 
-  getWhiteKeyCount() {
+  getNaturalKeyCount() {
     return this.getMidiNumbers().filter((number) => {
       const { isAccidental } = MidiNumbers.getAttributes(number);
       return !isAccidental;
@@ -42,7 +42,7 @@ class Keyboard extends React.Component {
 
   // Returns a ratio between 0 and 1
   getNaturalKeyWidth() {
-    return 1 / this.getWhiteKeyCount();
+    return 1 / this.getNaturalKeyCount();
   }
 
   getWidth() {
