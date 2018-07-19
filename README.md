@@ -9,8 +9,6 @@ An interactive piano keyboard for React. Supports custom sounds, touch/click/key
 
 ## Installing
 
-⚠️ **Warning:** This component is a work in progress and not well-suited for production use yet! The API will be changing significantly. Feel free to play around with it, but a v1.0.0 release is recommended for production use.
-
 ```
 yarn add react-piano
 ```
@@ -67,7 +65,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `keyWidthToHeight` | Number | Ratio of key width to height. Used to specify the dimensions of the piano key. |
 | `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
 | `disabled` | Boolean | Whether to show disabled state. Useful when audio sounds need to be asynchronously loaded. |
-| `keyboardShortcuts:` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. |
+| `keyboardShortcuts` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. You can omit it if you don't want to use keyboard shortcuts. **Note:** this shouldn't be generated inline in JSX because it can cause problems when diffing for shortcut changes. |
 | `playbackNotes` | Array of numbers | An array of form `[44, 47, 54]` which contains MIDI numbers to play back programmatically. |
 
 ## Customizing styles
@@ -81,7 +79,7 @@ import './customPianoStyles.css';  // import a set of overrides
 
 In the CSS file you can do things like:
 
-```
+```css
 .ReactPiano__Key--active {
   background: #f00;  /* Change the default active key color to bright red */
 }
