@@ -8,15 +8,15 @@ const MAX_MIDI_NUMBER = 127;
 const NOTE_REGEX = /(\w+)(\d)/;
 const NOTES_IN_OCTAVE = 12;
 
-function buildMidiNumberAttributes(number) {
-  const offset = (number - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
-  const octave = Math.floor((number - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
-  const basenote = BASENOTES[offset];
+function buildMidiNumberAttributes(midiNumber) {
+  const offsetFromC = (midiNumber - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
+  const octave = Math.floor((midiNumber - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
+  const basenote = BASENOTES[offsetFromC];
   return {
     note: `${basenote}${octave}`,
     basenote,
     octave,
-    midiNumber: number,
+    midiNumber,
     isAccidental: ACCIDENTALS.includes(basenote),
   };
 }
@@ -35,12 +35,12 @@ const midiNumberAttributesCache = buildMidiNumberAttributesCache();
 // https://www.midikits.net/midi_analyser/midi_note_numbers_for_octaves.htm
 function noteToMidiNumber(note) {
   const [, basenote, octave] = NOTE_REGEX.exec(note);
-  const offset = BASENOTES.indexOf(basenote);
-  return MIDI_NUMBER_C0 + offset + NOTES_IN_OCTAVE * parseInt(octave, 10);
+  const offsetFromC = BASENOTES.indexOf(basenote);
+  return MIDI_NUMBER_C0 + offsetFromC + NOTES_IN_OCTAVE * parseInt(octave, 10);
 }
 
-function getAttributes(number) {
-  const attrs = midiNumberAttributesCache[number];
+function getAttributes(midiNumber) {
+  const attrs = midiNumberAttributesCache[midiNumber];
   if (!attrs) {
     throw Error('MIDI number out of range');
   }
