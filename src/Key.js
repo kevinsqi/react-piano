@@ -16,13 +16,13 @@ class Key extends React.Component {
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     accidentalWidthRatio: PropTypes.number.isRequired,
-    basenotePositions: PropTypes.object.isRequired,
+    pitchPositions: PropTypes.object.isRequired,
     children: PropTypes.node,
   };
 
   static defaultProps = {
     accidentalWidthRatio: 0.65,
-    basenotePositions: {
+    pitchPositions: {
       C: 0,
       Db: 0.55,
       D: 1,
@@ -49,10 +49,10 @@ class Key extends React.Component {
   // Key position is represented by the number of natural key widths from the left
   getAbsoluteKeyPosition(midiNumber) {
     const OCTAVE_WIDTH = 7;
-    const { octave, basenote } = MidiNumbers.getAttributes(midiNumber);
-    const basenotePosition = this.props.basenotePositions[basenote];
+    const { octave, pitchName } = MidiNumbers.getAttributes(midiNumber);
+    const pitchPosition = this.props.pitchPositions[pitchName];
     const octavePosition = OCTAVE_WIDTH * octave;
-    return basenotePosition + octavePosition;
+    return pitchPosition + octavePosition;
   }
 
   getRelativeKeyPosition(midiNumber) {

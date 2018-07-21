@@ -1,7 +1,8 @@
 import range from 'lodash.range';
 
-const BASENOTES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-const BASENOTE_NUMBERS = {
+const SORTED_PITCHES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+const ACCIDENTAL_PITCHES = ['Db', 'Eb', 'Gb', 'Ab', 'Bb'];
+const PITCH_INDEXES = {
   C: 0,
   'C#': 1,
   Db: 1,
@@ -20,7 +21,6 @@ const BASENOTE_NUMBERS = {
   Bb: 10,
   B: 11,
 };
-const ACCIDENTALS = ['Db', 'Eb', 'Gb', 'Ab', 'Bb'];
 const MIDI_NUMBER_C0 = 12;
 const MIN_MIDI_NUMBER = MIDI_NUMBER_C0;
 const MAX_MIDI_NUMBER = 127;
@@ -28,15 +28,15 @@ const NOTE_REGEX = /([a-g])([#b]?)(\d+)/;
 const NOTES_IN_OCTAVE = 12;
 
 function buildMidiNumberAttributes(midiNumber) {
-  const offsetFromC = (midiNumber - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
+  const pitchIndex = (midiNumber - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
   const octave = Math.floor((midiNumber - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
-  const basenote = BASENOTES[offsetFromC];
+  const pitchName = SORTED_PITCHES[pitchIndex];
   return {
-    note: `${basenote}${octave}`,
-    basenote,
+    note: `${pitchName}${octave}`,
+    pitchName,
     octave,
     midiNumber,
-    isAccidental: ACCIDENTALS.includes(basenote),
+    isAccidental: ACCIDENTAL_PITCHES.includes(pitchName),
   };
 }
 
@@ -65,12 +65,12 @@ function fromNote(note) {
     return null;
   }
   const [, letter, accidental, octave] = match;
-  const basenote = `${letter.toUpperCase()}${accidental}`;
-  const offsetFromC = BASENOTE_NUMBERS[basenote];
-  if (!offsetFromC) {
+  const pitchName = `${letter.toUpperCase()}${accidental}`;
+  const pitchIndex = PITCH_INDEXES[pitchName];
+  if (!pitchIndex) {
     return null;
   }
-  return MIDI_NUMBER_C0 + offsetFromC + NOTES_IN_OCTAVE * parseInt(octave, 10);
+  return MIDI_NUMBER_C0 + pitchIndex + NOTES_IN_OCTAVE * parseInt(octave, 10);
 }
 
 function getAttributes(midiNumber) {

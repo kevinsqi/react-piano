@@ -5,7 +5,7 @@ test('getAttributes', () => {
 
   expect(result).toMatchObject({
     note: 'C0',
-    basenote: 'C',
+    pitchName: 'C',
     octave: 0,
     isAccidental: false,
     midiNumber: 12,
