@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/react-piano.svg)](https://www.npmjs.com/package/react-piano)
 [![build status](https://travis-ci.com/iqnivek/react-piano.svg?branch=master)](https://travis-ci.com/iqnivek/react-piano)
 
-An interactive piano keyboard for React. Supports custom sounds, touch/click/keyboard events, and fully configurable styling.
+An interactive piano keyboard for React. Supports custom sounds, touch/click/keyboard events, and fully configurable styling. [**Try it out on CodeSandbox**](https://codesandbox.io/s/7wq15pm1n1).
 
 <a href="http://www.kevinqi.com/react-piano/"><img width="500" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" /></a>
 
@@ -14,6 +14,8 @@ yarn add react-piano
 ```
 
 ## Usage
+
+You can view or fork the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to get a live version of the component in action.
 
 ```jsx
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
@@ -47,8 +49,6 @@ function App() {
   );
 }
 ```
-
-You can view or fork the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to get a sense of how to use the component.
 
 ## Implementing audio playback
 
