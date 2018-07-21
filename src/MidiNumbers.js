@@ -27,6 +27,33 @@ const MAX_MIDI_NUMBER = 127;
 const NOTE_REGEX = /([a-g])([#b]?)(\d+)/;
 const NOTES_IN_OCTAVE = 12;
 
+// Converts string notes in scientific pitch notation to a MIDI number, or null.
+//
+// Example: "c#0" => 13, "eb5" => 75, "abc" => null
+//
+// References:
+// - http://www.flutopedia.com/octave_notation.htm
+// - https://github.com/danigb/tonal/blob/master/packages/note/index.js
+function fromNote(note) {
+  if (!note) {
+    throw Error('Invalid note argument');
+  }
+  const match = NOTE_REGEX.exec(note.toLowerCase());
+  if (!match) {
+    throw Error('Invalid note argument');
+  }
+  const [, letter, accidental, octave] = match;
+  const pitchName = `${letter.toUpperCase()}${accidental}`;
+  const pitchIndex = PITCH_INDEXES[pitchName];
+  if (!pitchIndex) {
+    throw Error('Invalid note argument');
+  }
+  return MIDI_NUMBER_C0 + pitchIndex + NOTES_IN_OCTAVE * parseInt(octave, 10);
+}
+
+//
+// Build cache for getAttributes
+//
 function buildMidiNumberAttributes(midiNumber) {
   const pitchIndex = (midiNumber - MIDI_NUMBER_C0) % NOTES_IN_OCTAVE;
   const octave = Math.floor((midiNumber - MIDI_NUMBER_C0) / NOTES_IN_OCTAVE);
@@ -49,38 +76,17 @@ function buildMidiNumberAttributesCache() {
 
 const midiNumberAttributesCache = buildMidiNumberAttributesCache();
 
-// Converts string notes in scientific pitch notation to a MIDI number, or null if not a note.
-//
-// Example: "c#0" => 13, "eb5" => 75, "abc" => null
-//
-// References:
-// - http://www.flutopedia.com/octave_notation.htm
-// - https://github.com/danigb/tonal/blob/master/packages/note/index.js
-function fromNote(note) {
-  if (!note) {
-    return null;
-  }
-  const match = NOTE_REGEX.exec(note.toLowerCase());
-  if (!match) {
-    return null;
-  }
-  const [, letter, accidental, octave] = match;
-  const pitchName = `${letter.toUpperCase()}${accidental}`;
-  const pitchIndex = PITCH_INDEXES[pitchName];
-  if (!pitchIndex) {
-    return null;
-  }
-  return MIDI_NUMBER_C0 + pitchIndex + NOTES_IN_OCTAVE * parseInt(octave, 10);
-}
-
+// Returns an object containing various attributes for a given MIDI number.
+// Throws error for invalid midiNumbers.
 function getAttributes(midiNumber) {
   const attrs = midiNumberAttributesCache[midiNumber];
   if (!attrs) {
-    throw Error('MIDI number out of range');
+    throw Error('Invalid MIDI number');
   }
   return attrs;
 }
 
+// Returns all MIDI numbers corresponding to natural notes, e.g. C and not C# or Bb.
 const NATURAL_MIDI_NUMBERS = range(MIN_MIDI_NUMBER, MAX_MIDI_NUMBER + 1).filter(
   (midiNumber) => !getAttributes(midiNumber).isAccidental,
 );
