@@ -21,6 +21,7 @@ test('getAttributes', () => {
 test('fromNote', () => {
   expect(MidiNumbers.fromNote('C#0')).toBe(13);
   expect(MidiNumbers.fromNote('c#0')).toBe(13);
+  expect(MidiNumbers.fromNote('c3')).toBe(48);
   expect(MidiNumbers.fromNote('eb5')).toBe(75);
   expect(MidiNumbers.fromNote('G4')).toBe(67);
 

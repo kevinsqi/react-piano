@@ -16,14 +16,14 @@ yarn add react-piano
 ## Usage
 
 ```jsx
-import { Piano, KeyboardShortcuts } from 'react-piano';
+import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 
 // CSS styles are required in order to render piano correctly. Importing CSS requires
 // a CSS loader. Alternatively, copy the CSS file directly from src/styles.css into your <head>.
 import 'react-piano/build/styles.css';
 
-const firstNote = 48;
-const lastNote = 77;
+const firstNote = MidiNumbers.fromNote('c3');
+const lastNote = MidiNumbers.fromNote('f5');
 
 const keyboardShortcuts = KeyboardShortcuts.create({
   firstNote: firstNote,

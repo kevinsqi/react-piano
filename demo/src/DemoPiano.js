@@ -1,5 +1,5 @@
 import React from 'react';
-import { Piano, KeyboardShortcuts } from 'react-piano';
+import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 
 import DimensionsProvider from './DimensionsProvider';
 import InstrumentListProvider from './InstrumentListProvider';
@@ -13,8 +13,8 @@ class DemoPiano extends React.Component {
     config: {
       instrumentName: SoundfontProvider.defaultProps.instrumentName,
       noteRange: {
-        first: 48,
-        last: 77,
+        first: MidiNumbers.fromNote('c3'),
+        last: MidiNumbers.fromNote('f5'),
       },
       keyboardShortcutOffset: 0,
     },

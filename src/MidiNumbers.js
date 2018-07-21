@@ -45,7 +45,7 @@ function fromNote(note) {
   const [, letter, accidental, octave] = match;
   const pitchName = `${letter.toUpperCase()}${accidental}`;
   const pitchIndex = PITCH_INDEXES[pitchName];
-  if (!pitchIndex) {
+  if (pitchIndex == null) {
     throw Error('Invalid note argument');
   }
   return MIDI_NUMBER_C0 + pitchIndex + NOTES_IN_OCTAVE * parseInt(octave, 10);
