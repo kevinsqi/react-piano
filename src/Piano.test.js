@@ -201,4 +201,19 @@ describe('<Piano />', () => {
       expect(wrapper.find('.ReactPiano__Key--disabled').length).toBe(13);
     });
   });
+
+  describe('className', () => {
+    test('adds a className', () => {
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
+          onPlayNote={() => {}}
+          onStopNote={() => {}}
+          className="Hello"
+        />,
+      );
+
+      expect(wrapper.find('.ReactPiano__Keyboard').hasClass('Hello')).toBe(true);
+    });
+  });
 });
