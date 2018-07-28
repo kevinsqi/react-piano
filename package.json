@@ -17,7 +17,7 @@
     "start": "npm-run-all --parallel start:js start:css",
     "start:js": "cross-env NODE_ENV=development webpack --mode development --watch",
     "start:css": "postcss src/styles.css --use autoprefixer -d build/ --no-map --watch",
-    "test": "jest --config jest.config.json"
+    "test": "jest --config jest.config.json --coverage"
   },
   "repository": {
     "type": "git",
