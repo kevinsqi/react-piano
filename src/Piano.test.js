@@ -159,4 +159,46 @@ describe('<Piano />', () => {
       expect(mockStopNote).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe('disabled', () => {
+    test('disables firing of onPlayNote and onStopNote', () => {
+      const mockPlayNote = jest.fn();
+      const mockStopNote = jest.fn();
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
+          onPlayNote={mockPlayNote}
+          onStopNote={mockStopNote}
+          disabled
+        />,
+      );
+
+      wrapper
+        .find('.ReactPiano__Key')
+        .first()
+        .simulate('mousedown');
+
+      expect(mockPlayNote).toHaveBeenCalledTimes(0);
+
+      wrapper
+        .find('.ReactPiano__Key')
+        .first()
+        .simulate('mouseup');
+
+      expect(mockStopNote).toHaveBeenCalledTimes(0);
+    });
+
+    test('renders disabled key state', () => {
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
+          onPlayNote={() => {}}
+          onStopNote={() => {}}
+          disabled
+        />,
+      );
+
+      expect(wrapper.find('.ReactPiano__Key--disabled').length).toBe(13);
+    });
+  });
 });
