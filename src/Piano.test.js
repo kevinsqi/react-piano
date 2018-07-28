@@ -53,7 +53,7 @@ describe('<Piano />', () => {
         expect.stringContaining('noteRange.first must be smaller than noteRange.last'),
       );
     });
-    test('renders correct number of keys', () => {
+    test('renders correct keys', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
@@ -63,6 +63,8 @@ describe('<Piano />', () => {
       );
       expect(spyConsoleError).not.toHaveBeenCalled();
       expect(wrapper.find('.ReactPiano__Key').length).toBe(13); // Should have 12 + 1 keys
+      expect(wrapper.find('.ReactPiano__Key--natural').length).toBe(8); // Should have 7 + 1 natural keys
+      expect(wrapper.find('.ReactPiano__Key--accidental').length).toBe(5);
     });
   });
 
@@ -199,6 +201,21 @@ describe('<Piano />', () => {
       );
 
       expect(wrapper.find('.ReactPiano__Key--disabled').length).toBe(13);
+    });
+  });
+
+  describe('className', () => {
+    test('adds a className', () => {
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
+          onPlayNote={() => {}}
+          onStopNote={() => {}}
+          className="Hello"
+        />,
+      );
+
+      expect(wrapper.find('.ReactPiano__Keyboard').hasClass('Hello')).toBe(true);
     });
   });
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import range from 'lodash.range';
+import classNames from 'classnames';
 
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
@@ -13,6 +14,7 @@ class Keyboard extends React.Component {
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
     keyWidthToHeight: PropTypes.number.isRequired,
+    className: PropTypes.string,
     disabled: PropTypes.bool,
     gliss: PropTypes.bool,
     useTouchEvents: PropTypes.bool,
@@ -61,7 +63,7 @@ class Keyboard extends React.Component {
     const naturalKeyWidth = this.getNaturalKeyWidth();
     return (
       <div
-        className="ReactPiano__Keyboard"
+        className={classNames('ReactPiano__Keyboard', this.props.className)}
         style={{ width: this.getWidth(), height: this.getHeight() }}
       >
         {this.getMidiNumbers().map((midiNumber) => {

@@ -64,6 +64,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
 | `keyWidthToHeight` | Number | Ratio of key width to height. Used to specify the dimensions of the piano key. |
 | `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
+| `className` | String | A className to add to the component. |
 | `disabled` | Boolean | Whether to show disabled state. Useful when audio sounds need to be asynchronously loaded. |
 | `keyboardShortcuts` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. You can omit it if you don't want to use keyboard shortcuts. **Note:** this shouldn't be generated inline in JSX because it can cause problems when diffing for shortcut changes. |
 | `playbackNotes` | Array of numbers | An array of form `[44, 47, 54]` which contains MIDI numbers to play back programmatically. |

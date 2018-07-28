@@ -8,10 +8,11 @@ import Keyboard from './Keyboard';
 
 class Piano extends React.Component {
   static propTypes = {
-    noteRange: PropTypes.object,
+    noteRange: PropTypes.object.isRequired,
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
+    className: PropTypes.string,
     disabled: PropTypes.bool,
     width: PropTypes.number,
     keyWidthToHeight: PropTypes.number,
@@ -192,15 +193,16 @@ class Piano extends React.Component {
     return (
       <Keyboard
         noteRange={this.props.noteRange}
+        onPlayNote={this.onPlayNote}
+        onStopNote={this.onStopNote}
         activeNotes={this.props.playbackNotes || this.state.activeNotes}
+        className={this.props.className}
         disabled={this.props.disabled}
         width={this.props.width}
         keyWidthToHeight={this.props.keyWidthToHeight}
         gliss={this.state.isMouseDown}
         useTouchEvents={this.state.useTouchEvents}
         renderNoteLabel={this.renderNoteLabel}
-        onPlayNote={this.onPlayNote}
-        onStopNote={this.onStopNote}
       />
     );
   }
