@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 
 import Piano from './Piano';
 import MidiNumbers from './MidiNumbers';
+import KeyboardShortcuts from './KeyboardShortcuts';
 
 let eventListenerCallbacks;
 let spyConsoleError;
@@ -119,6 +120,40 @@ describe('<Piano />', () => {
         .find('.ReactPiano__Key')
         .first()
         .simulate('touchend');
+
+      expect(mockPlayNote).toHaveBeenCalledTimes(1);
+      expect(mockStopNote).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('keyboardShortcuts', () => {
+    test('key events trigger onPlayNote and onStopNote', () => {
+      const firstNote = MidiNumbers.fromNote('c3');
+      const lastNote = MidiNumbers.fromNote('c4');
+      const mockPlayNote = jest.fn();
+      const mockStopNote = jest.fn();
+      const keyboardShortcuts = [{ key: 'a', midiNumber: MidiNumbers.fromNote('c3') }];
+
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: firstNote, last: lastNote }}
+          onPlayNote={mockPlayNote}
+          onStopNote={mockStopNote}
+          keyboardShortcuts={keyboardShortcuts}
+        />,
+      );
+
+      // Trigger window keydown with a mock event
+      eventListenerCallbacks['keydown']({
+        key: 'a',
+      });
+
+      expect(mockPlayNote).toHaveBeenCalledTimes(1);
+      expect(mockStopNote).toHaveBeenCalledTimes(0);
+
+      eventListenerCallbacks['keyup']({
+        key: 'a',
+      });
 
       expect(mockPlayNote).toHaveBeenCalledTimes(1);
       expect(mockStopNote).toHaveBeenCalledTimes(1);
