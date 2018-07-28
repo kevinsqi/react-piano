@@ -1,3 +1,4 @@
 {
-  "rootDir": "src"
+  "rootDir": "src",
+  "setupTestFrameworkScriptFile": "<rootDir>/setupTests.js"
 }
