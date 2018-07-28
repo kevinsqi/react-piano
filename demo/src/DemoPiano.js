@@ -6,7 +6,7 @@ import InstrumentListProvider from './InstrumentListProvider';
 import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
 
-const soundfontHostname = 'http://d1pzp51pvbm36p.cloudfront.net';
+const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
 
 class DemoPiano extends React.Component {
   state = {
