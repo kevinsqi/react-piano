@@ -27,7 +27,7 @@ class Piano extends React.Component {
 
   static defaultProps = {
     renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) => (
-      <div
+      keyboardShortcut ? <div
         className={classNames('ReactPiano__NoteLabel', {
           'ReactPiano__NoteLabel--active': isActive,
           'ReactPiano__NoteLabel--accidental': isAccidental,
@@ -35,7 +35,7 @@ class Piano extends React.Component {
         })}
       >
         {keyboardShortcut}
-      </div>
+      </div> : null
     ),
   };
 
@@ -183,9 +183,6 @@ class Piano extends React.Component {
 
   renderNoteLabel = ({ midiNumber, isActive, isAccidental }) => {
     const keyboardShortcut = this.getKeyForMidiNumber(midiNumber);
-    if (!keyboardShortcut) {
-      return null;
-    }
     return this.props.renderNoteLabel({ keyboardShortcut, midiNumber, isActive, isAccidental });
   };
 
