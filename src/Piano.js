@@ -26,17 +26,18 @@ class Piano extends React.Component {
   };
 
   static defaultProps = {
-    renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) => (
-      keyboardShortcut ? <div
-        className={classNames('ReactPiano__NoteLabel', {
-          'ReactPiano__NoteLabel--active': isActive,
-          'ReactPiano__NoteLabel--accidental': isAccidental,
-          'ReactPiano__NoteLabel--natural': !isAccidental,
-        })}
-      >
-        {keyboardShortcut}
-      </div> : null
-    ),
+    renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) =>
+      keyboardShortcut ? (
+        <div
+          className={classNames('ReactPiano__NoteLabel', {
+            'ReactPiano__NoteLabel--active': isActive,
+            'ReactPiano__NoteLabel--accidental': isAccidental,
+            'ReactPiano__NoteLabel--natural': !isAccidental,
+          })}
+        >
+          {keyboardShortcut}
+        </div>
+      ) : null,
   };
 
   constructor(props) {
