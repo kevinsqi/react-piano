@@ -3,7 +3,6 @@ import { mount } from 'enzyme';
 
 import Piano from './Piano';
 import MidiNumbers from './MidiNumbers';
-import KeyboardShortcuts from './KeyboardShortcuts';
 
 let eventListenerCallbacks;
 let spyConsoleError;
@@ -216,6 +215,60 @@ describe('<Piano />', () => {
       );
 
       expect(wrapper.find('.ReactPiano__Keyboard').hasClass('Hello')).toBe(true);
+    });
+  });
+
+  describe('renderNoteLabel', () => {
+    test('default value has correct behavior', () => {
+      const keyboardShortcuts = [{ key: 'a', midiNumber: MidiNumbers.fromNote('c3') }];
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
+          onPlayNote={() => {}}
+          onStopNote={() => {}}
+          keyboardShortcuts={keyboardShortcuts}
+        />,
+      );
+
+      // First key should have label with correct classes
+      const firstKey = wrapper.find('.ReactPiano__Key').at(0);
+      expect(firstKey.find('.ReactPiano__NoteLabel').text()).toBe('a');
+      expect(
+        firstKey.find('.ReactPiano__NoteLabel').hasClass('ReactPiano__NoteLabel--natural'),
+      ).toBe(true);
+
+      // Second key should not have label
+      const secondKey = wrapper.find('.ReactPiano__Key').at(1);
+      expect(secondKey.find('.ReactPiano__NoteLabel').exists()).toBe(false);
+    });
+    test('works for keys with and without shortcuts', () => {
+      const keyboardShortcuts = [{ key: 'a', midiNumber: MidiNumbers.fromNote('c3') }];
+      const wrapper = mount(
+        <Piano
+          noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
+          onPlayNote={() => {}}
+          onStopNote={() => {}}
+          keyboardShortcuts={keyboardShortcuts}
+          renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
+            return (
+              <div>
+                <div className="label-keyboardShortcut">{keyboardShortcut}</div>
+                <div className="label-midiNumber">{midiNumber}</div>
+              </div>
+            );
+          }}
+        />,
+      );
+
+      // First key should have midinumber and keyboard shortcut labels
+      const firstKey = wrapper.find('.ReactPiano__Key').at(0);
+      expect(firstKey.find('.label-midiNumber').text()).toBe(`${MidiNumbers.fromNote('c3')}`);
+      expect(firstKey.find('.label-keyboardShortcut').text()).toBe('a');
+
+      // Second key should only have midinumber label
+      const secondKey = wrapper.find('.ReactPiano__Key').at(1);
+      expect(secondKey.find('.label-midiNumber').text()).toBe(`${MidiNumbers.fromNote('db3')}`);
+      expect(secondKey.find('.label-keyboardShortcut').text()).toBe('');
     });
   });
 });
