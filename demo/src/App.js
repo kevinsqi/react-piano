@@ -1,6 +1,6 @@
 import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
-import 'react-piano/build/styles.css';
+import 'react-piano/dist/styles.css';
 
 import DemoPiano from './DemoPiano';
 import Header from './Header';

@@ -6,8 +6,8 @@
 # testing
 /src/coverage
 
-# production
-/build
+# distribution folder
+/dist
 
 # misc
 .DS_Store

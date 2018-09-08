@@ -2,22 +2,22 @@
   "name": "react-piano",
   "version": "1.1.0",
   "description": "A responsive, customizable react piano keyboard component",
-  "main": "build/react-piano.cjs.js",
-  "module": "build/react-piano.esm.js",
-  "unpkg": "build/react-piano.umd.js",
-  "style": "build/styles.css",
+  "main": "dist/react-piano.cjs.js",
+  "module": "dist/react-piano.esm.js",
+  "unpkg": "dist/react-piano.umd.js",
+  "style": "dist/styles.css",
   "files": [
-    "build"
+    "dist"
   ],
   "scripts": {
     "build": "npm-run-all clean build:css build:js",
-    "build:css": "postcss src/styles.css --use autoprefixer -d build/ --no-map",
+    "build:css": "postcss src/styles.css --use autoprefixer -d dist/ --no-map",
     "build:js": "rollup -c",
-    "clean": "rimraf build",
+    "clean": "rimraf dist",
     "prepare": "npm run build",
     "start": "npm-run-all --parallel start:js start:css",
     "start:js": "rollup -c -w",
-    "start:css": "postcss src/styles.css --use autoprefixer -d build/ --no-map --watch",
+    "start:css": "postcss src/styles.css --use autoprefixer -d dist/ --no-map --watch",
     "test": "jest --config jest.config.json --coverage"
   },
   "repository": {
