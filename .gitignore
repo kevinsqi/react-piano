@@ -6,8 +6,8 @@
 # testing
 /src/coverage
 
-# production
-/build
+# distribution folder
+/dist
 
 # misc
 .DS_Store
@@ -19,3 +19,4 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.idea

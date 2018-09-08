@@ -13,16 +13,19 @@ An interactive piano keyboard for React. Supports custom sounds, touch/click/key
 yarn add react-piano
 ```
 
+Alternatively, you can download the UMD build from [unpkg](https://unpkg.com/react-piano).
+
 ## Usage
 
 You can view or fork the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to get a live version of the component in action.
+
 
 ```jsx
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 
 // CSS styles are required in order to render piano correctly. Importing CSS requires
 // a CSS loader. Alternatively, copy the CSS file directly from src/styles.css into your <head>.
-import 'react-piano/build/styles.css';
+import 'react-piano/dist/styles.css';
 
 const firstNote = MidiNumbers.fromNote('c3');
 const lastNote = MidiNumbers.fromNote('f5');
@@ -74,7 +77,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 You can customize many aspects of the piano using CSS. In javascript, you can override the base styles by creating your own set of overrides:
 
 ```javascript
-import 'react-piano/build/styles.css';
+import 'react-piano/dist/styles.css';
 import './customPianoStyles.css';  // import a set of overrides
 ```
 
