@@ -1,42 +1,42 @@
-import resolve from "rollup-plugin-node-resolve";
-import filesize from "rollup-plugin-filesize";
-import sourceMaps from "rollup-plugin-sourcemaps";
-import pkg from "./package.json";
-import babel from "rollup-plugin-babel";
-import commonjs from "rollup-plugin-commonjs";
-import cleanup from "rollup-plugin-cleanup";
+import resolve from 'rollup-plugin-node-resolve';
+import filesize from 'rollup-plugin-filesize';
+import sourceMaps from 'rollup-plugin-sourcemaps';
+import pkg from './package.json';
+import babel from 'rollup-plugin-babel';
+import commonjs from 'rollup-plugin-commonjs';
+import cleanup from 'rollup-plugin-cleanup';
 
-const input = "src/index.js";
-const external = ["react"];
+const input = 'src/index.js';
+const external = ['react'];
 
 const plugins = [
   babel(),
   resolve({
-    extensions: [".js", ".jsx", ".json"]
+    extensions: ['.js', '.jsx', '.json'],
   }),
   commonjs(),
   cleanup(),
   sourceMaps(),
-  filesize()
+  filesize(),
 ];
 
 export default [
   {
     input,
-    external: ["react", "react-dom"],
+    external: ['react', 'react-dom'],
     output: [
       {
         file: pkg.unpkg,
-        format: "umd",
+        format: 'umd',
         sourcemap: true,
-        name: "ReactPiano",
+        name: 'ReactPiano',
         globals: {
-          react: "React",
-          "react-dom": "ReactDOM"
-        }
-      }
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
     ],
-    plugins
+    plugins,
   },
   {
     input,
@@ -44,15 +44,15 @@ export default [
     output: [
       {
         file: pkg.module,
-        format: "es",
-        sourcemap: true
+        format: 'es',
+        sourcemap: true,
       },
       {
         file: pkg.main,
-        format: "cjs",
-        sourcemap: true
-      }
+        format: 'cjs',
+        sourcemap: true,
+      },
     ],
-    plugins
-  }
+    plugins,
+  },
 ];
