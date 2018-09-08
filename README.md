@@ -13,17 +13,12 @@ An interactive piano keyboard for React. Supports custom sounds, touch/click/key
 yarn add react-piano
 ```
 
+Alternatively, you can load the UMD build via [CDN](https://unpkg.com/react-piano).
+
 ## Usage
 
 You can view or fork the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to get a live version of the component in action.
 
-## CDN
-
-You can load the files using the following URLs.
-
-**JS** : [https://unpkg.com/react-piano](https://unpkg.com/react-piano)
-
-**CSS**: [https://unpkg.com/react-piano/build/styles.css](https://unpkg.com/react-piano/build/styles.css)
 
 ```jsx
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
