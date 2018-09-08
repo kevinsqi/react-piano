@@ -1,3 +1,7 @@
+## 2.0.1 (September 8, 2018)
+
+* Use babel env target to compile ES6 features to ES5 to fix create-react-app prod build [#25]
+
 ## 2.0.0 (September 8, 2018)
 
 Migration guide from 1.x.x:
