@@ -3,7 +3,7 @@
     [
       "@babel/env",
       {
-        "targets": { "node": "6" }
+        "targets": { "node": "6", "browsers": [">0.25%"] }
       }
     ],
     "@babel/preset-react"
