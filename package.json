@@ -67,9 +67,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "just-range": "^2.1.0",
     "lodash.difference": "^4.5.0",
-    "lodash.find": "^4.6.0",
-    "lodash.range": "^3.2.0",
     "prop-types": "^15.6.2"
   }
 }
