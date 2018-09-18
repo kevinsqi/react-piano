@@ -46,22 +46,24 @@ class Piano extends React.Component {
       isMouseDown: false,
       useTouchEvents: false,
     };
+
+    this.keyboardRef = React.createRef();
   }
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
-    window.addEventListener('mousedown', this.onMouseDown);
-    window.addEventListener('mouseup', this.onMouseUp);
-    window.addEventListener('touchstart', this.onTouchStart);
+    this.keyboardRef.current.addEventListener('mousedown', this.onMouseDown);
+    this.keyboardRef.current.addEventListener('mouseup', this.onMouseUp);
+    this.keyboardRef.current.addEventListener('touchstart', this.onTouchStart);
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
-    window.removeEventListener('mousedown', this.onMouseDown);
-    window.removeEventListener('mouseup', this.onMouseUp);
-    window.removeEventListener('touchstart', this.onTouchStart);
+    this.keyboardRef.current.removeEventListener('mousedown', this.onMouseDown);
+    this.keyboardRef.current.removeEventListener('mouseup', this.onMouseUp);
+    this.keyboardRef.current.removeEventListener('touchstart', this.onTouchStart);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -188,6 +190,7 @@ class Piano extends React.Component {
   render() {
     return (
       <Keyboard
+        innerRef={this.keyboardRef}
         noteRange={this.props.noteRange}
         onPlayNote={this.onPlayNote}
         onStopNote={this.onStopNote}

@@ -20,6 +20,7 @@ class Keyboard extends React.Component {
     useTouchEvents: PropTypes.bool,
     // If width is not provided, must have fixed width and height in parent container
     width: PropTypes.number,
+    innerRef: PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -65,6 +66,7 @@ class Keyboard extends React.Component {
       <div
         className={classNames('ReactPiano__Keyboard', this.props.className)}
         style={{ width: this.getWidth(), height: this.getHeight() }}
+        ref={this.props.innerRef}
       >
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
