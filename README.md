@@ -96,6 +96,10 @@ In the CSS file you can do things like:
 
 See [styles.css](/src/styles.css) for more detail on what styles can be customized.
 
+## Browser compatibility
+
+To support IE, you'll need to provide an `Array.find` polyfill.
+
 ## License
 
 MIT

@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import difference from 'lodash.difference';
-import find from 'lodash.find';
-
 import Keyboard from './Keyboard';
 
 class Piano extends React.Component {
@@ -98,7 +96,7 @@ class Piano extends React.Component {
     if (!this.props.keyboardShortcuts) {
       return null;
     }
-    const shortcut = find(this.props.keyboardShortcuts, { key: key });
+    const shortcut = this.props.keyboardShortcuts.find((sh) => sh.key === key);
     return shortcut && shortcut.midiNumber;
   };
 
@@ -106,7 +104,7 @@ class Piano extends React.Component {
     if (!this.props.keyboardShortcuts) {
       return null;
     }
-    const shortcut = find(this.props.keyboardShortcuts, { midiNumber: midiNumber });
+    const shortcut = this.props.keyboardShortcuts.find((sh) => sh.midiNumber === midiNumber);
     return shortcut && shortcut.key;
   };
 
