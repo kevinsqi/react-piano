@@ -96,7 +96,7 @@ class Piano extends React.Component {
     if (!this.props.keyboardShortcuts) {
       return null;
     }
-    const shortcut = this.props.keyboardShortcuts.find(_shortcut => _shortcut.key === key);
+    const shortcut = this.props.keyboardShortcuts.find((sh) => sh.key === key);
     return shortcut && shortcut.midiNumber;
   };
 
@@ -104,7 +104,7 @@ class Piano extends React.Component {
     if (!this.props.keyboardShortcuts) {
       return null;
     }
-    const shortcut = this.props.keyboardShortcuts.find(_shortcut => _shortcut.midiNumber === midiNumber);
+    const shortcut = this.props.keyboardShortcuts.find((sh) => sh.midiNumber === midiNumber);
     return shortcut && shortcut.key;
   };
 
