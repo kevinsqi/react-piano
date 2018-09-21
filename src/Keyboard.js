@@ -26,7 +26,7 @@ class Keyboard extends React.Component {
     disabled: false,
     gliss: false,
     useTouchEvents: false,
-    keyWidthToHeight: 0.25,
+    keyWidthToHeight: 0.33,
     renderNoteLabel: () => {},
   };
 
