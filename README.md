@@ -20,24 +20,27 @@ Alternatively, you can download the UMD build from [unpkg](https://unpkg.com/rea
 
 You can view or fork the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to get a live version of the component in action.
 
+Import the component and styles:
 
 ```jsx
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
-
-// CSS styles are required in order to render piano correctly. Importing CSS requires
-// a CSS loader. Alternatively, copy the CSS file directly from src/styles.css into your <head>.
 import 'react-piano/dist/styles.css';
+```
 
-const firstNote = MidiNumbers.fromNote('c3');
-const lastNote = MidiNumbers.fromNote('f5');
+Importing CSS requires a CSS loader (if you're using create-react-app, this is already set up for you). If you don't have a CSS loader, you can alternatively copy the CSS file into your project from [src/styles.css](src/styles.css).
 
-const keyboardShortcuts = KeyboardShortcuts.create({
-  firstNote: firstNote,
-  lastNote: lastNote,
-  keyboardConfig: KeyboardShortcuts.HOME_ROW,
-})
+Then to use the component:
 
+```jsx
 function App() {
+  const firstNote = MidiNumbers.fromNote('c3');
+  const lastNote = MidiNumbers.fromNote('f5');
+  const keyboardShortcuts = KeyboardShortcuts.create({
+    firstNote: firstNote,
+    lastNote: lastNote,
+    keyboardConfig: KeyboardShortcuts.HOME_ROW,
+  });
+
   return (
     <Piano
       noteRange={{ first: firstNote, last: lastNote }}
