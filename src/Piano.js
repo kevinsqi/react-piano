@@ -46,24 +46,16 @@ class Piano extends React.Component {
       isMouseDown: false,
       useTouchEvents: false,
     };
-
-    this.keyboardRef = React.createRef();
   }
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
-    this.keyboardRef.current.addEventListener('mousedown', this.onMouseDown);
-    this.keyboardRef.current.addEventListener('mouseup', this.onMouseUp);
-    this.keyboardRef.current.addEventListener('touchstart', this.onTouchStart);
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
-    this.keyboardRef.current.removeEventListener('mousedown', this.onMouseDown);
-    this.keyboardRef.current.removeEventListener('mouseup', this.onMouseUp);
-    this.keyboardRef.current.removeEventListener('touchstart', this.onTouchStart);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -189,20 +181,26 @@ class Piano extends React.Component {
 
   render() {
     return (
-      <Keyboard
-        innerRef={this.keyboardRef}
-        noteRange={this.props.noteRange}
-        onPlayNote={this.onPlayNote}
-        onStopNote={this.onStopNote}
-        activeNotes={this.props.playbackNotes || this.state.activeNotes}
-        className={this.props.className}
-        disabled={this.props.disabled}
-        width={this.props.width}
-        keyWidthToHeight={this.props.keyWidthToHeight}
-        gliss={this.state.isMouseDown}
-        useTouchEvents={this.state.useTouchEvents}
-        renderNoteLabel={this.renderNoteLabel}
-      />
+      <div
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onTouchStart={this.onTouchStart}
+        data-testid="container"
+      >
+        <Keyboard
+          noteRange={this.props.noteRange}
+          onPlayNote={this.onPlayNote}
+          onStopNote={this.onStopNote}
+          activeNotes={this.props.playbackNotes || this.state.activeNotes}
+          className={this.props.className}
+          disabled={this.props.disabled}
+          width={this.props.width}
+          keyWidthToHeight={this.props.keyWidthToHeight}
+          gliss={this.state.isMouseDown}
+          useTouchEvents={this.state.useTouchEvents}
+          renderNoteLabel={this.renderNoteLabel}
+        />
+      </div>
     );
   }
 }

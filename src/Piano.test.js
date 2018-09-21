@@ -106,22 +106,19 @@ describe('<Piano />', () => {
         />,
       );
 
-      // Need to first trigger window touchstart event callback so useTouchEvents is set
-      eventListenerCallbacks['touchstart']();
+      // Simulate touch on container component to trigger useTouchEvents
+      // (ideally this wouldn't need a separate touchStart to test)
+      const container = wrapper.find('[data-testid="container"]').first();
+      container.simulate('touchStart');
 
-      wrapper
-        .find('.ReactPiano__Key')
-        .first()
-        .simulate('touchstart');
-
+      // touchStart event on Key should play note
+      const firstKey = wrapper.find('.ReactPiano__Key').first();
+      firstKey.simulate('touchStart');
       expect(mockPlayNote).toHaveBeenCalledTimes(1);
       expect(mockStopNote).toHaveBeenCalledTimes(0);
 
-      wrapper
-        .find('.ReactPiano__Key')
-        .first()
-        .simulate('touchend');
-
+      // touchEnd event on Key should stop note
+      firstKey.simulate('touchend');
       expect(mockPlayNote).toHaveBeenCalledTimes(1);
       expect(mockStopNote).toHaveBeenCalledTimes(1);
     });
