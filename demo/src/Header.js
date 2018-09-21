@@ -7,8 +7,9 @@ function Header() {
         <div className="text-sm-center text-white py-5">
           <h1>react-piano</h1>
           <p>
-            An interactive piano keyboard for React. Supports custom sounds,<br className="d-none d-sm-block" />{' '}
-            touch/click/keyboard events, and fully configurable styling.
+            An interactive piano keyboard for React. Supports custom sounds,
+            <br className="d-none d-sm-block" /> touch/click/keyboard events, and fully configurable
+            styling.
           </p>
           <div className="mt-4">
             <a
