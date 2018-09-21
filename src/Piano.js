@@ -51,17 +51,11 @@ class Piano extends React.Component {
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
-    window.addEventListener('mousedown', this.onMouseDown);
-    window.addEventListener('mouseup', this.onMouseUp);
-    window.addEventListener('touchstart', this.onTouchStart);
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
-    window.removeEventListener('mousedown', this.onMouseDown);
-    window.removeEventListener('mouseup', this.onMouseUp);
-    window.removeEventListener('touchstart', this.onTouchStart);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -187,19 +181,26 @@ class Piano extends React.Component {
 
   render() {
     return (
-      <Keyboard
-        noteRange={this.props.noteRange}
-        onPlayNote={this.onPlayNote}
-        onStopNote={this.onStopNote}
-        activeNotes={this.props.playbackNotes || this.state.activeNotes}
-        className={this.props.className}
-        disabled={this.props.disabled}
-        width={this.props.width}
-        keyWidthToHeight={this.props.keyWidthToHeight}
-        gliss={this.state.isMouseDown}
-        useTouchEvents={this.state.useTouchEvents}
-        renderNoteLabel={this.renderNoteLabel}
-      />
+      <div
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onTouchStart={this.onTouchStart}
+        data-testid="container"
+      >
+        <Keyboard
+          noteRange={this.props.noteRange}
+          onPlayNote={this.onPlayNote}
+          onStopNote={this.onStopNote}
+          activeNotes={this.props.playbackNotes || this.state.activeNotes}
+          className={this.props.className}
+          disabled={this.props.disabled}
+          width={this.props.width}
+          keyWidthToHeight={this.props.keyWidthToHeight}
+          gliss={this.state.isMouseDown}
+          useTouchEvents={this.state.useTouchEvents}
+          renderNoteLabel={this.renderNoteLabel}
+        />
+      </div>
     );
   }
 }
