@@ -4,7 +4,7 @@
 /node_modules
 
 # testing
-/src/coverage
+/coverage
 
 # distribution folder
 /dist
