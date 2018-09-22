@@ -7,6 +7,7 @@ import Keyboard from './Keyboard';
 class Piano extends React.Component {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
+    activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     onPlayNote: PropTypes.func.isRequired,
     onStopNote: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
@@ -20,7 +21,6 @@ class Piano extends React.Component {
         midiNumber: PropTypes.number.isRequired,
       }),
     ),
-    playbackNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
   };
 
   static defaultProps = {
@@ -42,7 +42,6 @@ class Piano extends React.Component {
     super(props);
 
     this.state = {
-      activeNotes: [],
       isMouseDown: false,
       useTouchEvents: false,
     };
@@ -59,18 +58,10 @@ class Piano extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // If keyboard shortcuts change, any activeNotes will not
-    // correctly fire keyUp events. First cancel all activeNotes.
-    if (prevProps.keyboardShortcuts !== this.props.keyboardShortcuts) {
-      this.setState({
-        activeNotes: [],
-      });
-    }
-
-    if (this.state.activeNotes !== prevState.activeNotes) {
+    if (this.props.activeNotes !== prevProps.activeNotes) {
       this.handleNoteChanges({
-        prevActiveNotes: prevState.activeNotes || [],
-        nextActiveNotes: this.state.activeNotes || [],
+        prevActiveNotes: prevProps.activeNotes || [],
+        nextActiveNotes: this.props.activeNotes || [],
       });
     }
   }
@@ -130,30 +121,24 @@ class Piano extends React.Component {
       return;
     }
     // Prevent duplicate note firings
-    const isActive = this.state.activeNotes.includes(midiNumber);
+    const isActive = this.props.activeNotes.includes(midiNumber);
     if (isActive) {
       return;
     }
     // Pass in previous activeNotes for recording functionality
-    this.props.onPlayNote(midiNumber, this.state.activeNotes);
-    this.setState((prevState) => ({
-      activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
-    }));
+    this.props.onPlayNote(midiNumber, this.props.activeNotes);
   };
 
   onStopNote = (midiNumber) => {
     if (this.props.disabled) {
       return;
     }
-    const isInactive = !this.state.activeNotes.includes(midiNumber);
+    const isInactive = !this.props.activeNotes.includes(midiNumber);
     if (isInactive) {
       return;
     }
     // Pass in previous activeNotes for recording functionality
-    this.props.onStopNote(midiNumber, this.state.activeNotes);
-    this.setState((prevState) => ({
-      activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
-    }));
+    this.props.onStopNote(midiNumber, this.props.activeNotes);
   };
 
   onMouseDown = () => {
@@ -191,7 +176,7 @@ class Piano extends React.Component {
           noteRange={this.props.noteRange}
           onPlayNote={this.onPlayNote}
           onStopNote={this.onStopNote}
-          activeNotes={this.props.playbackNotes || this.state.activeNotes}
+          activeNotes={this.props.activeNotes}
           className={this.props.className}
           disabled={this.props.disabled}
           width={this.props.width}

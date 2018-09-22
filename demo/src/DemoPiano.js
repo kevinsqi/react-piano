@@ -18,6 +18,25 @@ class DemoPiano extends React.Component {
       },
       keyboardShortcutOffset: 0,
     },
+    activeNotes: [],
+  };
+
+  createPlayNoteFunction = (playNoteFn) => {
+    return (midiNumber) => {
+      playNoteFn(midiNumber);
+      this.setState((prevState) => ({
+        activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
+      }));
+    };
+  };
+
+  createStopNoteFunction = (stopNoteFn) => {
+    return (midiNumber) => {
+      stopNoteFn(midiNumber);
+      this.setState((prevState) => ({
+        activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
+      }));
+    };
   };
 
   render() {
@@ -38,10 +57,11 @@ class DemoPiano extends React.Component {
               <DimensionsProvider>
                 {({ containerWidth }) => (
                   <Piano
+                    activeNotes={this.state.activeNotes}
                     noteRange={this.state.config.noteRange}
                     keyboardShortcuts={keyboardShortcuts}
-                    onPlayNote={playNote}
-                    onStopNote={stopNote}
+                    onPlayNote={this.createPlayNoteFunction(playNote)}
+                    onStopNote={this.createStopNoteFunction(stopNote)}
                     disabled={isLoading}
                     width={containerWidth}
                   />

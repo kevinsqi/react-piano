@@ -66,6 +66,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `noteRange` | **Required** object | An object with format `{ first: 48, last: 77 }` where first and last are MIDI numbers that correspond to natural notes. You can use `MidiNumbers.NATURAL_MIDI_NUMBERS` to identify whether a number is a natural note or not. |
+| `activeNotes` | **Required** array of numbers | An array of form `[44, 47, 54]` which contains the currently active MIDI numbers being played. |
 | `onPlayNote` | **Required** function | `(midiNumber) => void` function to play a note specified by MIDI number. |
 | `onStopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
 | `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
@@ -74,7 +75,6 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `className` | String | A className to add to the component. |
 | `disabled` | Boolean | Whether to show disabled state. Useful when audio sounds need to be asynchronously loaded. |
 | `keyboardShortcuts` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. You can omit it if you don't want to use keyboard shortcuts. **Note:** this shouldn't be generated inline in JSX because it can cause problems when diffing for shortcut changes. |
-| `playbackNotes` | Array of numbers | An array of form `[44, 47, 54]` which contains MIDI numbers to play back programmatically. |
 
 ## Customizing styles
 
