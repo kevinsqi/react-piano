@@ -10,6 +10,17 @@ class Piano extends React.Component {
     activeNotes: [],
   };
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.activeNotes !== this.props.activeNotes &&
+      this.state.activeNotes !== this.props.activeNotes
+    ) {
+      this.setState({
+        activeNotes: this.props.activeNotes,
+      });
+    }
+  }
+
   handlePlayNote = (midiNumber) => {
     this.props.onPlayNote(midiNumber);
     this.setState((prevState) => ({

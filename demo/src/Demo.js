@@ -1,5 +1,5 @@
 import React from 'react';
-import { ControlledPiano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
+import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 
 import DimensionsProvider from './DimensionsProvider';
 import InstrumentListProvider from './InstrumentListProvider';
@@ -18,25 +18,6 @@ class Demo extends React.Component {
       },
       keyboardShortcutOffset: 0,
     },
-    activeNotes: [],
-  };
-
-  enhancePlayNote = (playNoteFn) => {
-    return (midiNumber) => {
-      playNoteFn(midiNumber);
-      this.setState((prevState) => ({
-        activeNotes: prevState.activeNotes.concat(midiNumber),
-      }));
-    };
-  };
-
-  enhanceStopNote = (stopNoteFn) => {
-    return (midiNumber) => {
-      stopNoteFn(midiNumber);
-      this.setState((prevState) => ({
-        activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
-      }));
-    };
   };
 
   render() {
@@ -56,12 +37,11 @@ class Demo extends React.Component {
             <div>
               <DimensionsProvider>
                 {({ containerWidth }) => (
-                  <ControlledPiano
-                    activeNotes={this.state.activeNotes}
+                  <Piano
                     noteRange={this.state.config.noteRange}
                     keyboardShortcuts={keyboardShortcuts}
-                    onPlayNote={this.enhancePlayNote(playNote)}
-                    onStopNote={this.enhanceStopNote(stopNote)}
+                    onPlayNote={playNote}
+                    onStopNote={stopNote}
                     disabled={isLoading}
                     width={containerWidth}
                   />
