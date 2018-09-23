@@ -75,6 +75,7 @@ class PlaybackDemo extends React.Component {
                   width={containerWidth}
                   onPlayNote={playNote}
                   onStopNote={stopNote}
+                  disabled={isLoading}
                 />
               )}
             </DimensionsProvider>
