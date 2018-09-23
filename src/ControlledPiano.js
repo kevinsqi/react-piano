@@ -8,8 +8,10 @@ class ControlledPiano extends React.Component {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    onPlayNote: PropTypes.func.isRequired,
-    onStopNote: PropTypes.func.isRequired,
+    playNote: PropTypes.func.isRequired,
+    stopNote: PropTypes.func.isRequired,
+    onPlayNoteInput: PropTypes.func.isRequired,
+    onStopNoteInput: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
     className: PropTypes.string,
     disabled: PropTypes.bool,
@@ -67,13 +69,16 @@ class ControlledPiano extends React.Component {
   }
 
   handleNoteChanges = ({ prevActiveNotes, nextActiveNotes }) => {
-    const notesStarted = difference(prevActiveNotes, nextActiveNotes);
-    const notesStopped = difference(nextActiveNotes, prevActiveNotes);
+    if (this.props.disabled) {
+      return;
+    }
+    const notesStopped = difference(prevActiveNotes, nextActiveNotes);
+    const notesStarted = difference(nextActiveNotes, prevActiveNotes);
     notesStarted.forEach((midiNumber) => {
-      this.onStopNote(midiNumber);
+      this.props.playNote(midiNumber);
     });
     notesStopped.forEach((midiNumber) => {
-      this.onPlayNote(midiNumber);
+      this.props.stopNote(midiNumber);
     });
   };
 
@@ -100,7 +105,7 @@ class ControlledPiano extends React.Component {
     }
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onPlayNote(midiNumber);
+      this.onPlayNoteInput(midiNumber);
     }
   };
 
@@ -112,33 +117,24 @@ class ControlledPiano extends React.Component {
     // the ctrl/meta/shift check is removed to fix that issue.
     const midiNumber = this.getMidiNumberForKey(event.key);
     if (midiNumber) {
-      this.onStopNote(midiNumber);
+      this.onStopNoteInput(midiNumber);
     }
   };
 
-  onPlayNote = (midiNumber) => {
+  onPlayNoteInput = (midiNumber) => {
     if (this.props.disabled) {
       return;
     }
-    // Prevent duplicate note firings
-    const isActive = this.props.activeNotes.includes(midiNumber);
-    if (isActive) {
-      return;
-    }
     // Pass in previous activeNotes for recording functionality
-    this.props.onPlayNote(midiNumber, this.props.activeNotes);
+    this.props.onPlayNoteInput(midiNumber, this.props.activeNotes);
   };
 
-  onStopNote = (midiNumber) => {
+  onStopNoteInput = (midiNumber) => {
     if (this.props.disabled) {
       return;
     }
-    const isInactive = !this.props.activeNotes.includes(midiNumber);
-    if (isInactive) {
-      return;
-    }
     // Pass in previous activeNotes for recording functionality
-    this.props.onStopNote(midiNumber, this.props.activeNotes);
+    this.props.onStopNoteInput(midiNumber, this.props.activeNotes);
   };
 
   onMouseDown = () => {
@@ -174,8 +170,8 @@ class ControlledPiano extends React.Component {
       >
         <Keyboard
           noteRange={this.props.noteRange}
-          onPlayNote={this.onPlayNote}
-          onStopNote={this.onStopNote}
+          onPlayNote={this.onPlayNoteInput}
+          onStopNote={this.onStopNoteInput}
           activeNotes={this.props.activeNotes}
           className={this.props.className}
           disabled={this.props.disabled}

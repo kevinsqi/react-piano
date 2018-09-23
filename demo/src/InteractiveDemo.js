@@ -45,8 +45,8 @@ class InteractiveDemo extends React.Component {
                   <Piano
                     noteRange={this.state.config.noteRange}
                     keyboardShortcuts={keyboardShortcuts}
-                    onPlayNote={playNote}
-                    onStopNote={stopNote}
+                    playNote={playNote}
+                    stopNote={stopNote}
                     disabled={isLoading}
                     width={containerWidth}
                   />

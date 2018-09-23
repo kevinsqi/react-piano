@@ -24,14 +24,12 @@ class Piano extends React.Component {
   }
 
   handlePlayNote = (midiNumber) => {
-    this.props.onPlayNote(midiNumber);
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.concat(midiNumber),
     }));
   };
 
   handleStopNote = (midiNumber) => {
-    this.props.onStopNote(midiNumber);
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
     }));
@@ -42,8 +40,10 @@ class Piano extends React.Component {
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
-        onPlayNote={this.handlePlayNote}
-        onStopNote={this.handleStopNote}
+        playNote={this.props.onPlayNote}
+        stopNote={this.props.onStopNote}
+        onPlayNoteInput={this.handlePlayNote}
+        onStopNoteInput={this.handleStopNote}
         {...otherProps}
       />
     );
