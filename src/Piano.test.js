@@ -30,8 +30,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('db4'), last: MidiNumbers.fromNote('c5') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
         />,
       );
       expect(spyConsoleError).toHaveBeenCalledWith(
@@ -44,8 +44,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c5'), last: MidiNumbers.fromNote('c3') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
         />,
       );
       expect(spyConsoleError).toHaveBeenCalledWith(
@@ -56,8 +56,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
         />,
       );
       expect(spyConsoleError).not.toHaveBeenCalled();
@@ -67,15 +67,15 @@ describe('<Piano />', () => {
     });
   });
 
-  describe('onPlayNote and onStopNote', () => {
+  describe('playNote and stopNote', () => {
     test('is fired upon mousedown and mouseup', () => {
       const mockPlayNote = jest.fn();
       const mockStopNote = jest.fn();
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={mockPlayNote}
-          onStopNote={mockStopNote}
+          playNote={mockPlayNote}
+          stopNote={mockStopNote}
         />,
       );
 
@@ -101,8 +101,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={mockPlayNote}
-          onStopNote={mockStopNote}
+          playNote={mockPlayNote}
+          stopNote={mockStopNote}
         />,
       );
 
@@ -125,7 +125,7 @@ describe('<Piano />', () => {
   });
 
   describe('keyboardShortcuts', () => {
-    test('key events trigger onPlayNote and onStopNote', () => {
+    test('key events trigger playNote and stopNote', () => {
       const firstNote = MidiNumbers.fromNote('c3');
       const lastNote = MidiNumbers.fromNote('c4');
       const mockPlayNote = jest.fn();
@@ -135,8 +135,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: firstNote, last: lastNote }}
-          onPlayNote={mockPlayNote}
-          onStopNote={mockStopNote}
+          playNote={mockPlayNote}
+          stopNote={mockStopNote}
           keyboardShortcuts={keyboardShortcuts}
         />,
       );
@@ -159,14 +159,14 @@ describe('<Piano />', () => {
   });
 
   describe('disabled', () => {
-    test('disables firing of onPlayNote and onStopNote', () => {
+    test('disables firing of playNote and stopNote', () => {
       const mockPlayNote = jest.fn();
       const mockStopNote = jest.fn();
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={mockPlayNote}
-          onStopNote={mockStopNote}
+          playNote={mockPlayNote}
+          stopNote={mockStopNote}
           disabled
         />,
       );
@@ -190,8 +190,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
           disabled
         />,
       );
@@ -205,8 +205,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
           className="Hello"
         />,
       );
@@ -221,8 +221,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
           keyboardShortcuts={keyboardShortcuts}
         />,
       );
@@ -243,8 +243,8 @@ describe('<Piano />', () => {
       const wrapper = mount(
         <Piano
           noteRange={{ first: MidiNumbers.fromNote('c3'), last: MidiNumbers.fromNote('c4') }}
-          onPlayNote={() => {}}
-          onStopNote={() => {}}
+          playNote={() => {}}
+          stopNote={() => {}}
           keyboardShortcuts={keyboardShortcuts}
           renderNoteLabel={({ keyboardShortcut, midiNumber, isActive, isAccidental }) => {
             return (
