@@ -21,16 +21,16 @@ class DemoPiano extends React.Component {
     activeNotes: [],
   };
 
-  createPlayNoteFunction = (playNoteFn) => {
+  enhancePlayNote = (playNoteFn) => {
     return (midiNumber) => {
       playNoteFn(midiNumber);
       this.setState((prevState) => ({
-        activeNotes: prevState.activeNotes.concat(midiNumber).sort(),
+        activeNotes: prevState.activeNotes.concat(midiNumber),
       }));
     };
   };
 
-  createStopNoteFunction = (stopNoteFn) => {
+  enhanceStopNote = (stopNoteFn) => {
     return (midiNumber) => {
       stopNoteFn(midiNumber);
       this.setState((prevState) => ({
@@ -60,8 +60,8 @@ class DemoPiano extends React.Component {
                     activeNotes={this.state.activeNotes}
                     noteRange={this.state.config.noteRange}
                     keyboardShortcuts={keyboardShortcuts}
-                    onPlayNote={this.createPlayNoteFunction(playNote)}
-                    onStopNote={this.createStopNoteFunction(stopNote)}
+                    onPlayNote={this.enhancePlayNote(playNote)}
+                    onStopNote={this.enhanceStopNote(stopNote)}
                     disabled={isLoading}
                     width={containerWidth}
                   />
