@@ -2,7 +2,7 @@ import React from 'react';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 import 'react-piano/dist/styles.css';
 
-import DemoPiano from './DemoPiano';
+import Demo from './Demo';
 import Header from './Header';
 import Footer from './Footer';
 import './App.css';
@@ -40,7 +40,7 @@ class App extends React.Component {
           </div>
           <div className="row mt-4">
             <div className="col-md-8 offset-md-2">
-              <DemoPiano audioContext={audioContext} />
+              <Demo audioContext={audioContext} />
             </div>
           </div>
           <hr className="mt-5" />

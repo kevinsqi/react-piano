@@ -8,7 +8,7 @@ import PianoConfig from './PianoConfig';
 
 const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
 
-class DemoPiano extends React.Component {
+class Demo extends React.Component {
   state = {
     config: {
       instrumentName: SoundfontProvider.defaultProps.instrumentName,
@@ -95,4 +95,4 @@ class DemoPiano extends React.Component {
   }
 }
 
-export default DemoPiano;
+export default Demo;
