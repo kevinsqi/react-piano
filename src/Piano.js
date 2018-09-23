@@ -23,28 +23,25 @@ class Piano extends React.Component {
     }
   }
 
-  handlePlayNote = (midiNumber) => {
+  handlePlayNoteInput = (midiNumber) => {
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.concat(midiNumber),
     }));
   };
 
-  handleStopNote = (midiNumber) => {
+  handleStopNoteInput = (midiNumber) => {
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
     }));
   };
 
   render() {
-    const { onPlayNote, onStopNote, ...otherProps } = this.props;
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
-        playNote={this.props.onPlayNote}
-        stopNote={this.props.onStopNote}
-        onPlayNoteInput={this.handlePlayNote}
-        onStopNoteInput={this.handleStopNote}
-        {...otherProps}
+        onPlayNoteInput={this.handlePlayNoteInput}
+        onStopNoteInput={this.handleStopNoteInput}
+        {...this.props}
       />
     );
   }

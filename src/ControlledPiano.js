@@ -68,6 +68,8 @@ class ControlledPiano extends React.Component {
     }
   }
 
+  // This function is responsible for diff'ing activeNotes
+  // and playing or stopping notes accordingly.
   handleNoteChanges = ({ prevActiveNotes, nextActiveNotes }) => {
     if (this.props.disabled) {
       return;
@@ -170,8 +172,8 @@ class ControlledPiano extends React.Component {
       >
         <Keyboard
           noteRange={this.props.noteRange}
-          onPlayNote={this.onPlayNoteInput}
-          onStopNote={this.onStopNoteInput}
+          onPlayNoteInput={this.onPlayNoteInput}
+          onStopNoteInput={this.onStopNoteInput}
           activeNotes={this.props.activeNotes}
           className={this.props.className}
           disabled={this.props.disabled}

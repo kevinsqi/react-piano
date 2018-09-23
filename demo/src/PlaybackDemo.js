@@ -46,6 +46,8 @@ class PlaybackDemo extends React.Component {
   };
 
   componentDidMount() {
+    // noreintegrate
+    return;
     setInterval(() => {
       this.setState({
         activeNotes: lostWoodsSong[this.state.activeNotesIndex],
@@ -73,8 +75,8 @@ class PlaybackDemo extends React.Component {
                   activeNotes={this.state.activeNotes}
                   noteRange={noteRange}
                   width={containerWidth}
-                  onPlayNote={playNote}
-                  onStopNote={stopNote}
+                  playNote={playNote}
+                  stopNote={stopNote}
                   disabled={isLoading}
                 />
               )}
