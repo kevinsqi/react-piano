@@ -1,5 +1,5 @@
 import React from 'react';
-import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
+import { ControlledPiano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 
 import DimensionsProvider from './DimensionsProvider';
 import InstrumentListProvider from './InstrumentListProvider';
@@ -56,7 +56,7 @@ class DemoPiano extends React.Component {
             <div>
               <DimensionsProvider>
                 {({ containerWidth }) => (
-                  <Piano
+                  <ControlledPiano
                     activeNotes={this.state.activeNotes}
                     noteRange={this.state.config.noteRange}
                     keyboardShortcuts={keyboardShortcuts}
