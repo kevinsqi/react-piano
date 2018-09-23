@@ -11,6 +11,8 @@ class Piano extends React.Component {
   };
 
   componentDidUpdate(prevProps) {
+    // Make activeNotes "controllable" by using internal
+    // state by default, but allowing prop overrides.
     if (
       prevProps.activeNotes !== this.props.activeNotes &&
       this.state.activeNotes !== this.props.activeNotes
