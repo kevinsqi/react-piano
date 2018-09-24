@@ -6,6 +6,24 @@ import ControlledPiano from './ControlledPiano';
 import Keyboard from './Keyboard';
 
 class Piano extends React.Component {
+  static propTypes = {
+    noteRange: PropTypes.object.isRequired,
+    activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
+    playNote: PropTypes.func.isRequired,
+    stopNote: PropTypes.func.isRequired,
+    renderNoteLabel: PropTypes.func,
+    className: PropTypes.string,
+    disabled: PropTypes.bool,
+    width: PropTypes.number,
+    keyWidthToHeight: PropTypes.number,
+    keyboardShortcuts: PropTypes.arrayOf(
+      PropTypes.shape({
+        key: PropTypes.string.isRequired,
+        midiNumber: PropTypes.number.isRequired,
+      }),
+    ),
+  };
+
   state = {
     activeNotes: [],
   };

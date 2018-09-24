@@ -66,10 +66,10 @@ react-piano does not implement audio playback of each note, so you have to imple
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `noteRange` | **Required** object | An object with format `{ first: 48, last: 77 }` where first and last are MIDI numbers that correspond to natural notes. You can use `MidiNumbers.NATURAL_MIDI_NUMBERS` to identify whether a number is a natural note or not. |
-| `activeNotes` | **Required** array of numbers | An array of form `[44, 47, 54]` which contains the currently active MIDI numbers being played. |
 | `playNote` | **Required** function | `(midiNumber) => void` function to play a note specified by MIDI number. |
 | `stopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
 | `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
+| `activeNotes` | Array of numbers | An array of MIDI numbers, e.g. `[44, 47, 54]`, which allows you to programmatically play notes on the piano. |
 | `keyWidthToHeight` | Number | Ratio of key width to height. Used to specify the dimensions of the piano key. |
 | `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
 | `className` | String | A className to add to the component. |
