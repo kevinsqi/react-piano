@@ -6,7 +6,7 @@
 
 An interactive piano keyboard for React. Supports custom sounds, touch/click/keyboard events, and fully configurable styling. [**Try it out on CodeSandbox**](https://codesandbox.io/s/7wq15pm1n1).
 
-<a href="http://www.kevinqi.com/react-piano/"><img width="500" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" /></a>
+<a href="http://www.kevinqi.com/react-piano/"><img width="600" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" /></a>
 
 ## Installing
 

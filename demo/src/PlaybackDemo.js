@@ -51,7 +51,7 @@ class PlaybackDemo extends React.Component {
           <p>Or try playing it back.</p>
           <div>
             <button
-              className={classNames('btn btn-sm', {
+              className={classNames('btn', {
                 'btn-outline-info': !this.state.isPlaying,
                 'btn-outline-danger': this.state.isPlaying,
               })}
@@ -64,7 +64,7 @@ class PlaybackDemo extends React.Component {
         <div className="mt-4">
           <SoundfontProvider
             audioContext={this.props.audioContext}
-            instrumentName="acoustic_grand_piano"
+            instrumentName="ocarina"
             hostname={this.props.soundfontHostname}
             onLoad={({ stopAllNotes }) => this.setState({ stopAllNotes })}
             render={({ isLoading, playNote, stopNote, stopAllNotes }) => (
