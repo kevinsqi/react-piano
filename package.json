@@ -1,6 +1,6 @@
 {
   "name": "react-piano",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "A responsive, customizable react piano keyboard component",
   "main": "dist/react-piano.cjs.js",
   "module": "dist/react-piano.esm.js",
