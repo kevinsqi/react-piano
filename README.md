@@ -44,10 +44,10 @@ function App() {
   return (
     <Piano
       noteRange={{ first: firstNote, last: lastNote }}
-      onPlayNote={(midiNumber) => {
+      playNote={(midiNumber) => {
         // Play a given note - see notes below
       }}
-      onStopNote={(midiNumber) => {
+      stopNote={(midiNumber) => {
         // Stop playing a given note - see notes below
       }}
       width={1000}
@@ -59,22 +59,22 @@ function App() {
 
 ## Implementing audio playback
 
-react-piano does not implement audio playback of each note, so you have to implement it with `onPlayNote` and `onStopNote` props. This gives you the ability to use any sounds you'd like with the rendered piano. The [react-piano demo page](http://www.kevinqi.com/react-piano/) uses @danigb's excellent [soundfont-player](https://github.com/danigb/soundfont-player) to play realistic-sounding soundfont samples. Take a look at the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to see how you can implement that yourself.
+react-piano does not implement audio playback of each note, so you have to implement it with `playNote` and `stopNote` props. This gives you the ability to use any sounds you'd like with the rendered piano. The [react-piano demo page](http://www.kevinqi.com/react-piano/) uses @danigb's excellent [soundfont-player](https://github.com/danigb/soundfont-player) to play realistic-sounding soundfont samples. Take a look at the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to see how you can implement that yourself.
 
 ## Props
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | `noteRange` | **Required** object | An object with format `{ first: 48, last: 77 }` where first and last are MIDI numbers that correspond to natural notes. You can use `MidiNumbers.NATURAL_MIDI_NUMBERS` to identify whether a number is a natural note or not. |
-| `onPlayNote` | **Required** function | `(midiNumber) => void` function to play a note specified by MIDI number. |
-| `onStopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
+| `playNote` | **Required** function | `(midiNumber) => void` function to play a note specified by MIDI number. |
+| `stopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
 | `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
+| `activeNotes` | Array of numbers | An array of MIDI numbers, e.g. `[44, 47, 54]`, which allows you to programmatically play notes on the piano. |
 | `keyWidthToHeight` | Number | Ratio of key width to height. Used to specify the dimensions of the piano key. |
 | `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
 | `className` | String | A className to add to the component. |
 | `disabled` | Boolean | Whether to show disabled state. Useful when audio sounds need to be asynchronously loaded. |
 | `keyboardShortcuts` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. You can omit it if you don't want to use keyboard shortcuts. **Note:** this shouldn't be generated inline in JSX because it can cause problems when diffing for shortcut changes. |
-| `playbackNotes` | Array of numbers | An array of form `[44, 47, 54]` which contains MIDI numbers to play back programmatically. |
 
 ## Customizing styles
 

@@ -1,17 +1,16 @@
 import React from 'react';
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 
 import DimensionsProvider from './DimensionsProvider';
 import InstrumentListProvider from './InstrumentListProvider';
 import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
 
-const soundfontHostname = 'https://d1pzp51pvbm36p.cloudfront.net';
-
-class DemoPiano extends React.Component {
+class InteractiveDemo extends React.Component {
   state = {
     config: {
-      instrumentName: SoundfontProvider.defaultProps.instrumentName,
+      instrumentName: 'acoustic_grand_piano',
       noteRange: {
         first: MidiNumbers.fromNote('c3'),
         last: MidiNumbers.fromNote('f5'),
@@ -31,17 +30,23 @@ class DemoPiano extends React.Component {
       <SoundfontProvider
         audioContext={this.props.audioContext}
         instrumentName={this.state.config.instrumentName}
-        hostname={soundfontHostname}
+        hostname={this.props.soundfontHostname}
         render={({ isLoading, playNote, stopNote, stopAllNotes }) => (
           <div>
-            <div>
+            <div className="text-center">
+              <p className="">Try it by clicking, tapping, or using your keyboard:</p>
+              <div style={{ color: '#777' }}>
+                <MdArrowDownward size={32} />
+              </div>
+            </div>
+            <div className="mt-4">
               <DimensionsProvider>
                 {({ containerWidth }) => (
                   <Piano
                     noteRange={this.state.config.noteRange}
                     keyboardShortcuts={keyboardShortcuts}
-                    onPlayNote={playNote}
-                    onStopNote={stopNote}
+                    playNote={playNote}
+                    stopNote={stopNote}
                     disabled={isLoading}
                     width={containerWidth}
                   />
@@ -51,7 +56,7 @@ class DemoPiano extends React.Component {
             <div className="row mt-5">
               <div className="col-lg-8 offset-lg-2">
                 <InstrumentListProvider
-                  hostname={soundfontHostname}
+                  hostname={this.props.soundfontHostname}
                   render={(instrumentList) => (
                     <PianoConfig
                       config={this.state.config}
@@ -75,4 +80,4 @@ class DemoPiano extends React.Component {
   }
 }
 
-export default DemoPiano;
+export default InteractiveDemo;

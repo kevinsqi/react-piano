@@ -11,6 +11,7 @@ class SoundfontProvider extends React.Component {
     format: PropTypes.oneOf(['mp3', 'ogg']),
     soundfont: PropTypes.oneOf(['MusyngKite', 'FluidR3_GM']),
     audioContext: PropTypes.instanceOf(window.AudioContext),
+    onLoad: PropTypes.func,
     render: PropTypes.func,
   };
 
@@ -35,6 +36,17 @@ class SoundfontProvider extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.instrumentName !== this.props.instrumentName) {
       this.loadInstrument(this.props.instrumentName);
+    }
+
+    if (prevState.instrument !== this.state.instrument) {
+      if (!this.props.onLoad) {
+        return;
+      }
+      this.props.onLoad({
+        playNote: this.playNote,
+        stopNote: this.stopNote,
+        stopAllNotes: this.stopAllNotes,
+      });
     }
   }
 
@@ -104,12 +116,14 @@ class SoundfontProvider extends React.Component {
   };
 
   render() {
-    return this.props.render({
-      isLoading: !this.state.instrument,
-      playNote: this.playNote,
-      stopNote: this.stopNote,
-      stopAllNotes: this.stopAllNotes,
-    });
+    return this.props.render
+      ? this.props.render({
+          isLoading: !this.state.instrument,
+          playNote: this.playNote,
+          stopNote: this.stopNote,
+          stopAllNotes: this.stopAllNotes,
+        })
+      : null;
   }
 }
 

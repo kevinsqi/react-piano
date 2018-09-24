@@ -13,8 +13,8 @@ class Key extends React.Component {
     accidental: PropTypes.bool.isRequired,
     active: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
-    onPlayNote: PropTypes.func.isRequired,
-    onStopNote: PropTypes.func.isRequired,
+    onPlayNoteInput: PropTypes.func.isRequired,
+    onStopNoteInput: PropTypes.func.isRequired,
     accidentalWidthRatio: PropTypes.number.isRequired,
     pitchPositions: PropTypes.object.isRequired,
     children: PropTypes.node,
@@ -38,12 +38,12 @@ class Key extends React.Component {
     },
   };
 
-  playNote = () => {
-    this.props.onPlayNote(this.props.midiNumber);
+  onPlayNoteInput = () => {
+    this.props.onPlayNoteInput(this.props.midiNumber);
   };
 
-  stopNote = () => {
-    this.props.onStopNote(this.props.midiNumber);
+  onStopNoteInput = () => {
+    this.props.onStopNoteInput(this.props.midiNumber);
   };
 
   // Key position is represented by the number of natural key widths from the left
@@ -91,13 +91,13 @@ class Key extends React.Component {
             accidental ? accidentalWidthRatio * naturalKeyWidth : naturalKeyWidth,
           ),
         }}
-        onMouseDown={useTouchEvents ? null : this.playNote}
-        onMouseUp={useTouchEvents ? null : this.stopNote}
-        onMouseEnter={gliss ? this.playNote : null}
-        onMouseLeave={this.stopNote}
-        onTouchStart={useTouchEvents ? this.playNote : null}
-        onTouchCancel={useTouchEvents ? this.stopNote : null}
-        onTouchEnd={useTouchEvents ? this.stopNote : null}
+        onMouseDown={useTouchEvents ? null : this.onPlayNoteInput}
+        onMouseUp={useTouchEvents ? null : this.onStopNoteInput}
+        onMouseEnter={gliss ? this.onPlayNoteInput : null}
+        onMouseLeave={this.onStopNoteInput}
+        onTouchStart={useTouchEvents ? this.onPlayNoteInput : null}
+        onTouchCancel={useTouchEvents ? this.onStopNoteInput : null}
+        onTouchEnd={useTouchEvents ? this.onStopNoteInput : null}
       >
         <div className="ReactPiano__NoteLabelContainer">{children}</div>
       </div>
