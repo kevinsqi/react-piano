@@ -1,3 +1,25 @@
+## 3.0.0 (September 23, 2018)
+
+Migration guide from 2.x.x:
+
+* Piano component's `playbackNotes` prop has been replaced with `activeNotes` [#36]
+* Rename Piano's `onPlayNote` prop to `playNote` [#36]
+* Rename Piano's `onStopNote` prop to `stopNote` [#36]
+* If you need to support IE, you may now need to polyfill `Array.find` [#30]
+
+Non-migratable changes:
+
+* Gliss behavior is modified so that clicking down on mouse outside the Piano component will not start a gliss - you have to click within the Piano element to start a gliss [#33]
+
+PRs:
+
+* Make Piano a controllable component, and export a ControlledPiano component [#36]
+* Only apply mouse/touch listeners on the piano component [#33]
+* Remove lodash utilities in favour of just/native [#30]
+* Use Rollup filesize plugin [#28]
+
+Thanks to @ritz078 for #30 and #33, and for making the suggestion for #28 and #36!
+
 ## 2.0.1 (September 8, 2018)
 
 * Use babel env target to compile ES6 features to ES5 to fix create-react-app prod build [#25]

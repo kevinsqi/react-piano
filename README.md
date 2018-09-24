@@ -99,6 +99,10 @@ In the CSS file you can do things like:
 
 See [styles.css](/src/styles.css) for more detail on what styles can be customized.
 
+## Upgrading versions
+
+See the [CHANGELOG](CHANGELOG.md) which contains migration guides for instructions on upgrading to each major version.
+
 ## Browser compatibility
 
 To support IE, you'll need to provide an `Array.find` polyfill.
