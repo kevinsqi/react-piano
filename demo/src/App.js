@@ -5,6 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import InteractiveDemo from './InteractiveDemo';
 import PlaybackDemo from './PlaybackDemo';
+import { lostWoods } from './songs';
 import './App.css';
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -41,7 +42,11 @@ class App extends React.Component {
           <hr className="mt-5" />
           <div className="row mt-5">
             <div className="col-md-8 offset-md-2">
-              <PlaybackDemo audioContext={audioContext} soundfontHostname={soundfontHostname} />
+              <PlaybackDemo
+                audioContext={audioContext}
+                soundfontHostname={soundfontHostname}
+                song={lostWoods}
+              />
             </div>
           </div>
           <hr className="mt-5" />

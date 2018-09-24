@@ -1,60 +1,43 @@
 import React from 'react';
 import { Piano, MidiNumbers } from 'react-piano';
+import classNames from 'classnames';
 
 import DimensionsProvider from './DimensionsProvider';
 import SoundfontProvider from './SoundfontProvider';
 
-const lostWoodsSong = [
-  [65],
-  [69],
-  [71],
-  [],
-  [65],
-  [69],
-  [71],
-  [],
-  [65],
-  [69],
-  [71],
-  [76],
-  [74],
-  [],
-  [71],
-  [72],
-  [71],
-  [67],
-  [64],
-  [],
-  [],
-  [],
-  [],
-  [62],
-  [64],
-  [67],
-  [64],
-  [],
-  [],
-  [],
-  [],
-  [],
-];
-
 class PlaybackDemo extends React.Component {
   state = {
-    activeNotes: [],
     activeNotesIndex: 0,
+    isPlaying: false,
+    stopAllNotes: () => console.warn('stopAllNotes not yet loaded'),
   };
 
-  componentDidMount() {
-    // noreintegrate
-    return;
-    setInterval(() => {
-      this.setState({
-        activeNotes: lostWoodsSong[this.state.activeNotesIndex],
-        activeNotesIndex: (this.state.activeNotesIndex + 1) % lostWoodsSong.length,
-      });
-    }, 250);
+  constructor(props) {
+    super(props);
+    this.playbackIntervalFn = null;
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.isPlaying !== this.state.isPlaying) {
+      if (this.state.isPlaying) {
+        this.playbackIntervalFn = setInterval(() => {
+          this.setState({
+            activeNotesIndex: (this.state.activeNotesIndex + 1) % this.props.song.length,
+          });
+        }, 200);
+      } else {
+        clearInterval(this.playbackIntervalFn);
+        this.state.stopAllNotes();
+        this.setState({
+          activeNotesIndex: 0,
+        });
+      }
+    }
+  }
+
+  setPlaying = (value) => {
+    this.setState({ isPlaying: value });
+  };
 
   render() {
     const noteRange = {
@@ -64,25 +47,44 @@ class PlaybackDemo extends React.Component {
 
     return (
       <div>
-        <SoundfontProvider
-          audioContext={this.props.audioContext}
-          instrumentName="acoustic_grand_piano"
-          hostname={this.props.soundfontHostname}
-          render={({ isLoading, playNote, stopNote, stopAllNotes }) => (
-            <DimensionsProvider>
-              {({ containerWidth }) => (
-                <Piano
-                  activeNotes={this.state.activeNotes}
-                  noteRange={noteRange}
-                  width={containerWidth}
-                  playNote={playNote}
-                  stopNote={stopNote}
-                  disabled={isLoading}
-                />
-              )}
-            </DimensionsProvider>
-          )}
-        />
+        <div className="text-center">
+          <p>Or try playing it back.</p>
+          <div>
+            <button
+              className={classNames('btn btn-sm', {
+                'btn-outline-info': !this.state.isPlaying,
+                'btn-outline-danger': this.state.isPlaying,
+              })}
+              onClick={() => this.setPlaying(!this.state.isPlaying)}
+            >
+              {this.state.isPlaying ? 'Stop' : 'Start'}
+            </button>
+          </div>
+        </div>
+        <div className="mt-4">
+          <SoundfontProvider
+            audioContext={this.props.audioContext}
+            instrumentName="acoustic_grand_piano"
+            hostname={this.props.soundfontHostname}
+            onLoad={({ stopAllNotes }) => this.setState({ stopAllNotes })}
+            render={({ isLoading, playNote, stopNote, stopAllNotes }) => (
+              <DimensionsProvider>
+                {({ containerWidth }) => (
+                  <Piano
+                    activeNotes={
+                      this.state.isPlaying ? this.props.song[this.state.activeNotesIndex] : []
+                    }
+                    noteRange={noteRange}
+                    width={containerWidth}
+                    playNote={playNote}
+                    stopNote={stopNote}
+                    disabled={isLoading || !this.state.isPlaying}
+                  />
+                )}
+              </DimensionsProvider>
+            )}
+          />
+        </div>
       </div>
     );
   }
