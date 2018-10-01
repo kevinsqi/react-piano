@@ -36,7 +36,7 @@ class Piano extends React.Component {
       this.state.activeNotes !== this.props.activeNotes
     ) {
       this.setState({
-        activeNotes: this.props.activeNotes,
+        activeNotes: this.props.activeNotes || [],
       });
     }
   }
