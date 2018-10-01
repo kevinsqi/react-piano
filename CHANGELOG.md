@@ -1,3 +1,7 @@
+## 3.1.0 (September 30, 2018)
+
+* Fix activeNotes prop behavior, and add onPlayNoteInput/onStopNoteInput props [#37]
+
 ## 3.0.0 (September 23, 2018)
 
 Migration guide from 2.x.x:
