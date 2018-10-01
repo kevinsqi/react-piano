@@ -47,9 +47,15 @@ class Piano extends React.Component {
     if (this.props.onPlayNoteInput) {
       this.props.onPlayNoteInput(midiNumber, { prevActiveNotes: this.state.activeNotes });
     }
-    this.setState((prevState) => ({
-      activeNotes: prevState.activeNotes.concat(midiNumber),
-    }));
+    this.setState((prevState) => {
+      // Don't append note to activeNotes if it's already present
+      if (prevState.activeNotes.includes(midiNumber)) {
+        return null;
+      }
+      return {
+        activeNotes: prevState.activeNotes.concat(midiNumber),
+      };
+    });
   };
 
   handleStopNoteInput = (midiNumber) => {
