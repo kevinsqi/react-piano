@@ -54,12 +54,13 @@ class Piano extends React.Component {
   };
 
   render() {
+    const { activeNotes, ...otherProps } = this.props;
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
         onPlayNoteInput={this.handlePlayNoteInput}
         onStopNoteInput={this.handleStopNoteInput}
-        {...this.props}
+        {...otherProps}
       />
     );
   }
