@@ -40,14 +40,10 @@ class ControlledPiano extends React.Component {
       ) : null,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isMouseDown: false,
-      useTouchEvents: false,
-    };
-  }
+  state = {
+    isMouseDown: false,
+    useTouchEvents: false,
+  };
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown);

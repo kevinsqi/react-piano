@@ -75,6 +75,8 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `className` | String | A className to add to the component. |
 | `disabled` | Boolean | Whether to show disabled state. Useful when audio sounds need to be asynchronously loaded. |
 | `keyboardShortcuts` | Array of object | An array of form `[{ key: 'a', midiNumber: 48 }, ...]`, where `key` is a `keyEvent.key` value. You can generate this using `KeyboardShortcuts.create`, or use your own method to generate it. You can omit it if you don't want to use keyboard shortcuts. **Note:** this shouldn't be generated inline in JSX because it can cause problems when diffing for shortcut changes. |
+| `onPlayNoteInput` | Function | `(midiNumber, { prevActiveNotes }) => void` function that fires whenever a play-note event is fired. Can use `prevActiveNotes` to record notes. |
+| `onStopNoteInput` | Function | `(midiNumber, { prevActiveNotes }) => void` function that fires whenever a stop-note event is fired. Can use `prevActiveNotes` to record notes. |
 
 ## Customizing styles
 

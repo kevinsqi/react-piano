@@ -11,6 +11,8 @@ class Piano extends React.Component {
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
     playNote: PropTypes.func.isRequired,
     stopNote: PropTypes.func.isRequired,
+    onPlayNoteInput: PropTypes.func,
+    onStopNoteInput: PropTypes.func,
     renderNoteLabel: PropTypes.func,
     className: PropTypes.string,
     disabled: PropTypes.bool,
@@ -36,30 +38,43 @@ class Piano extends React.Component {
       this.state.activeNotes !== this.props.activeNotes
     ) {
       this.setState({
-        activeNotes: this.props.activeNotes,
+        activeNotes: this.props.activeNotes || [],
       });
     }
   }
 
   handlePlayNoteInput = (midiNumber) => {
-    this.setState((prevState) => ({
-      activeNotes: prevState.activeNotes.concat(midiNumber),
-    }));
+    if (this.props.onPlayNoteInput) {
+      this.props.onPlayNoteInput(midiNumber, { prevActiveNotes: this.state.activeNotes });
+    }
+    this.setState((prevState) => {
+      // Don't append note to activeNotes if it's already present
+      if (prevState.activeNotes.includes(midiNumber)) {
+        return null;
+      }
+      return {
+        activeNotes: prevState.activeNotes.concat(midiNumber),
+      };
+    });
   };
 
   handleStopNoteInput = (midiNumber) => {
+    if (this.props.onStopNoteInput) {
+      this.props.onStopNoteInput(midiNumber, { prevActiveNotes: this.state.activeNotes });
+    }
     this.setState((prevState) => ({
       activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
     }));
   };
 
   render() {
+    const { activeNotes, onPlayNoteInput, onStopNoteInput, ...otherProps } = this.props;
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
         onPlayNoteInput={this.handlePlayNoteInput}
         onStopNoteInput={this.handleStopNoteInput}
-        {...this.props}
+        {...otherProps}
       />
     );
   }
