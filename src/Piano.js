@@ -27,7 +27,7 @@ class Piano extends React.Component {
   };
 
   state = {
-    activeNotes: [],
+    activeNotes: this.props.activeNotes || [],
   };
 
   componentDidUpdate(prevProps) {
