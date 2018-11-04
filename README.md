@@ -78,6 +78,12 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `onPlayNoteInput` | Function | `(midiNumber, { prevActiveNotes }) => void` function that fires whenever a play-note event is fired. Can use `prevActiveNotes` to record notes. |
 | `onStopNoteInput` | Function | `(midiNumber, { prevActiveNotes }) => void` function that fires whenever a stop-note event is fired. Can use `prevActiveNotes` to record notes. |
 
+## Recording/saving notes
+
+You can "record" notes that are played on a `<Piano>` by using `onPlayNoteInput` or `onStopNoteInput`, and you can then play back the recording by using `activeNotes`. See [this CodeSandbox](https://codesandbox.io/s/l4jjvzmp47) which demonstrates how to set that up.
+
+<a href="https://codesandbox.io/s/l4jjvzmp47"><img src="/demo/public/images/recording-demo.gif" alt="demo of recording" /></a>
+
 ## Customizing styles
 
 You can customize many aspects of the piano using CSS. In javascript, you can override the base styles by creating your own set of overrides:
