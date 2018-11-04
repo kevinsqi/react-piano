@@ -82,7 +82,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 
 You can "record" notes that are played on a `<Piano>` by using `onPlayNoteInput` or `onStopNoteInput`, and you can then play back the recording by using `activeNotes`. See [this CodeSandbox](https://codesandbox.io/s/l4jjvzmp47) which demonstrates how to set that up.
 
-<a href="https://codesandbox.io/s/l4jjvzmp47"><img src="/demo/public/images/recording-demo.gif" alt="demo of recording" /></a>
+<a href="https://codesandbox.io/s/l4jjvzmp47"><img width="300" src="/demo/public/images/recording-demo.gif" alt="demo of recording" /></a>
 
 ## Customizing styles
 
