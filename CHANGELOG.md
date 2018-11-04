@@ -1,3 +1,7 @@
+## 3.1.1 (November 3, 2018)
+
+* Fix issue where Piano does not expand to container size when "width" prop is omitted [#38]
+
 ## 3.1.0 (September 30, 2018)
 
 * Fix activeNotes prop behavior, and add onPlayNoteInput/onStopNoteInput props [#37]
