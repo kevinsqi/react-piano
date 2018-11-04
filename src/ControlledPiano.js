@@ -161,6 +161,7 @@ class ControlledPiano extends React.Component {
   render() {
     return (
       <div
+        style={{ width: '100%', height: '100%' }}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
         onTouchStart={this.onTouchStart}
