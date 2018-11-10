@@ -1,3 +1,7 @@
+## 3.1.2 (November 10, 2018)
+
+* Make Piano use activeNotes prop for initial state [#40]
+
 ## 3.1.1 (November 3, 2018)
 
 * Fix issue where Piano does not expand to container size when "width" prop is omitted [#38]
