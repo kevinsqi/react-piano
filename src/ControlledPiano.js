@@ -26,6 +26,7 @@ class ControlledPiano extends React.Component {
   };
 
   static defaultProps = {
+    keyWidthToHeight: 0.33,
     renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) =>
       keyboardShortcut ? (
         <div
@@ -159,9 +160,18 @@ class ControlledPiano extends React.Component {
   };
 
   render() {
+    const whiteKeysPerOctave = 7;
+    const totalKeysPerOctave = 12;
+    const keyCount = this.props.noteRange.last - this.props.noteRange.first;
+    const octaves = keyCount / totalKeysPerOctave;
+    const keyboardWidthToHeight = this.props.keyWidthToHeight * whiteKeysPerOctave * octaves;
+    const style = this.props.width
+      ? { width: '100%', height: '100%' }
+      : { position: 'relative', height: 0, paddingTop: `${(1 / keyboardWidthToHeight) * 100}%` };
+
     return (
       <div
-        style={{ width: '100%', height: '100%' }}
+        style={style}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
         onTouchStart={this.onTouchStart}

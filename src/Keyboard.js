@@ -61,11 +61,11 @@ class Keyboard extends React.Component {
 
   render() {
     const naturalKeyWidth = this.getNaturalKeyWidth();
+    const style = this.props.width
+      ? { width: this.getWidth(), height: this.getHeight() }
+      : { width: this.getWidth(), height: this.getHeight(), position: 'absolute', top: 0, left: 0 };
     return (
-      <div
-        className={classNames('ReactPiano__Keyboard', this.props.className)}
-        style={{ width: this.getWidth(), height: this.getHeight() }}
-      >
+      <div className={classNames('ReactPiano__Keyboard', this.props.className)} style={style}>
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
           const isActive = this.props.activeNotes.includes(midiNumber);
