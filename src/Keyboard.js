@@ -61,38 +61,48 @@ class Keyboard extends React.Component {
 
   render() {
     const naturalKeyWidth = this.getNaturalKeyWidth();
-    const style = this.props.width
+    const keyboardWidthToHeight = this.props.keyWidthToHeight * this.getNaturalKeyCount();
+    const containerStyle = this.props.width
+      ? { width: '100%', height: '100%' }
+      : { position: 'relative', height: 0, paddingTop: `${(1 / keyboardWidthToHeight) * 100}%` };
+    const keyboardStyle = this.props.width
       ? { width: this.getWidth(), height: this.getHeight() }
       : { width: this.getWidth(), height: this.getHeight(), position: 'absolute', top: 0, left: 0 };
+
     return (
-      <div className={classNames('ReactPiano__Keyboard', this.props.className)} style={style}>
-        {this.getMidiNumbers().map((midiNumber) => {
-          const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
-          const isActive = this.props.activeNotes.includes(midiNumber);
-          return (
-            <Key
-              naturalKeyWidth={naturalKeyWidth}
-              midiNumber={midiNumber}
-              noteRange={this.props.noteRange}
-              active={isActive}
-              accidental={isAccidental}
-              disabled={this.props.disabled}
-              onPlayNoteInput={this.props.onPlayNoteInput}
-              onStopNoteInput={this.props.onStopNoteInput}
-              gliss={this.props.gliss}
-              useTouchEvents={this.props.useTouchEvents}
-              key={midiNumber}
-            >
-              {this.props.disabled
-                ? null
-                : this.props.renderNoteLabel({
-                    isActive,
-                    isAccidental,
-                    midiNumber,
-                  })}
-            </Key>
-          );
-        })}
+      <div className="ReactPiano__Keyboard_Container" style={containerStyle}>
+        <div
+          className={classNames('ReactPiano__Keyboard', this.props.className)}
+          style={keyboardStyle}
+        >
+          {this.getMidiNumbers().map((midiNumber) => {
+            const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
+            const isActive = this.props.activeNotes.includes(midiNumber);
+            return (
+              <Key
+                naturalKeyWidth={naturalKeyWidth}
+                midiNumber={midiNumber}
+                noteRange={this.props.noteRange}
+                active={isActive}
+                accidental={isAccidental}
+                disabled={this.props.disabled}
+                onPlayNoteInput={this.props.onPlayNoteInput}
+                onStopNoteInput={this.props.onStopNoteInput}
+                gliss={this.props.gliss}
+                useTouchEvents={this.props.useTouchEvents}
+                key={midiNumber}
+              >
+                {this.props.disabled
+                  ? null
+                  : this.props.renderNoteLabel({
+                      isActive,
+                      isAccidental,
+                      midiNumber,
+                    })}
+              </Key>
+            );
+          })}
+        </div>
       </div>
     );
   }
