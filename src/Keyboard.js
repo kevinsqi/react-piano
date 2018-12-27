@@ -52,26 +52,24 @@ class Keyboard extends React.Component {
   }
 
   getHeight() {
-    if (!this.props.width || !this.props.keyWidthToHeight) {
+    if (!this.props.width || !this.props.keyWidthToHeight || this.shouldUseAspectRatioWrapper()) {
       return '100%';
     }
     const keyWidth = this.props.width * this.getNaturalKeyWidth();
     return `${keyWidth / this.props.keyWidthToHeight}px`;
   }
 
-  keyboardWidthToHeightRatio() {
-    if (this.props.keyWidthToHeight) {
-      return this.props.keyWidthToHeight * this.getNaturalKeyCount();
-    } else {
-      // we cannot calculate a width/height ratio, the component will be sized in height depending on the style of containing elements
-      return undefined;
-    }
+  shouldUseAspectRatioWrapper() {
+    // do not use AspectRatioWrapper in case width is defined, since the height can be calculated statically easily
+    return !this.props.width && this.props.keyWidthToHeight;
   }
 
   render() {
     const naturalKeyWidth = this.getNaturalKeyWidth();
+    const keyboardWidthToHeightRatio =
+      this.shouldUseAspectRatioWrapper() && this.props.keyWidthToHeight * this.getNaturalKeyCount();
     return (
-      <AspectRatioWrapper widthToHeightRatio={this.keyboardWidthToHeightRatio()}>
+      <AspectRatioWrapper widthToHeightRatio={keyboardWidthToHeightRatio}>
         <div
           className={classNames('ReactPiano__Keyboard', this.props.className)}
           style={{ width: this.getWidth(), height: this.getHeight() }}
