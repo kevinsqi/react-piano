@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
+import AspectRatioWrapper from './AspectRatioWrapper';
 
 class Keyboard extends React.Component {
   static propTypes = {
@@ -61,19 +62,14 @@ class Keyboard extends React.Component {
 
   render() {
     const naturalKeyWidth = this.getNaturalKeyWidth();
-    const keyboardWidthToHeight = this.props.keyWidthToHeight * this.getNaturalKeyCount();
-    const containerStyle = this.props.width
-      ? { width: '100%', height: '100%' }
-      : { position: 'relative', height: 0, paddingTop: `${(1 / keyboardWidthToHeight) * 100}%` };
-    const keyboardStyle = this.props.width
-      ? { width: this.getWidth(), height: this.getHeight() }
-      : { width: this.getWidth(), height: this.getHeight(), position: 'absolute', top: 0, left: 0 };
-
+    const keyboardWidthToHeightRatio = this.props.width
+      ? undefined
+      : this.props.keyWidthToHeight * this.getNaturalKeyCount();
     return (
-      <div className="ReactPiano__Keyboard_Container" style={containerStyle}>
+      <AspectRatioWrapper widthToHeightRatio={keyboardWidthToHeightRatio}>
         <div
           className={classNames('ReactPiano__Keyboard', this.props.className)}
-          style={keyboardStyle}
+          style={{ width: this.getWidth(), height: this.getHeight() }}
         >
           {this.getMidiNumbers().map((midiNumber) => {
             const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
@@ -103,7 +99,7 @@ class Keyboard extends React.Component {
             );
           })}
         </div>
-      </div>
+      </AspectRatioWrapper>
     );
   }
 }
