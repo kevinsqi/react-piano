@@ -45,6 +45,7 @@ class InteractiveDemo extends React.Component {
                 playNote={playNote}
                 stopNote={stopNote}
                 disabled={isLoading}
+                keyWidthToHeight={0.33}
               />
             </div>
             <div className="row mt-5">

@@ -75,6 +75,7 @@ class PlaybackDemo extends React.Component {
                 playNote={playNote}
                 stopNote={stopNote}
                 disabled={isLoading || !this.state.isPlaying}
+                keyWidthToHeight={0.33}
               />
             )}
           />
