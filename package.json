@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iqnivek/react-piano.git"
+    "url": "git+https://github.com/kevinsqi/react-piano.git"
   },
   "keywords": [
     "react",
@@ -34,9 +34,9 @@
   "author": "Kevin Qi <iqnivek@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/iqnivek/react-piano/issues"
+    "url": "https://github.com/kevinsqi/react-piano/issues"
   },
-  "homepage": "https://github.com/iqnivek/react-piano",
+  "homepage": "https://github.com/kevinsqi/react-piano",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",

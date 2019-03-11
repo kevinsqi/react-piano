@@ -41,7 +41,7 @@ Thanks to @ritz078 for #30 and #33, and for making the suggestion for #28 and #3
 Migration guide from 1.x.x:
 
 * Import the styles with `import 'react-piano/dist/styles.css'` instead of `import 'react-piano/build/styles.css'` [#23]
-* If you customized the `renderNoteLabel` prop, you may need to adjust its behavior because it is now called on all keys, not just ones with keyboardShortcuts. See [this commit](https://github.com/iqnivek/react-piano/pull/24/commits/822b66738e79909009ccea41b8a8f13554c7c01e) for more detail.
+* If you customized the `renderNoteLabel` prop, you may need to adjust its behavior because it is now called on all keys, not just ones with keyboardShortcuts. See [this commit](https://github.com/kevinsqi/react-piano/pull/24/commits/822b66738e79909009ccea41b8a8f13554c7c01e) for more detail.
 
 PRs:
 

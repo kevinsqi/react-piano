@@ -11,7 +11,7 @@ function Footer(props) {
           </span>
           by{' '}
           <a className="text-secondary" href="http://www.kevinqi.com/">
-            <strong>@iqnivek</strong>
+            <strong>@kevinsqi</strong>
           </a>
         </div>
       </div>

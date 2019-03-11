@@ -14,7 +14,7 @@ function Header() {
           <div className="mt-4">
             <a
               className="btn btn-outline-light btn-lg"
-              href="https://github.com/iqnivek/react-piano"
+              href="https://github.com/kevinsqi/react-piano"
             >
               View docs on Github
             </a>

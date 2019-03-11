@@ -20,7 +20,7 @@ function Installation() {
         <code className="p-2 text-dark bg-yellow">yarn add react-piano</code>
       </p>
       <div className="mt-5">
-        <a className="btn btn-info btn-lg" href="https://github.com/iqnivek/react-piano">
+        <a className="btn btn-info btn-lg" href="https://github.com/kevinsqi/react-piano">
           View docs on Github
         </a>
       </div>
