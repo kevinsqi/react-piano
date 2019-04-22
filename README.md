@@ -6,7 +6,7 @@
 
 An interactive piano keyboard for React. Supports custom sounds, touch/click/keyboard events, and fully configurable styling. [**Try it out on CodeSandbox**](https://codesandbox.io/s/7wq15pm1n1).
 
-<a href="http://www.kevinqi.com/react-piano/"><img width="600" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" /></a>
+<a href="https://www.kevinqi.com/react-piano/"><img width="600" src="/demo/public/images/react-piano-screenshot.png" alt="react-piano screenshot" /></a>
 
 ## Installing
 
@@ -59,7 +59,7 @@ function App() {
 
 ## Implementing audio playback
 
-react-piano does not implement audio playback of each note, so you have to implement it with `playNote` and `stopNote` props. This gives you the ability to use any sounds you'd like with the rendered piano. The [react-piano demo page](http://www.kevinqi.com/react-piano/) uses @danigb's excellent [soundfont-player](https://github.com/danigb/soundfont-player) to play realistic-sounding soundfont samples. Take a look at the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to see how you can implement that yourself.
+react-piano does not implement audio playback of each note, so you have to implement it with `playNote` and `stopNote` props. This gives you the ability to use any sounds you'd like with the rendered piano. The [react-piano demo page](https://www.kevinqi.com/react-piano/) uses @danigb's excellent [soundfont-player](https://github.com/danigb/soundfont-player) to play realistic-sounding soundfont samples. Take a look at the [**CodeSandbox demo**](https://codesandbox.io/s/7wq15pm1n1) to see how you can implement that yourself.
 
 ## Props
 
