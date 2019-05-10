@@ -2,7 +2,6 @@ import React from 'react';
 import { Piano, MidiNumbers } from 'react-piano';
 import classNames from 'classnames';
 
-import DimensionsProvider from './DimensionsProvider';
 import SoundfontProvider from './SoundfontProvider';
 
 class PlaybackDemo extends React.Component {
@@ -68,20 +67,16 @@ class PlaybackDemo extends React.Component {
             hostname={this.props.soundfontHostname}
             onLoad={({ stopAllNotes }) => this.setState({ stopAllNotes })}
             render={({ isLoading, playNote, stopNote, stopAllNotes }) => (
-              <DimensionsProvider>
-                {({ containerWidth }) => (
-                  <Piano
-                    activeNotes={
-                      this.state.isPlaying ? this.props.song[this.state.activeNotesIndex] : []
-                    }
-                    noteRange={noteRange}
-                    width={containerWidth}
-                    playNote={playNote}
-                    stopNote={stopNote}
-                    disabled={isLoading || !this.state.isPlaying}
-                  />
-                )}
-              </DimensionsProvider>
+              <Piano
+                activeNotes={
+                  this.state.isPlaying ? this.props.song[this.state.activeNotesIndex] : []
+                }
+                noteRange={noteRange}
+                playNote={playNote}
+                stopNote={stopNote}
+                disabled={isLoading || !this.state.isPlaying}
+                keyWidthToHeight={0.33}
+              />
             )}
           />
         </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import { Piano, KeyboardShortcuts, MidiNumbers } from 'react-piano';
 import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 
-import DimensionsProvider from './DimensionsProvider';
 import InstrumentListProvider from './InstrumentListProvider';
 import SoundfontProvider from './SoundfontProvider';
 import PianoConfig from './PianoConfig';
@@ -40,18 +39,14 @@ class InteractiveDemo extends React.Component {
               </div>
             </div>
             <div className="mt-4">
-              <DimensionsProvider>
-                {({ containerWidth }) => (
-                  <Piano
-                    noteRange={this.state.config.noteRange}
-                    keyboardShortcuts={keyboardShortcuts}
-                    playNote={playNote}
-                    stopNote={stopNote}
-                    disabled={isLoading}
-                    width={containerWidth}
-                  />
-                )}
-              </DimensionsProvider>
+              <Piano
+                noteRange={this.state.config.noteRange}
+                keyboardShortcuts={keyboardShortcuts}
+                playNote={playNote}
+                stopNote={stopNote}
+                disabled={isLoading}
+                keyWidthToHeight={0.33}
+              />
             </div>
             <div className="row mt-5">
               <div className="col-lg-8 offset-lg-2">

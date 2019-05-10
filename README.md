@@ -50,8 +50,8 @@ function App() {
       stopNote={(midiNumber) => {
         // Stop playing a given note - see notes below
       }}
-      width={1000}
       keyboardShortcuts={keyboardShortcuts}
+      keyWidthToHeight={0.33}
     />
   );
 }
@@ -68,7 +68,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `noteRange` | **Required** object | An object with format `{ first: 48, last: 77 }` where first and last are MIDI numbers that correspond to natural notes. You can use `MidiNumbers.NATURAL_MIDI_NUMBERS` to identify whether a number is a natural note or not. |
 | `playNote` | **Required** function | `(midiNumber) => void` function to play a note specified by MIDI number. |
 | `stopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
-| `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
+| `width` | number | Width in pixels of the component. This is not strictly required, if you omit it, the `<Piano>` will size itself responsively satisfying the `keyWidthToHeight` ratio. If neither `width` nor `keyWidthToHeight` are set, the keyboard will size itself to the parent containers size. |
 | `activeNotes` | Array of numbers | An array of MIDI numbers, e.g. `[44, 47, 54]`, which allows you to programmatically play notes on the piano. |
 | `keyWidthToHeight` | Number | Ratio of key width to height. Used to specify the dimensions of the piano key. |
 | `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
