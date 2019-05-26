@@ -12,6 +12,7 @@ class Key extends React.Component {
     useTouchEvents: PropTypes.bool.isRequired,
     accidental: PropTypes.bool.isRequired,
     active: PropTypes.bool.isRequired,
+    highlighted: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
     onPlayNoteInput: PropTypes.func.isRequired,
     onStopNoteInput: PropTypes.func.isRequired,
@@ -71,6 +72,7 @@ class Key extends React.Component {
       useTouchEvents,
       accidental,
       active,
+      highlighted,
       disabled,
       children,
     } = this.props;
@@ -84,6 +86,7 @@ class Key extends React.Component {
           'ReactPiano__Key--natural': !accidental,
           'ReactPiano__Key--disabled': disabled,
           'ReactPiano__Key--active': active,
+          'ReactPiano__Key--highlighted':highlighted,
         })}
         style={{
           left: ratioToPercentage(this.getRelativeKeyPosition(midiNumber) * naturalKeyWidth),

@@ -70,6 +70,7 @@ react-piano does not implement audio playback of each note, so you have to imple
 | `stopNote` | **Required** function | `(midiNumber) => void` function to stop playing a note. |
 | `width` | **Conditionally required** number | Width in pixels of the component. While this is not strictly required, if you omit it, the container around the `<Piano>` will need to have an explicit width and height in order to render correctly. |
 | `activeNotes` | Array of numbers | An array of MIDI numbers, e.g. `[44, 47, 54]`, which allows you to programmatically play notes on the piano. |
+| `highlightedNotes` | Array of numbers | An array of MIDI numbers, e.g. `[44, 47, 54]`, which allows you to highlight notes on the piano. |
 | `keyWidthToHeight` | Number | Ratio of key width to height. Used to specify the dimensions of the piano key. |
 | `renderNoteLabel` | Function | `({ keyboardShortcut, midiNumber, isActive, isAccidental }) => node` function to render a label on piano keys that have keyboard shortcuts |
 | `className` | String | A className to add to the component. |

@@ -9,6 +9,7 @@ class Piano extends React.Component {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
+    highlightedNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
     playNote: PropTypes.func.isRequired,
     stopNote: PropTypes.func.isRequired,
     onPlayNoteInput: PropTypes.func,
@@ -28,6 +29,7 @@ class Piano extends React.Component {
 
   state = {
     activeNotes: this.props.activeNotes || [],
+    highlightedNotes: this.props.highlightedNotes || [],
   };
 
   componentDidUpdate(prevProps) {
@@ -39,6 +41,14 @@ class Piano extends React.Component {
     ) {
       this.setState({
         activeNotes: this.props.activeNotes || [],
+      });
+    }
+    if (
+      prevProps.highlightedNotes !== this.props.highlightedNotes &&
+      this.state.highlightedNotes !== this.props.highlightedNotes
+    ) {
+      this.setState({
+        highlightedNotes: this.props.highlightedNotes || [],
       });
     }
   }
@@ -72,6 +82,7 @@ class Piano extends React.Component {
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
+        highlightedNotes={this.state.highlightedNotes}
         onPlayNoteInput={this.handlePlayNoteInput}
         onStopNoteInput={this.handleStopNoteInput}
         {...otherProps}
