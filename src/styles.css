@@ -72,10 +72,6 @@
 /*
  * Styles for disabled state
  */
-.ReactPiano__Key--disabled.ReactPiano__Key {
-  cursor: progress;
-}
-
 .ReactPiano__Key--disabled.ReactPiano__Key--accidental {
   background: #ddd;
   border: 1px solid #999;
