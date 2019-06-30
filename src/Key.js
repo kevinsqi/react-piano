@@ -4,7 +4,9 @@ import classNames from 'classnames';
 
 import MidiNumbers from './MidiNumbers';
 
-class Key extends React.Component {
+class Key extends React.PureComponent {
+  static whyDidYouRender = true;
+
   static propTypes = {
     midiNumber: PropTypes.number.isRequired,
     naturalKeyWidth: PropTypes.number.isRequired, // Width as a ratio between 0 and 1
