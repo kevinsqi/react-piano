@@ -68,7 +68,7 @@ class Keyboard extends React.Component {
       >
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
-          const isActive = this.props.activeNotes.includes(midiNumber);
+          const isActive = !this.props.disabled && this.props.activeNotes.includes(midiNumber);
           return (
             <Key
               naturalKeyWidth={naturalKeyWidth}
