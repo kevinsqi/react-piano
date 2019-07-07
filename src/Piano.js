@@ -5,7 +5,7 @@ import difference from 'lodash.difference';
 import ControlledPiano from './ControlledPiano';
 import Keyboard from './Keyboard';
 
-class Piano extends React.Component {
+class Piano extends React.PureComponent {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired),

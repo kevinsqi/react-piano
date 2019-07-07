@@ -4,7 +4,21 @@ import classNames from 'classnames';
 import difference from 'lodash.difference';
 import Keyboard from './Keyboard';
 
-class ControlledPiano extends React.Component {
+function defaultRenderNoteLabel({ keyboardShortcut, midiNumber, isActive, isAccidental }) {
+  return keyboardShortcut ? (
+    <div
+      className={classNames('ReactPiano__NoteLabel', {
+        'ReactPiano__NoteLabel--active': isActive,
+        'ReactPiano__NoteLabel--accidental': isAccidental,
+        'ReactPiano__NoteLabel--natural': !isAccidental,
+      })}
+    >
+      {keyboardShortcut}
+    </div>
+  ) : null;
+}
+
+class ControlledPiano extends React.PureComponent {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
@@ -26,18 +40,7 @@ class ControlledPiano extends React.Component {
   };
 
   static defaultProps = {
-    renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) =>
-      keyboardShortcut ? (
-        <div
-          className={classNames('ReactPiano__NoteLabel', {
-            'ReactPiano__NoteLabel--active': isActive,
-            'ReactPiano__NoteLabel--accidental': isAccidental,
-            'ReactPiano__NoteLabel--natural': !isAccidental,
-          })}
-        >
-          {keyboardShortcut}
-        </div>
-      ) : null,
+    renderNoteLabel: defaultRenderNoteLabel,
   };
 
   state = {

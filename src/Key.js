@@ -40,11 +40,26 @@ class Key extends React.PureComponent {
     },
   };
 
+  // noreintegrate use .bind on these instead of arrow funcs
   onPlayNoteInput = () => {
     this.props.onPlayNoteInput(this.props.midiNumber);
   };
 
+  onPlayNoteInputGliss = () => {
+    if (!this.props.gliss) {
+      return;
+    }
+    this.props.onPlayNoteInput(this.props.midiNumber);
+  };
+
   onStopNoteInput = () => {
+    this.props.onStopNoteInput(this.props.midiNumber);
+  };
+
+  onStopNoteInputGliss = () => {
+    if (!this.props.gliss) {
+      return;
+    }
     this.props.onStopNoteInput(this.props.midiNumber);
   };
 

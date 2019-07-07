@@ -6,7 +6,25 @@ import classNames from 'classnames';
 import Key from './Key';
 import MidiNumbers from './MidiNumbers';
 
-class Keyboard extends React.Component {
+class NoteLabel extends React.PureComponent {
+  static whyDidYouRender = true;
+  render() {
+    return null;
+    /*
+    const { disabled, isActive, isAccidental, midiNumber, render } = this.props;
+    return disabled
+      ? null
+      : render({
+          isActive,
+          isAccidental,
+          midiNumber,
+        });
+    */
+  }
+}
+
+class Keyboard extends React.PureComponent {
+  static whyDidYouRender = true;
   static propTypes = {
     noteRange: noteRangePropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
@@ -83,13 +101,15 @@ class Keyboard extends React.Component {
               useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
             >
-              {this.props.disabled
-                ? null
-                : this.props.renderNoteLabel({
-                    isActive,
-                    isAccidental,
-                    midiNumber,
-                  })}
+              {/*
+              <NoteLabel
+                isAccidental={isAccidental}
+                isActive={isActive}
+                midiNumber={midiNumber}
+                disabled={this.props.disabled}
+                render={this.props.renderNoteLabel}
+              />
+              */}
             </Key>
           );
         })}
