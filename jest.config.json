@@ -1,5 +1,5 @@
 {
   "rootDir": "src",
-  "setupTestFrameworkScriptFile": "<rootDir>/setupTests.js",
+  "setupFilesAfterEnv": ["<rootDir>/setupTests.js"],
   "coverageDirectory": "<rootDir>/../coverage"
 }

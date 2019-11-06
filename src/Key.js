@@ -12,7 +12,6 @@ class Key extends React.Component {
     useTouchEvents: PropTypes.bool.isRequired,
     accidental: PropTypes.bool.isRequired,
     active: PropTypes.bool.isRequired,
-    highlighted: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
     onPlayNoteInput: PropTypes.func.isRequired,
     onStopNoteInput: PropTypes.func.isRequired,
@@ -68,11 +67,8 @@ class Key extends React.Component {
       naturalKeyWidth,
       accidentalWidthRatio,
       midiNumber,
-      gliss,
-      useTouchEvents,
       accidental,
       active,
-      highlighted,
       disabled,
       children,
     } = this.props;
@@ -86,7 +82,6 @@ class Key extends React.Component {
           'ReactPiano__Key--natural': !accidental,
           'ReactPiano__Key--disabled': disabled,
           'ReactPiano__Key--active': active,
-          'ReactPiano__Key--highlighted':highlighted,
         })}
         style={{
           left: ratioToPercentage(this.getRelativeKeyPosition(midiNumber) * naturalKeyWidth),
@@ -94,13 +89,6 @@ class Key extends React.Component {
             accidental ? accidentalWidthRatio * naturalKeyWidth : naturalKeyWidth,
           ),
         }}
-        onMouseDown={useTouchEvents ? null : this.onPlayNoteInput}
-        onMouseUp={useTouchEvents ? null : this.onStopNoteInput}
-        onMouseEnter={gliss ? this.onPlayNoteInput : null}
-        onMouseLeave={this.onStopNoteInput}
-        onTouchStart={useTouchEvents ? this.onPlayNoteInput : null}
-        onTouchCancel={useTouchEvents ? this.onStopNoteInput : null}
-        onTouchEnd={useTouchEvents ? this.onStopNoteInput : null}
       >
         <div className="ReactPiano__NoteLabelContainer">{children}</div>
       </div>

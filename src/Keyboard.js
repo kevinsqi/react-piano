@@ -10,7 +10,6 @@ class Keyboard extends React.Component {
   static propTypes = {
     noteRange: noteRangePropType,
     activeNotes: PropTypes.arrayOf(PropTypes.number),
-    highlightedNotes: PropTypes.arrayOf(PropTypes.number),
     onPlayNoteInput: PropTypes.func.isRequired,
     onStopNoteInput: PropTypes.func.isRequired,
     renderNoteLabel: PropTypes.func.isRequired,
@@ -69,21 +68,15 @@ class Keyboard extends React.Component {
       >
         {this.getMidiNumbers().map((midiNumber) => {
           const { note, isAccidental } = MidiNumbers.getAttributes(midiNumber);
-          const isActive = this.props.activeNotes.includes(midiNumber);
-          const isHighlighted = this.props.highlightedNotes.includes(midiNumber);
+          const isActive = !this.props.disabled && this.props.activeNotes.includes(midiNumber);
           return (
             <Key
               naturalKeyWidth={naturalKeyWidth}
               midiNumber={midiNumber}
               noteRange={this.props.noteRange}
               active={isActive}
-              highlighted={isHighlighted}
               accidental={isAccidental}
               disabled={this.props.disabled}
-              onPlayNoteInput={this.props.onPlayNoteInput}
-              onStopNoteInput={this.props.onStopNoteInput}
-              gliss={this.props.gliss}
-              useTouchEvents={this.props.useTouchEvents}
               key={midiNumber}
             >
               {this.props.disabled

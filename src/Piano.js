@@ -9,7 +9,6 @@ class Piano extends React.Component {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
-    highlightedNotes: PropTypes.arrayOf(PropTypes.number.isRequired),
     playNote: PropTypes.func.isRequired,
     stopNote: PropTypes.func.isRequired,
     onPlayNoteInput: PropTypes.func,
@@ -29,7 +28,6 @@ class Piano extends React.Component {
 
   state = {
     activeNotes: this.props.activeNotes || [],
-    highlightedNotes: this.props.highlightedNotes || [],
   };
 
   componentDidUpdate(prevProps) {
@@ -43,21 +41,16 @@ class Piano extends React.Component {
         activeNotes: this.props.activeNotes || [],
       });
     }
-    if (
-      prevProps.highlightedNotes !== this.props.highlightedNotes &&
-      this.state.highlightedNotes !== this.props.highlightedNotes
-    ) {
-      this.setState({
-        highlightedNotes: this.props.highlightedNotes || [],
-      });
-    }
   }
 
   handlePlayNoteInput = (midiNumber) => {
-    if (this.props.onPlayNoteInput) {
-      this.props.onPlayNoteInput(midiNumber, { prevActiveNotes: this.state.activeNotes });
-    }
     this.setState((prevState) => {
+      // Need to be handled inside setState in order to set prevActiveNotes without
+      // race conditions.
+      if (this.props.onPlayNoteInput) {
+        this.props.onPlayNoteInput(midiNumber, { prevActiveNotes: prevState.activeNotes });
+      }
+
       // Don't append note to activeNotes if it's already present
       if (prevState.activeNotes.includes(midiNumber)) {
         return null;
@@ -69,12 +62,16 @@ class Piano extends React.Component {
   };
 
   handleStopNoteInput = (midiNumber) => {
-    if (this.props.onStopNoteInput) {
-      this.props.onStopNoteInput(midiNumber, { prevActiveNotes: this.state.activeNotes });
-    }
-    this.setState((prevState) => ({
-      activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
-    }));
+    this.setState((prevState) => {
+      // Need to be handled inside setState in order to set prevActiveNotes without
+      // race conditions.
+      if (this.props.onStopNoteInput) {
+        this.props.onStopNoteInput(midiNumber, { prevActiveNotes: this.state.activeNotes });
+      }
+      return {
+        activeNotes: prevState.activeNotes.filter((note) => midiNumber !== note),
+      };
+    });
   };
 
   render() {
@@ -82,9 +79,6 @@ class Piano extends React.Component {
     return (
       <ControlledPiano
         activeNotes={this.state.activeNotes}
-        highlightedNotes={this.state.highlightedNotes}
-        onPlayNoteInput={this.handlePlayNoteInput}
-        onStopNoteInput={this.handleStopNoteInput}
         {...otherProps}
       />
     );

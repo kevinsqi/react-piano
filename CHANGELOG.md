@@ -1,3 +1,14 @@
+### 3.1.3 (July 21, 2019)
+
+- Fix prevActiveNotes race condition, and don't add 'active' style to disabled piano keys [`#46`](https://github.com/kevinsqi/react-piano/pull/46)
+- Upgrade dependencies for security warnings [`#54`](https://github.com/kevinsqi/react-piano/pull/54)
+- Upgrade /demo dependencies (react, react-dom, react-scripts) [`#53`](https://github.com/kevinsqi/react-piano/pull/53)
+- Bump lodash from 4.17.10 to 4.17.13 in /demo [`#50`](https://github.com/kevinsqi/react-piano/pull/50)
+- Bump lodash.template from 4.4.0 to 4.5.0 in /demo [`#49`](https://github.com/kevinsqi/react-piano/pull/49)
+- Bump lodash from 4.17.10 to 4.17.15 [`#52`](https://github.com/kevinsqi/react-piano/pull/52)
+- Bump handlebars from 4.0.11 to 4.1.2 in /demo [`#48`](https://github.com/kevinsqi/react-piano/pull/48)
+- Bump handlebars from 4.0.11 to 4.1.2 [`#47`](https://github.com/kevinsqi/react-piano/pull/47)
+
 ## 3.1.2 (November 10, 2018)
 
 * Make Piano use activeNotes prop for initial state [#40]

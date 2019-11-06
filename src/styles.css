@@ -56,14 +56,6 @@
   background: #3ac8da;
 }
 
-/*
- * Styles of "highlighted" keys
- */
-.ReactPiano__Key--highlighted {
-  background: #c969f5;
-  color: #fff;
-}
-
 .ReactPiano__Key--active.ReactPiano__Key--accidental {
   border: 1px solid #fff;
   border-top: 1px solid #3ac8da;
@@ -80,10 +72,6 @@
 /*
  * Styles for disabled state
  */
-.ReactPiano__Key--disabled.ReactPiano__Key {
-  cursor: progress;
-}
-
 .ReactPiano__Key--disabled.ReactPiano__Key--accidental {
   background: #ddd;
   border: 1px solid #999;

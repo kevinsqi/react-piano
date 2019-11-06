@@ -8,7 +8,6 @@ class ControlledPiano extends React.Component {
   static propTypes = {
     noteRange: PropTypes.object.isRequired,
     activeNotes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    highlightedNotes: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     playNote: PropTypes.func.isRequired,
     stopNote: PropTypes.func.isRequired,
     onPlayNoteInput: PropTypes.func.isRequired,
@@ -27,7 +26,7 @@ class ControlledPiano extends React.Component {
   };
 
   static defaultProps = {
-    renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental, isHighlighted }) =>
+    renderNoteLabel: ({ keyboardShortcut, midiNumber, isActive, isAccidental }) =>
       keyboardShortcut ? (
         <div
           className={classNames('ReactPiano__NoteLabel', {
@@ -45,16 +44,6 @@ class ControlledPiano extends React.Component {
     isMouseDown: false,
     useTouchEvents: false,
   };
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown);
-    window.addEventListener('keyup', this.onKeyUp);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
-    window.removeEventListener('keyup', this.onKeyUp);
-  }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.activeNotes !== prevProps.activeNotes) {
@@ -163,9 +152,6 @@ class ControlledPiano extends React.Component {
     return (
       <div
         style={{ width: '100%', height: '100%' }}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
-        onTouchStart={this.onTouchStart}
         data-testid="container"
       >
         <Keyboard
@@ -173,7 +159,6 @@ class ControlledPiano extends React.Component {
           onPlayNoteInput={this.onPlayNoteInput}
           onStopNoteInput={this.onStopNoteInput}
           activeNotes={this.props.activeNotes}
-          highlightedNotes={this.props.highlightedNotes}
           className={this.props.className}
           disabled={this.props.disabled}
           width={this.props.width}
