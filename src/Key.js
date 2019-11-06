@@ -8,13 +8,9 @@ class Key extends React.Component {
   static propTypes = {
     midiNumber: PropTypes.number.isRequired,
     naturalKeyWidth: PropTypes.number.isRequired, // Width as a ratio between 0 and 1
-    gliss: PropTypes.bool.isRequired,
-    useTouchEvents: PropTypes.bool.isRequired,
     accidental: PropTypes.bool.isRequired,
     active: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
-    onPlayNoteInput: PropTypes.func.isRequired,
-    onStopNoteInput: PropTypes.func.isRequired,
     accidentalWidthRatio: PropTypes.number.isRequired,
     pitchPositions: PropTypes.object.isRequired,
     children: PropTypes.node,
