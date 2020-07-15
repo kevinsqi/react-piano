@@ -1,7 +1,8 @@
-import ControlledPiano from './ControlledPiano';
-import Piano from './Piano';
-import Keyboard from './Keyboard';
-import KeyboardShortcuts from './KeyboardShortcuts';
-import MidiNumbers from './MidiNumbers';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 
-export { ControlledPiano, Piano, Keyboard, KeyboardShortcuts, MidiNumbers };
+ReactDOM.render(<App />, document.getElementById('root'));
+registerServiceWorker();
