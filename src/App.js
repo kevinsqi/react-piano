@@ -15,7 +15,7 @@ function Installation() {
   return (
     <div className="text-center">
       <h2>Installation</h2>
-      <p className="mt-4">Install with yarn or npm:</p>
+      <p className="mt-4">DO WHAT YOU WANT... Add Yarn or npm</p>
       <p className="mt-3">
         <code className="p-2 text-dark bg-yellow">yarn add react-piano</code>
       </p>
