@@ -95,6 +95,9 @@ class Key extends React.Component {
         onMouseUp={useTouchEvents ? null : this.onStopNoteInput}
         onMouseEnter={gliss ? this.onPlayNoteInput : null}
         onMouseLeave={this.onStopNoteInput}
+        onPointerDown={useTouchEvents ? (ev) => { ev.target.releasePointerCapture(ev.pointerId); } : null}
+        onPointerEnter={useTouchEvents ? this.onPlayNoteInput : null}
+        onPointerLeave={useTouchEvents ? this.onStopNoteInput : null}
         onTouchStart={useTouchEvents ? this.onPlayNoteInput : null}
         onTouchCancel={useTouchEvents ? this.onStopNoteInput : null}
         onTouchEnd={useTouchEvents ? this.onStopNoteInput : null}
